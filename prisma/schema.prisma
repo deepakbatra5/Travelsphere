@@ -53,7 +53,6 @@ model Package {
 
 enum Category {
   FAMILY
-  HONEYMOON
   GROUP
   SOLO
   PILGRIMAGE

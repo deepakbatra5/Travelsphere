@@ -18,7 +18,7 @@ export default function Footer() {
           <h3 className="mb-3 font-semibold text-white">Quick Links</h3>
           <ul className="space-y-2 text-sm text-slate-300">
             <li><Link href="/packages" className="hover:text-orange-300">All Packages</Link></li>
-            <li><Link href="/packages?category=HONEYMOON" className="hover:text-orange-300">Honeymoon Tours</Link></li>
+            <li><Link href="/packages?category=SOLO" className="hover:text-orange-300">Solo Trips</Link></li>
             <li><Link href="/packages?category=FAMILY" className="hover:text-orange-300">Family Tours</Link></li>
             <li><Link href="/packages?category=PILGRIMAGE" className="hover:text-orange-300">Pilgrimage Tours</Link></li>
             <li><Link href="/packages?category=ADVENTURE" className="hover:text-orange-300">Adventure Tours</Link></li>
@@ -44,7 +44,7 @@ export default function Footer() {
             href="https://wa.me/918603606089"
             target="_blank"
             rel="noreferrer"
-            className="inline-block rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-2 text-sm font-semibold text-white hover:from-emerald-600 hover:to-teal-600"
+            className="inline-block rounded-full bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-2 text-sm font-semibold text-white hover:from-emerald-600 hover:to-teal-600"
           >
             WhatsApp Us
           </a>

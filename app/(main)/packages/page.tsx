@@ -18,7 +18,7 @@ interface Props {
 
 const quickCategories = [
   { label: 'All Packages', value: 'ALL' },
-  { label: 'Honeymoon', value: 'HONEYMOON' },
+  { label: 'Solo Trips', value: 'SOLO' },
   { label: 'Family', value: 'FAMILY' },
   { label: 'Pilgrimage', value: 'PILGRIMAGE' },
   { label: 'Group Tours', value: 'GROUP' },

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AdminToast, { AdminToastMessage } from '@/components/ui/AdminToast'
 
-const categories = ['FAMILY', 'HONEYMOON', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'SOLO', 'CORPORATE']
+const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'CORPORATE']
 
 interface ItineraryDay {
   day: number
@@ -51,6 +51,21 @@ export default function AddPackagePage() {
     const file = e.target.files?.[0]
     if (!file) return
 
+    // Validate file size on client side
+    const maxSizeInBytes = 5 * 1024 * 1024
+    if (file.size > maxSizeInBytes) {
+      setToast({ type: 'error', text: 'Image exceeds 5MB limit. Please choose a smaller image.' })
+      e.target.value = ''
+      return
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setToast({ type: 'error', text: 'Please select a valid image file (JPG, PNG, etc).' })
+      e.target.value = ''
+      return
+    }
+
     setUploadingImage(true)
 
     try {
@@ -59,14 +74,25 @@ export default function AddPackagePage() {
 
       const res = await fetch('/api/upload', { method: 'POST', body: formData })
       const data = await res.json()
+      
+      if (!res.ok) {
+        setToast({ type: 'error', text: data.error || 'Upload failed. Please try again.' })
+        e.target.value = ''
+        return
+      }
+
       if (data.url) {
         setImages((prev) => [...prev, data.url])
         setToast({ type: 'success', text: 'Image uploaded successfully.' })
       } else {
         setToast({ type: 'error', text: data.error || 'Upload failed.' })
       }
+    } catch (err) {
+      console.error('Upload error:', err)
+      setToast({ type: 'error', text: 'Network error. Please check your connection and try again.' })
     } finally {
       setUploadingImage(false)
+      e.target.value = ''
     }
   }
 

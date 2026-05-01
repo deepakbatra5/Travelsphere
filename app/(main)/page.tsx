@@ -3,11 +3,11 @@ import { prisma } from '@/lib/db'
 import PackageCard from '@/components/packages/PackageCard'
 import {
   GlobeAsiaAustraliaIcon,
-  HeartIcon,
   PhoneIcon,
   ShieldCheckIcon,
   SparklesIcon,
   UserGroupIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline'
 
 export const dynamic = 'force-dynamic'
@@ -21,12 +21,11 @@ async function getFeaturedPackages() {
 }
 
 const categories = [
-  { label: 'Honeymoon', value: 'HONEYMOON', icon: HeartIcon, style: 'from-rose-200 to-rose-100 text-rose-700' },
+  { label: 'Solo Trips', value: 'SOLO', icon: UserIcon, style: 'from-indigo-200 to-indigo-100 text-indigo-700' },
   { label: 'Family', value: 'FAMILY', icon: UserGroupIcon, style: 'from-sky-200 to-sky-100 text-sky-700' },
   { label: 'Group Tours', value: 'GROUP', icon: GlobeAsiaAustraliaIcon, style: 'from-amber-200 to-amber-100 text-amber-700' },
   { label: 'Pilgrimage', value: 'PILGRIMAGE', icon: SparklesIcon, style: 'from-orange-200 to-orange-100 text-orange-700' },
   { label: 'Adventure', value: 'ADVENTURE', icon: ShieldCheckIcon, style: 'from-emerald-200 to-emerald-100 text-emerald-700' },
-  { label: 'Solo', value: 'SOLO', icon: GlobeAsiaAustraliaIcon, style: 'from-indigo-200 to-indigo-100 text-indigo-700' },
 ]
 
 export default async function HomePage() {

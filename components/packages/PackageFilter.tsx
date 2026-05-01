@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-const categories = ['ALL', 'HONEYMOON', 'FAMILY', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'SOLO', 'CORPORATE']
+const categories = ['ALL', 'SOLO', 'FAMILY', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'CORPORATE']
 const durations = ['ALL', '1-3', '4-6', '7-10', '10+']
 const budgets = [
   { label: 'All Budgets', value: 'ALL' },

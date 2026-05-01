@@ -52,18 +52,26 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) return null
 
+        const userWithAgent = await prisma.user.findUnique({
+          where: { email: user.email },
+          include: { agent: { select: { status: true } } },
+        })
+
+        if (!userWithAgent) return null
+
         const passwordMatch = await bcrypt.compare(
           password,
-          user.password
+          userWithAgent.password
         )
 
         if (!passwordMatch) return null
 
         return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role
+          id: userWithAgent.id,
+          name: userWithAgent.name,
+          email: userWithAgent.email,
+          role: userWithAgent.role,
+          agentStatus: userWithAgent.agent?.status ?? null,
         }
       }
     })
@@ -73,6 +81,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role
         token.id = user.id
+        token.agentStatus = user.agentStatus ?? null
       }
       return token
     },
@@ -80,6 +89,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.role = token.role
         session.user.id = token.id
+        session.user.agentStatus = token.agentStatus ?? null
       }
       return session
     },

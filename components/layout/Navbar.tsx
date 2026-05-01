@@ -9,11 +9,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'All Packages', href: '/packages' },
-  { label: 'Honeymoon', href: '/packages?category=HONEYMOON' },
+  { label: 'Solo Trips', href: '/packages?category=SOLO' },
   { label: 'Family', href: '/packages?category=FAMILY' },
   { label: 'Pilgrimage', href: '/packages?category=PILGRIMAGE' },
   { label: 'Group Tours', href: '/packages?category=GROUP' },
-  { label: 'Become an Agent', href: '/agent-register' },
 ]
 
 export default function Navbar() {
@@ -22,6 +21,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const userName = session?.user?.name?.split(' ')[0] || 'Traveler'
   const isPackagesPage = pathname?.startsWith('/packages')
+  const isAdmin = session?.user?.role === 'ADMIN'
+  const showBecomeAgent = !session?.user?.agentStatus && !isAdmin
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur">
@@ -46,6 +47,11 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          {showBecomeAgent && (
+            <Link href="/agent-register" className="rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
+              Become an Agent
+            </Link>
+          )}
         </div>
 
         <div className="hidden items-center gap-4 lg:flex">
@@ -56,9 +62,11 @@ export default function Navbar() {
                   Admin Panel
                 </Link>
               )}
-              <Link href="/agent" className="whitespace-nowrap text-sm font-semibold text-cyan-700 hover:text-cyan-800">
-                Agent Portal
-              </Link>
+              {!isAdmin && (
+                <Link href="/agent" className="whitespace-nowrap text-sm font-semibold text-cyan-700 hover:text-cyan-800">
+                  Agent Portal
+                </Link>
+              )}
               <Link href="/dashboard" className="whitespace-nowrap text-sm font-semibold text-slate-600 hover:text-slate-900">
                 Dashboard
               </Link>
@@ -113,6 +121,11 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {showBecomeAgent && (
+              <Link href="/agent-register" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
+                Become an Agent
+              </Link>
+            )}
             {session?.user ? (
               <>
                 {session.user.role === 'ADMIN' && (
@@ -120,9 +133,11 @@ export default function Navbar() {
                     Admin Panel
                   </Link>
                 )}
-                <Link href="/agent" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
-                  Agent Portal
-                </Link>
+                {!isAdmin && (
+                  <Link href="/agent" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
+                    Agent Portal
+                  </Link>
+                )}
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
                   Dashboard
                 </Link>

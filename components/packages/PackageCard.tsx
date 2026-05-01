@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { ArrowRightIcon, ClockIcon, MapPinIcon } from '@heroicons/react/24/outline'
 
 const categoryColors: Record<string, string> = {
-  HONEYMOON: 'bg-rose-100/95 text-rose-700',
   FAMILY: 'bg-sky-100/95 text-sky-700',
   GROUP: 'bg-amber-100/95 text-amber-700',
   PILGRIMAGE: 'bg-orange-100/95 text-orange-700',
@@ -39,7 +38,7 @@ export default function PackageCard({ package: pkg }: Props) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition duration-500 group-hover:scale-110"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-slate-900/10 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-slate-950/45 via-slate-900/10 to-transparent" />
           <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold ${categoryColors[pkg.category] || 'bg-slate-100 text-slate-700'}`}>
             {pkg.category}
           </span>
