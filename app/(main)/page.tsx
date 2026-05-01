@@ -13,11 +13,16 @@ import {
 export const dynamic = 'force-dynamic'
 
 async function getFeaturedPackages() {
-  return await prisma.package.findMany({
-    where: { isActive: true },
-    take: 6,
-    orderBy: { createdAt: 'desc' }
-  })
+  try {
+    return await prisma.package.findMany({
+      where: { isActive: true },
+      take: 6,
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error('Failed to load featured packages:', error)
+    return []
+  }
 }
 
 const categories = [

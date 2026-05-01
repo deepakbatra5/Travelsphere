@@ -25,37 +25,42 @@ const quickCategories = [
 ]
 
 async function getPackages(filters: SearchParams) {
-  const where: Prisma.PackageWhereInput = { isActive: true }
+  try {
+    const where: Prisma.PackageWhereInput = { isActive: true }
 
-  if (filters.search) {
-    where.OR = [
-      { title: { contains: filters.search, mode: 'insensitive' } },
-      { destination: { contains: filters.search, mode: 'insensitive' } },
-    ]
-  }
-
-  if (filters.category && filters.category !== 'ALL' && filters.category in Category) {
-    where.category = filters.category as Category
-  }
-
-  if (filters.duration && filters.duration !== 'ALL') {
-    if (filters.duration === '10+') {
-      where.duration = { gte: 10 }
-    } else {
-      const [min, max] = filters.duration.split('-').map(Number)
-      where.duration = { gte: min, lte: max }
+    if (filters.search) {
+      where.OR = [
+        { title: { contains: filters.search, mode: 'insensitive' } },
+        { destination: { contains: filters.search, mode: 'insensitive' } },
+      ]
     }
-  }
 
-  if (filters.budget && filters.budget !== 'ALL') {
-    const [min, max] = filters.budget.split('-').map(Number)
-    where.price = { gte: min, lte: max }
-  }
+    if (filters.category && filters.category !== 'ALL' && filters.category in Category) {
+      where.category = filters.category as Category
+    }
 
-  return await prisma.package.findMany({
-    where,
-    orderBy: { createdAt: 'desc' }
-  })
+    if (filters.duration && filters.duration !== 'ALL') {
+      if (filters.duration === '10+') {
+        where.duration = { gte: 10 }
+      } else {
+        const [min, max] = filters.duration.split('-').map(Number)
+        where.duration = { gte: min, lte: max }
+      }
+    }
+
+    if (filters.budget && filters.budget !== 'ALL') {
+      const [min, max] = filters.budget.split('-').map(Number)
+      where.price = { gte: min, lte: max }
+    }
+
+    return await prisma.package.findMany({
+      where,
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error('Failed to load package listings:', error)
+    return []
+  }
 }
 
 export default async function PackagesPage({ searchParams }: Props) {
