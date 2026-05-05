@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { markAuthSessionActive } from '@/lib/browser-session'
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
@@ -50,6 +51,7 @@ export default function LoginPage() {
       setError('Unable to login right now. Please try again.')
     } else {
       // Use sanitized callback path directly to avoid callback URL loop issues in production.
+      markAuthSessionActive()
       window.location.assign(safeCallbackPath)
     }
   }

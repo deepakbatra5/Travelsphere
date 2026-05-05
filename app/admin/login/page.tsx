@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
+import { markAuthSessionActive } from '@/lib/browser-session'
 
 function getSafeCallbackPath() {
   if (typeof window === 'undefined') return '/admin'
@@ -51,6 +52,7 @@ export default function AdminLoginPage() {
       return
     }
 
+    markAuthSessionActive()
     window.location.assign(safeCallbackPath)
   }
 

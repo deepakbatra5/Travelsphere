@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import { clearAuthSession } from '@/lib/browser-session'
 
 const navItems = [
   { href: '/agent', label: 'Dashboard' },
@@ -39,7 +40,13 @@ export default function AgentLayout({ children }: { children: React.ReactNode })
         </nav>
         <div className="space-y-2 border-t border-cyan-900 px-4 py-4">
           <Link href="/" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-cyan-200 hover:bg-cyan-900">View Website</Link>
-          <button onClick={() => signOut({ callbackUrl: '/' })} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-red-300 hover:bg-cyan-900">
+          <button
+            onClick={() => {
+              clearAuthSession()
+              signOut({ callbackUrl: '/' })
+            }}
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-red-300 hover:bg-cyan-900"
+          >
             Logout
           </button>
         </div>

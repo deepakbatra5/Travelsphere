@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { clearAuthSession } from '@/lib/browser-session'
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -74,7 +75,10 @@ export default function Navbar() {
               <span className="whitespace-nowrap text-sm font-semibold text-slate-500">Hi, {userName}</span>
               <button
                 type="button"
-                onClick={() => void signOut()}
+                onClick={() => {
+                  clearAuthSession()
+                  void signOut()
+                }}
                 className="rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-700"
               >
                 Logout
@@ -146,6 +150,7 @@ export default function Navbar() {
                 <button
                   onClick={() => {
                     setMenuOpen(false)
+                    clearAuthSession()
                     void signOut()
                   }}
                   className="rounded-xl px-3 py-2 text-left text-red-600 hover:bg-red-50"
