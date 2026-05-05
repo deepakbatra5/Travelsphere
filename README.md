@@ -50,14 +50,23 @@ This app should be deployed on Vercel, not GitHub Pages.
 1. Push the repository to GitHub.
 2. Import the repository into Vercel.
 3. Add all environment variables from `.env.example`.
-4. Set `NEXTAUTH_URL` to your production Vercel domain, for example `https://your-project.vercel.app`.
+4. Set `NEXTAUTH_URL` and `NEXTAUTH_URL_INTERNAL` to your production Vercel domain, for example `https://your-project.vercel.app`.
 5. Trigger the first deployment.
 
 This repo is already configured for that flow:
 
 - `vercel.json` tells Vercel to use `npm run vercel-build`
-- `npm run vercel-build` runs Prisma generate, `prisma migrate deploy`, and `next build`
+- `npm run vercel-build` runs Prisma generate, `prisma migrate deploy`, seed data, and `next build`
 - `prisma/migrations` now contains the initial migration Vercel can apply to a fresh PostgreSQL database
+
+Set `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` in Vercel before deploying. The seed step creates or updates that admin account and adds the sample tour packages that appear on the homepage.
+
+If the admin panel keeps redirecting or looks like it only reloads after login, check these Vercel variables first:
+
+- `NEXTAUTH_URL` must be your deployed HTTPS URL, not `http://localhost:3000`
+- `NEXTAUTH_URL_INTERNAL` should use the same deployed HTTPS URL on Vercel
+- `NEXTAUTH_SECRET` must be set and must not change between deploys
+- `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` must match the login details you are using
 
 If you are using Vercel Postgres or Prisma Postgres, set:
 

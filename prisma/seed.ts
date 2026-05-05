@@ -20,26 +20,32 @@ type SeedPackage = Prisma.PackageCreateInput
 async function main() {
   console.log('Seeding database...')
 
-  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@travelsphere.com'
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'Admin@12345'
-  const adminPasswordHash = await bcrypt.hash(adminPassword, 10)
+  const isProduction = process.env.NODE_ENV === 'production'
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || (isProduction ? undefined : 'admin@travelsphere.com')
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || (isProduction ? undefined : 'Admin@12345')
 
-  await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: {
-      name: 'Admin',
-      password: adminPasswordHash,
-      role: 'ADMIN',
-    },
-    create: {
-      name: 'Admin',
-      email: adminEmail,
-      password: adminPasswordHash,
-      role: 'ADMIN',
-    },
-  })
+  if (adminEmail && adminPassword) {
+    const adminPasswordHash = await bcrypt.hash(adminPassword, 10)
 
-  console.log(`Admin user ready: ${adminEmail}`)
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: {
+        name: 'Admin',
+        password: adminPasswordHash,
+        role: 'ADMIN',
+      },
+      create: {
+        name: 'Admin',
+        email: adminEmail,
+        password: adminPasswordHash,
+        role: 'ADMIN',
+      },
+    })
+
+    console.log(`Admin user ready: ${adminEmail}`)
+  } else {
+    console.log('Skipping admin seed. Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD to create an admin user.')
+  }
 
   const packages: SeedPackage[] = [
     {

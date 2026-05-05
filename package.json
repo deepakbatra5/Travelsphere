@@ -14,7 +14,7 @@
     "dev:raw": "next dev --webpack",
     "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1",
     "build": "next build",
-    "vercel-build": "npm run prisma:generate && (npm run db:migrate:deploy || npm run db:push) && next build",
+    "vercel-build": "npm run prisma:generate && (npm run db:migrate:deploy || npm run db:push) && npm run seed && next build",
     "start": "next start",
     "lint": "eslint"
   },
