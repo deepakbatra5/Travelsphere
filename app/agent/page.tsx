@@ -55,7 +55,7 @@ export default async function AgentDashboard() {
         {[
           { label: 'Active Assignments', value: active, bg: 'bg-cyan-600' },
           { label: 'Completed Tours', value: completed, bg: 'bg-emerald-600' },
-          { label: 'Total Earnings', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500' },
+          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500' },
           { label: 'Tours I Cover', value: preferredCount, bg: 'bg-slate-800' },
         ].map((stat) => (
           <div key={stat.label} className={`${stat.bg} rounded-2xl p-5 text-white`}>
@@ -77,7 +77,7 @@ export default async function AgentDashboard() {
                 <p className="font-semibold text-slate-800">{assignment.booking.package.title}</p>
                 <p className="text-sm text-slate-500">{assignment.booking.package.destination} - {new Date(assignment.booking.travelDate).toLocaleDateString('en-IN')}</p>
               </div>
-              <div className="text-sm font-bold text-emerald-600">Rs {assignment.commission.toLocaleString('en-IN')}</div>
+              <div className="text-sm font-bold text-emerald-600">Agent payout: Rs {assignment.commission.toLocaleString('en-IN')}</div>
             </div>
           ))}
           {assignments.length === 0 && <p className="py-8 text-center text-sm text-slate-400">No assignments yet. Select preferred tours to help admins match you.</p>}

@@ -91,7 +91,7 @@ export default function AgentRegisterPage() {
             Travel Sphere
           </Link>
           <h1 className="mt-4 text-2xl font-extrabold text-slate-900">Become a Travel Agent</h1>
-          <p className="mt-1 text-sm text-slate-600">Join our network and earn 10% commission per tour.</p>
+          <p className="mt-1 text-sm text-slate-600">Join our network and receive 80% of each assigned tour amount.</p>
         </div>
 
         <div className="mb-6 flex items-center">
@@ -185,7 +185,7 @@ export default function AgentRegisterPage() {
             </div>
 
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-relaxed text-emerald-700">
-              You earn 10% commission on every completed tour. Example: customer pays Rs 20,000, your commission is Rs 2,000.
+              Travel Sphere keeps 20% from every completed tour and the assigned agent receives the remaining 80%. Example: customer pays Rs 20,000, Travel Sphere keeps Rs 4,000 and agent payout is Rs 16,000.
             </div>
 
             <div className="flex gap-3">

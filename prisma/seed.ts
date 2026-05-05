@@ -26,9 +26,19 @@ async function repairLegacyCategories() {
   `)
 }
 
+async function repairAgentPayouts() {
+  await prisma.$executeRawUnsafe(`
+    UPDATE "BookingAgent" AS assignment
+    SET "commission" = booking."totalAmount" * 0.8
+    FROM "Booking" AS booking
+    WHERE assignment."bookingId" = booking."id"
+  `)
+}
+
 async function main() {
   console.log('Seeding database...')
   await repairLegacyCategories()
+  await repairAgentPayouts()
 
   const isProduction = process.env.NODE_ENV === 'production'
   const adminEmail = process.env.SEED_ADMIN_EMAIL || (isProduction ? undefined : 'admin@travelsphere.com')

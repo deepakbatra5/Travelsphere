@@ -59,7 +59,7 @@ export default async function AdminAgentsPage() {
                   { label: 'Active Tours', value: active, bg: 'bg-cyan-50', text: 'text-cyan-600' },
                   { label: 'Completed', value: completed, bg: 'bg-emerald-50', text: 'text-emerald-600' },
                   { label: 'Tours Covered', value: agent.preferredTours.length, bg: 'bg-orange-50', text: 'text-orange-600' },
-                  { label: 'Total Earned', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-slate-50', text: 'text-slate-700' },
+                  { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-slate-50', text: 'text-slate-700' },
                 ].map((stat) => (
                   <div key={stat.label} className={`${stat.bg} rounded-xl p-3 text-center`}>
                     <p className={`text-lg font-bold ${stat.text}`}>{stat.value}</p>

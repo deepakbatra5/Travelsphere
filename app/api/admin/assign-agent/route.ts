@@ -4,8 +4,9 @@ import { revalidatePath } from 'next/cache'
 import nodemailer from 'nodemailer'
 import { prisma } from '@/lib/db'
 import { authOptions } from '@/lib/auth'
+import { getAgentPayout, getCompanyCommission } from '@/lib/commission'
 
-async function notifyAgent(agentId: string, bookingId: string, commission: number) {
+async function notifyAgent(agentId: string, bookingId: string, agentPayout: number, companyCommission: number) {
   const [agent, booking] = await Promise.all([
     prisma.agent.findUnique({ where: { id: agentId }, include: { user: true } }),
     prisma.booking.findUnique({ where: { id: bookingId }, include: { user: true, package: true } }),
@@ -35,7 +36,8 @@ async function notifyAgent(agentId: string, bookingId: string, commission: numbe
           <tr><td style="padding:8px 0;color:#6b7280;">Customer</td><td style="font-weight:600;">${booking.user.name}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;">Travel Date</td><td style="font-weight:600;">${new Date(booking.travelDate).toLocaleDateString('en-IN')}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;">Travellers</td><td style="font-weight:600;">${booking.travellers}</td></tr>
-          <tr><td style="padding:8px 0;color:#6b7280;">Commission</td><td style="font-weight:700;color:#16a34a;">Rs ${commission.toLocaleString('en-IN')}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;">Travel Sphere Share</td><td style="font-weight:600;">Rs ${companyCommission.toLocaleString('en-IN')}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;">Your Payout</td><td style="font-weight:700;color:#16a34a;">Rs ${agentPayout.toLocaleString('en-IN')}</td></tr>
         </table>
       </div>
     `,
@@ -59,15 +61,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Agent is not approved' }, { status: 400 })
     }
 
-    const commission = booking.totalAmount * 0.1
+    const companyCommission = getCompanyCommission(booking.totalAmount)
+    const agentPayout = getAgentPayout(booking.totalAmount)
 
     await prisma.bookingAgent.upsert({
       where: { bookingId },
-      update: { agentId, commission, status: 'ASSIGNED', completedAt: null },
-      create: { bookingId, agentId, commission },
+      update: { agentId, commission: agentPayout, status: 'ASSIGNED', completedAt: null },
+      create: { bookingId, agentId, commission: agentPayout },
     })
 
-    notifyAgent(agentId, bookingId, commission).catch(console.error)
+    notifyAgent(agentId, bookingId, agentPayout, companyCommission).catch(console.error)
 
     revalidatePath('/admin/bookings')
     revalidatePath('/admin/agents')

@@ -53,6 +53,7 @@ export default async function AgentMyToursPage() {
               <div className="text-left sm:text-right">
                 <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-700">{assignment.status}</span>
                 <p className="mt-2 text-lg font-bold text-emerald-600">Rs {assignment.commission.toLocaleString('en-IN')}</p>
+                <p className="text-xs font-semibold text-slate-400">Agent payout</p>
               </div>
             </div>
             <div className="mt-4 grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">

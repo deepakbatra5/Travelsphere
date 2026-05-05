@@ -22,7 +22,8 @@ export default function Navbar() {
   const userName = session?.user?.name?.split(' ')[0] || 'Traveler'
   const isPackagesPage = pathname?.startsWith('/packages')
   const isAdmin = session?.user?.role === 'ADMIN'
-  const showBecomeAgent = !session?.user?.agentStatus && !isAdmin
+  const isAgent = Boolean(session?.user?.agentStatus)
+  const showBecomeAgent = !session?.user
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur">
@@ -62,7 +63,7 @@ export default function Navbar() {
                   Admin Panel
                 </Link>
               )}
-              {!isAdmin && (
+              {!isAdmin && isAgent && (
                 <Link href="/agent" className="whitespace-nowrap text-sm font-semibold text-cyan-700 hover:text-cyan-800">
                   Agent Portal
                 </Link>
@@ -133,7 +134,7 @@ export default function Navbar() {
                     Admin Panel
                   </Link>
                 )}
-                {!isAdmin && (
+                {!isAdmin && isAgent && (
                   <Link href="/agent" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
                     Agent Portal
                   </Link>

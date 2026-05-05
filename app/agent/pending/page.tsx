@@ -15,7 +15,7 @@ export default function AgentPendingPage() {
             <li>2. You receive approval</li>
             <li>3. Login and select preferred tours</li>
             <li>4. Admin assigns bookings to you</li>
-            <li>5. Earn 10% commission per completed tour</li>
+            <li>5. Receive 80% agent payout per completed tour</li>
           </ul>
         </div>
         <Link href="/" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">

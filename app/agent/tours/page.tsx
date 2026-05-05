@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getAgentPayout, getCompanyCommission } from '@/lib/commission'
 import AgentTourSelector from './AgentTourSelector'
 
 export const dynamic = 'force-dynamic'
@@ -46,7 +47,8 @@ export default async function AgentToursPage() {
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {packages.map((pkg) => {
-          const commission = pkg.price * 0.1
+          const companyCommission = getCompanyCommission(pkg.price)
+          const agentPayout = getAgentPayout(pkg.price)
           const selected = selectedIds.has(pkg.id)
 
           return (
@@ -58,7 +60,7 @@ export default async function AgentToursPage() {
                 </div>
                 <AgentTourSelector agentId={agent.id} packageId={pkg.id} selected={selected} />
               </div>
-              <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
+              <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
                 <div className="rounded-2xl bg-slate-50 p-3">
                   <p className="text-xs text-slate-400">Duration</p>
                   <p className="font-bold text-slate-800">{pkg.duration} Days</p>
@@ -67,9 +69,13 @@ export default async function AgentToursPage() {
                   <p className="text-xs text-slate-400">Price</p>
                   <p className="font-bold text-slate-800">Rs {pkg.price.toLocaleString('en-IN')}</p>
                 </div>
+                <div className="rounded-2xl bg-orange-50 p-3">
+                  <p className="text-xs text-orange-600">Company Share</p>
+                  <p className="font-bold text-orange-700">Rs {companyCommission.toLocaleString('en-IN')}</p>
+                </div>
                 <div className="rounded-2xl bg-emerald-50 p-3">
-                  <p className="text-xs text-emerald-600">Commission</p>
-                  <p className="font-bold text-emerald-700">Rs {commission.toLocaleString('en-IN')}</p>
+                  <p className="text-xs text-emerald-600">Agent Payout</p>
+                  <p className="font-bold text-emerald-700">Rs {agentPayout.toLocaleString('en-IN')}</p>
                 </div>
               </div>
             </div>
