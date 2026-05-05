@@ -58,7 +58,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <ThemeToggle />
+          <div className="order-first">
+            <ThemeToggle />
+          </div>
           {session?.user ? (
             <>
               {session.user.role === 'ADMIN' && (
@@ -102,7 +104,9 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggle />
+          <div className="order-first">
+            <ThemeToggle />
+          </div>
           <button
             type="button"
             className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700"
