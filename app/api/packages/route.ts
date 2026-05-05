@@ -31,7 +31,7 @@ const packagePayloadSchema = z.object({
   description: z.string().trim().min(20).max(10000),
   price: z.coerce.number().positive().max(10000000),
   duration: z.coerce.number().int().min(1).max(365),
-  category: z.nativeEnum(Category),
+  category: z.preprocess((value) => value === 'HONEYMOON' ? 'SOLO' : value, z.nativeEnum(Category)),
   images: z.array(z.string().url()).max(20).optional().default([]),
   itinerary: z.array(itineraryDaySchema).max(60).optional().default([]),
   inclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
@@ -46,8 +46,10 @@ export async function GET(req: Request) {
 
     const where: Prisma.PackageWhereInput = { isActive: true }
 
-    if (category && category !== 'ALL' && category in Category) {
-      where.category = category as Category
+    const normalizedCategory = category === 'HONEYMOON' ? 'SOLO' : category
+
+    if (normalizedCategory && normalizedCategory !== 'ALL' && normalizedCategory in Category) {
+      where.category = normalizedCategory as Category
     }
 
     if (search) {

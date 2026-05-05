@@ -44,6 +44,7 @@ export default async function PackageDetailPage({ params }: Props) {
   const avgRating = pkg.reviews.length
     ? (pkg.reviews.reduce((sum, r) => sum + r.rating, 0) / pkg.reviews.length).toFixed(1)
     : null
+  const category = pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -80,7 +81,7 @@ export default async function PackageDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700">
-                  {pkg.category}
+                  {category}
                 </span>
                 <h1 className="mt-3 text-3xl font-extrabold text-slate-900">{pkg.title}</h1>
                 <p className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
@@ -182,7 +183,7 @@ export default async function PackageDetailPage({ params }: Props) {
                   <CalendarDaysIcon className="h-4 w-4" />
                   Category
                 </span>
-                <span className="font-bold text-slate-800">{pkg.category}</span>
+                <span className="font-bold text-slate-800">{category}</span>
               </div>
             </div>
 

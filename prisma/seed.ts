@@ -17,8 +17,18 @@ const prisma = new PrismaClient({ adapter })
 
 type SeedPackage = Prisma.PackageCreateInput
 
+async function repairLegacyCategories() {
+  await prisma.$executeRawUnsafe(`ALTER TYPE "Category" ADD VALUE IF NOT EXISTS 'SOLO'`)
+  await prisma.$executeRawUnsafe(`
+    UPDATE "Package"
+    SET "category" = 'SOLO'::"Category"
+    WHERE "category"::text = 'HONEYMOON'
+  `)
+}
+
 async function main() {
   console.log('Seeding database...')
+  await repairLegacyCategories()
 
   const isProduction = process.env.NODE_ENV === 'production'
   const adminEmail = process.env.SEED_ADMIN_EMAIL || (isProduction ? undefined : 'admin@travelsphere.com')

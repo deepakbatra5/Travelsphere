@@ -25,8 +25,10 @@ async function getPackages(filters: SearchParams) {
     ]
   }
 
-  if (filters.category && filters.category !== 'ALL' && filters.category in Category) {
-    where.category = filters.category as Category
+  const normalizedCategory = filters.category === 'HONEYMOON' ? 'SOLO' : filters.category
+
+  if (normalizedCategory && normalizedCategory !== 'ALL' && normalizedCategory in Category) {
+    where.category = normalizedCategory as Category
   }
 
   if (filters.duration && filters.duration !== 'ALL') {

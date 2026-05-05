@@ -26,6 +26,7 @@ interface Props {
 
 export default function PackageCard({ package: pkg }: Props) {
   const image = pkg.images?.[0] || '/travel-placeholder.svg'
+  const category = pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category
 
   return (
     <Link href={`/packages/${pkg.slug}`} className="group block">
@@ -39,8 +40,8 @@ export default function PackageCard({ package: pkg }: Props) {
             className="object-cover transition duration-500 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-linear-to-t from-slate-950/45 via-slate-900/10 to-transparent" />
-          <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold ${categoryColors[pkg.category] || 'bg-slate-100 text-slate-700'}`}>
-            {pkg.category}
+          <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold ${categoryColors[category] || 'bg-slate-100 text-slate-700'}`}>
+            {category}
           </span>
           <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700">
             <MapPinIcon className="h-4 w-4" />

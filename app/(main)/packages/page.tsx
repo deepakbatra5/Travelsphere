@@ -35,8 +35,10 @@ async function getPackages(filters: SearchParams) {
       ]
     }
 
-    if (filters.category && filters.category !== 'ALL' && filters.category in Category) {
-      where.category = filters.category as Category
+    const normalizedCategory = filters.category === 'HONEYMOON' ? 'SOLO' : filters.category
+
+    if (normalizedCategory && normalizedCategory !== 'ALL' && normalizedCategory in Category) {
+      where.category = normalizedCategory as Category
     }
 
     if (filters.duration && filters.duration !== 'ALL') {
@@ -66,7 +68,7 @@ async function getPackages(filters: SearchParams) {
 export default async function PackagesPage({ searchParams }: Props) {
   const filters = (await searchParams) ?? {}
   const packages = await getPackages(filters)
-  const selectedCategory = filters.category || 'ALL'
+  const selectedCategory = filters.category === 'HONEYMOON' ? 'SOLO' : filters.category || 'ALL'
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
