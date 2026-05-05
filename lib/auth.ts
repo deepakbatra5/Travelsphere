@@ -66,6 +66,10 @@ export const authOptions: NextAuthOptions = {
 
         if (!passwordMatch) return null
 
+        if (!userWithAgent.isEmailVerified && userWithAgent.role !== 'ADMIN') {
+          throw new Error('EMAIL_NOT_VERIFIED')
+        }
+
         return {
           id: userWithAgent.id,
           name: userWithAgent.name,

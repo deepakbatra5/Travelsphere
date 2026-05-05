@@ -80,7 +80,7 @@ export default function AgentRegisterPage() {
       return
     }
 
-    router.push('/agent/pending')
+    router.push(`/verify-otp?email=${encodeURIComponent(data.email || form.email)}`)
   }
 
   return (
@@ -191,7 +191,7 @@ export default function AgentRegisterPage() {
             <div className="flex gap-3">
               <button type="button" onClick={() => setStep(1)} className="flex-1 rounded-2xl border border-slate-300 py-3 font-semibold text-slate-600 hover:bg-slate-50">Back</button>
               <button type="submit" disabled={loading} className="flex-1 rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600 disabled:opacity-60">
-                {loading ? 'Submitting...' : 'Submit Application'}
+                {loading ? 'Sending OTP...' : 'Submit Application'}
               </button>
             </div>
           </form>

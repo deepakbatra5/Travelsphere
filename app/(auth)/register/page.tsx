@@ -49,7 +49,7 @@ export default function RegisterPage() {
     if (!res.ok) {
       setError(data.error || 'Something went wrong.')
     } else {
-      router.push('/login?registered=true')
+      router.push(`/verify-otp?email=${encodeURIComponent(data.email || form.email)}`)
     }
   }
 
@@ -137,7 +137,7 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 py-3 font-bold text-white hover:from-orange-600 hover:to-amber-600 disabled:opacity-60"
           >
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? 'Sending OTP...' : 'Create Account'}
           </button>
         </form>
 

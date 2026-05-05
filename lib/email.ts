@@ -18,13 +18,41 @@ interface BookingEmailPayload {
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
+  port: Number(process.env.EMAIL_PORT || 587),
   secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 })
+
+export async function sendEmailOtp({
+  to,
+  name,
+  otp,
+  expiresMinutes,
+}: {
+  to: string
+  name: string
+  otp: string
+  expiresMinutes: number
+}) {
+  await transporter.sendMail({
+    from: `"Travel Sphere" <${process.env.EMAIL_USER}>`,
+    to,
+    subject: 'Verify your Travel Sphere account',
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;padding:28px;background:#ffffff;">
+        <h2 style="color:#f97316;margin:0 0 12px;">Travel Sphere Email Verification</h2>
+        <p>Hello <strong>${name}</strong>,</p>
+        <p>Use this OTP to verify your email address:</p>
+        <div style="font-size:34px;font-weight:800;letter-spacing:8px;color:#111827;margin:24px 0;">${otp}</div>
+        <p>This OTP expires in ${expiresMinutes} minutes.</p>
+        <p style="color:#6b7280;font-size:13px;">If you did not create an account, you can ignore this email.</p>
+      </div>
+    `,
+  })
+}
 
 export async function sendBookingConfirmationEmail(booking: BookingEmailPayload) {
   const { user, package: pkg, travelDate, travellers, totalAmount, id } = booking

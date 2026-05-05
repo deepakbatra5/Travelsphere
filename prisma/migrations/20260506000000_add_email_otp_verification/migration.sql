@@ -1,0 +1,13 @@
+ALTER TABLE "User"
+  ADD COLUMN IF NOT EXISTS "isEmailVerified" BOOLEAN NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS "emailVerifiedAt" TIMESTAMP(3),
+  ADD COLUMN IF NOT EXISTS "emailOtpHash" TEXT,
+  ADD COLUMN IF NOT EXISTS "emailOtpExpiresAt" TIMESTAMP(3),
+  ADD COLUMN IF NOT EXISTS "emailOtpAttempts" INTEGER NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "emailOtpSentAt" TIMESTAMP(3),
+  ADD COLUMN IF NOT EXISTS "emailOtpResendCount" INTEGER NOT NULL DEFAULT 0;
+
+UPDATE "User"
+SET "isEmailVerified" = true,
+    "emailVerifiedAt" = COALESCE("emailVerifiedAt", CURRENT_TIMESTAMP)
+WHERE "isEmailVerified" = false;

@@ -46,7 +46,11 @@ export default function LoginPage() {
     setLoading(false)
 
     if (result?.error) {
-      setError('Invalid email or password. Please try again.')
+      if (result.error === 'EMAIL_NOT_VERIFIED') {
+        setError('Please verify your email before login.')
+      } else {
+        setError('Invalid email or password. Please try again.')
+      }
     } else if (!result?.ok) {
       setError('Unable to login right now. Please try again.')
     } else {

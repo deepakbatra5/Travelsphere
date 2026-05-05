@@ -53,12 +53,16 @@ async function main() {
         name: 'Admin',
         password: adminPasswordHash,
         role: 'ADMIN',
+        isEmailVerified: true,
+        emailVerifiedAt: new Date(),
       },
       create: {
         name: 'Admin',
         email: adminEmail,
         password: adminPasswordHash,
         role: 'ADMIN',
+        isEmailVerified: true,
+        emailVerifiedAt: new Date(),
       },
     })
 

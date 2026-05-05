@@ -14,6 +14,13 @@ model User {
   phone     String?
   password  String
   role      Role     @default(USER)
+  isEmailVerified Boolean @default(true)
+  emailVerifiedAt DateTime?
+  emailOtpHash String?
+  emailOtpExpiresAt DateTime?
+  emailOtpAttempts Int @default(0)
+  emailOtpSentAt DateTime?
+  emailOtpResendCount Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

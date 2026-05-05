@@ -6,6 +6,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { clearAuthSession } from '@/lib/browser-session'
+import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -57,6 +58,7 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-4 lg:flex">
+          <ThemeToggle />
           {session?.user ? (
             <>
               {session.user.role === 'ADMIN' && (
@@ -99,14 +101,17 @@ export default function Navbar() {
           )}
         </div>
 
-        <button
-          type="button"
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 lg:hidden"
-          onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="theme-toggle flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
