@@ -57,16 +57,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="px-4 py-4 border-t border-gray-700 space-y-2">
-          <Link
-            href="/"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-gray-300 hover:bg-gray-800 transition"
-          >
-            View Website
-          </Link>
           <button
             onClick={() => {
               clearAuthSession()
-              signOut({ callbackUrl: '/' })
+              signOut({ callbackUrl: '/admin/login' })
             }}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-400 hover:bg-gray-800 transition"
           >

@@ -1,12 +1,10 @@
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import Script from 'next/script'
 import AIAgent from '@/components/AIAgent'
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive" />
       <Navbar />
       <main className="min-h-screen bg-gray-50">
         <div className="mx-auto max-w-[1600px]">{children}</div>

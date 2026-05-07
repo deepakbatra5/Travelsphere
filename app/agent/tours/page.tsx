@@ -10,7 +10,7 @@ export const revalidate = 0
 
 export default async function AgentToursPage() {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) redirect('/login?callbackUrl=/agent/tours')
+  if (!session?.user?.email) redirect('/agent-login?callbackUrl=/agent/tours')
   const userEmail = session.user.email
 
   const user = await (async () => {

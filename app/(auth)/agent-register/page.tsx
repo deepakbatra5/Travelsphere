@@ -80,7 +80,7 @@ export default function AgentRegisterPage() {
       return
     }
 
-    router.push(`/verify-otp?email=${encodeURIComponent(data.email || form.email)}`)
+    router.push(`/verify-otp?email=${encodeURIComponent(data.email || form.email)}&next=${encodeURIComponent('/agent-login')}`)
   }
 
   return (
@@ -198,7 +198,7 @@ export default function AgentRegisterPage() {
         )}
 
         <p className="mt-5 text-center text-sm text-slate-600">
-          Already an agent? <Link href="/login" className="font-semibold text-orange-600 hover:underline">Login here</Link>
+          Already an agent? <Link href="/agent-login" className="font-semibold text-orange-600 hover:underline">Login here</Link>
         </p>
       </div>
     </div>

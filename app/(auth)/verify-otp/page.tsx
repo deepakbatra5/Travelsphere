@@ -12,10 +12,15 @@ export default function VerifyOtpPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [resending, setResending] = useState(false)
+  const [nextPath, setNextPath] = useState('/login')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setEmail(params.get('email') || '')
+    const next = params.get('next')
+    if (next?.startsWith('/')) {
+      setNextPath(next)
+    }
   }, [])
 
   const handleVerify = async (e: React.FormEvent) => {
@@ -39,7 +44,7 @@ export default function VerifyOtpPage() {
     }
 
     setMessage(data.message || 'Email verified successfully.')
-    setTimeout(() => router.push('/login?verified=true'), 900)
+    setTimeout(() => router.push(`${nextPath}${nextPath.includes('?') ? '&' : '?'}verified=true`), 900)
   }
 
   const handleResend = async () => {

@@ -25,6 +25,7 @@ export default function Navbar() {
   const isPackagesPage = pathname?.startsWith('/packages')
   const isAdmin = session?.user?.role === 'ADMIN'
   const isAgent = Boolean(session?.user?.agentStatus)
+  const showPublicLinks = !isAdmin && !isAgent
   const showBecomeAgent = !session?.user
 
   return (
@@ -37,23 +38,27 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-2 lg:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={`rounded-full px-3 py-2 text-sm font-semibold transition ${
-                (link.href === '/packages' && isPackagesPage) || pathname === link.href
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          {showBecomeAgent && (
-            <Link href="/agent-register" className="rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
-              Become an Agent
-            </Link>
+          {showPublicLinks && (
+            <>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={`rounded-full px-3 py-2 text-sm font-semibold transition ${
+                    (link.href === '/packages' && isPackagesPage) || pathname === link.href
+                      ? 'bg-slate-900 text-white'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              {showBecomeAgent && (
+                <Link href="/agent-register" className="rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
+                  Business
+                </Link>
+              )}
+            </>
           )}
         </div>
 
@@ -121,24 +126,28 @@ export default function Navbar() {
       {menuOpen && (
         <div className="border-t border-slate-100 bg-white px-4 py-4">
           <div className="mx-auto flex max-w-7xl flex-col gap-2 text-sm font-medium text-slate-700">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`rounded-xl px-3 py-2 ${
-                  (link.href === '/packages' && isPackagesPage) || pathname === link.href
-                    ? 'bg-slate-900 text-white'
-                    : 'hover:bg-slate-100'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            {showBecomeAgent && (
-              <Link href="/agent-register" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
-                Become an Agent
-              </Link>
+            {showPublicLinks && (
+              <>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={`rounded-xl px-3 py-2 ${
+                      (link.href === '/packages' && isPackagesPage) || pathname === link.href
+                        ? 'bg-slate-900 text-white'
+                        : 'hover:bg-slate-100'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                {showBecomeAgent && (
+                  <Link href="/agent-register" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
+                    Business
+                  </Link>
+                )}
+              </>
             )}
             {session?.user ? (
               <>
