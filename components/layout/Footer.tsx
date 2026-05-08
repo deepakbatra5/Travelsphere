@@ -40,11 +40,6 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/packages?category=HONEYMOON" className="hover:text-orange-400 transition">
-                Honeymoon Tours
-              </Link>
-            </li>
-            <li>
               <Link href="/packages?category=FAMILY" className="hover:text-orange-400 transition">
                 Family Tours
               </Link>

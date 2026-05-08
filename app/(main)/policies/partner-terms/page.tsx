@@ -26,7 +26,7 @@ export default function PartnerTermsPage() {
           <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-6">
             <p className="text-purple-800">
               <strong>Interested in becoming a Travel Sphere partner?</strong> Register as an agent
-              and earn 10% commission on every tour you complete.
+              and earn 80% of booking amount on every tour you complete.
               <Link href="/agent-register" className="text-orange-500 font-medium ml-1 hover:underline">
                 Apply Now →
               </Link>
@@ -63,16 +63,17 @@ export default function PartnerTermsPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-gray-800 mb-3">3. Commission Structure</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-3">3. Revenue Sharing Model</h2>
           <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-4">
-            <p className="font-bold text-green-800 text-base mb-3">Commission Rate: 10% per completed tour</p>
+            <p className="font-bold text-green-800 text-base mb-3">Travel Sphere keeps 20% | Agent receives 80%</p>
             <div className="space-y-2 text-sm">
               {[
-                { label: 'Commission Rate', value: '10% of total customer booking amount' },
-                { label: 'Example', value: 'Customer pays Rs 28,999 → Your commission: Rs 2,899' },
+                { label: 'Travel Sphere (20%)', value: 'Payment gateway charges, GST, server costs, employee salaries, company profit & all operational expenses' },
+                { label: 'Agent Share (80%)', value: 'Tour expenses, agent profit & any additional earnings' },
+                { label: 'Example', value: 'Customer pays Rs 28,999 → Travel Sphere: Rs 5,800 | Agent: Rs 23,199' },
                 { label: 'Payment Timing', value: 'After tour completion and customer confirmation' },
                 { label: 'Payment Method', value: 'Bank transfer or UPI within 7 business days' },
-                { label: 'Minimum Payout', value: 'Rs 500 (commissions below this accumulate)' },
+                { label: 'Minimum Payout', value: 'Rs 500 (amounts below this accumulate)' },
               ].map((row) => (
                 <div key={row.label} className="flex gap-3">
                   <span className="text-green-600 font-medium w-36 flex-shrink-0">{row.label}</span>
@@ -83,10 +84,11 @@ export default function PartnerTermsPage() {
           </div>
           <ul className="space-y-2 list-none">
             {[
-              'Commission is calculated on the base tour package price excluding any add-ons or upgrades arranged independently.',
-              'No commission is payable for cancelled or refunded bookings.',
-              'Travel Sphere reserves the right to revise commission rates with 30 days notice to active partners.',
-              'Commission disputes must be raised within 15 days of payment via email.',
+              'The 80% agent share is meant to cover all tour-related expenses (transport, accommodation, meals, guides) plus agent profit.',
+              'Agent is responsible for managing and executing the tour as per itinerary.',
+              'No payment is payable for cancelled or refunded bookings.',
+              'Travel Sphere reserves the right to revise revenue share with 30 days notice to active agents.',
+              'Payment disputes must be raised within 15 days of payment via email.',
             ].map((item, i) => (
               <li key={i} className="flex gap-2">
                 <span className="text-orange-500 font-bold flex-shrink-0 mt-0.5">›</span>
@@ -215,8 +217,8 @@ export default function PartnerTermsPage() {
           <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl p-5">
             <h3 className="font-bold text-lg mb-2">Earn with Travel Sphere</h3>
             <p className="text-orange-100 text-sm mb-4">
-              Join our growing network of travel agents across India. Earn 10% commission
-              on every tour you complete. No targets, no pressure — work at your own pace.
+              Join our growing network of travel agents across India. Earn 80% of every booking
+              to cover tour expenses and your profit. No targets, no pressure — work at your own pace.
             </p>
             <Link
               href="/agent-register"

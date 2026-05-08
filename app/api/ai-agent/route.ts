@@ -135,9 +135,14 @@ export async function POST(req: Request) {
       ...messages
     ]
 
+    // Check for OpenAI API key
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: 'AI service not configured. Please contact us on WhatsApp at +91 8603606089.' }, { status: 503 })
+    }
+
     // Use OpenAI Chat Completions (OpenAI SDK)
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
       messages: payloadMessages,
       max_tokens: 1000,
       temperature: 0.7,
@@ -148,6 +153,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ reply })
   } catch (error: any) {
     console.error('AI Agent error:', error)
+    console.error('Error type:', error?.type)
+    console.error('Error message:', error?.message)
+    console.error('Error cause:', error?.cause)
+
+    // Return more specific error based on error type
+    if (error?.message?.includes('API key')) {
+      return NextResponse.json({ error: 'AI service configuration error. Please contact us on WhatsApp.' }, { status: 503 })
+    }
+    if (error?.message?.includes('rate_limit')) {
+      return NextResponse.json({ error: 'AI service is busy. Please try again in a few moments.' }, { status: 503 })
+    }
     return NextResponse.json({ error: 'AI service unavailable. Please contact us on WhatsApp at +91 8603606089.' }, { status: 500 })
   }
 }

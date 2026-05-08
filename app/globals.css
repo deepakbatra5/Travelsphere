@@ -84,6 +84,12 @@ textarea:focus {
   box-shadow: 0 20px 40px -30px rgba(15, 23, 42, 0.55);
 }
 
+:root[data-theme="dark"] .surface-card {
+  background: rgba(17, 17, 17, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 40px -30px rgba(0, 0, 0, 0.5) !important;
+}
+
 .section-shell {
   border: 1px solid var(--card-border);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 253, 0.94));
@@ -157,6 +163,221 @@ textarea:focus {
   border-color: rgba(255, 255, 255, 0.18) !important;
   background: #0b0b0b !important;
   color: #f8fafc !important;
+}
+
+/* Dark mode - Orange variants */
+:root[data-theme="dark"] .bg-orange-50,
+:root[data-theme="dark"] .bg-orange-100 {
+  background-color: rgba(234, 88, 12, 0.15) !important;
+}
+:root[data-theme="dark"] .text-orange-600,
+:root[data-theme="dark"] .text-orange-500 {
+  color: #fb923c !important;
+}
+:root[data-theme="dark"] .text-orange-400 {
+  color: #fdba74 !important;
+}
+:root[data-theme="dark"] .border-orange-200,
+:root[data-theme="dark"] .border-orange-100 {
+  border-color: rgba(251, 146, 60, 0.3) !important;
+}
+
+/* Dark mode - Emerald/Green variants */
+:root[data-theme="dark"] .bg-emerald-50,
+:root[data-theme="dark"] .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+:root[data-theme="dark"] .text-emerald-600,
+:root[data-theme="dark"] .text-emerald-500 {
+  color: #34d399 !important;
+}
+:root[data-theme="dark"] .text-emerald-700,
+:root[data-theme="dark"] .text-emerald-800 {
+  color: #6ee7b7 !important;
+}
+
+/* Dark mode - Purple variants */
+:root[data-theme="dark"] .bg-purple-50,
+:root[data-theme="dark"] .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+}
+:root[data-theme="dark"] .text-purple-600,
+:root[data-theme="dark"] .text-purple-500 {
+  color: #a78bfa !important;
+}
+:root[data-theme="dark"] .text-purple-800 {
+  color: #c4b5fd !important;
+}
+
+/* Dark mode - Red variants */
+:root[data-theme="dark"] .text-red-600,
+:root[data-theme="dark"] .text-red-500 {
+  color: #f87171 !important;
+}
+
+/* Dark mode - Shadows and cards */
+:root[data-theme="dark"] .shadow-sm,
+:root[data-theme="dark"] .shadow-md {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Dark mode - Rounded elements */
+:root[data-theme="dark"] .rounded-2xl,
+:root[data-theme="dark"] .rounded-3xl,
+:root[data-theme="dark"] .rounded-xl,
+:root[data-theme="dark"] .rounded-lg {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark mode - Labels and small text */
+:root[data-theme="dark"] label,
+:root[data-theme="dark"] .text-sm,
+:root[data-theme="dark"] .text-xs {
+  color: #cbd5e1 !important;
+}
+
+/* Dark mode - Headings */
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4 {
+  color: #f8fafc !important;
+}
+
+/* Dark mode - Links */
+:root[data-theme="dark"] a {
+  color: #fb923c !important;
+}
+
+/* Dark mode - Home page Category cards (Browse by Category) - Vibrant Colors */
+:root[data-theme="dark"] section:has([href*="packages?category=SOLO"]) [href*="category=SOLO"],
+:root[data-theme="dark"] section:has([href*="category=SOLO"]) .from-indigo-200 {
+  background: linear-gradient(145deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%) !important;
+  border-color: rgba(139, 92, 246, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3), 0 0 30px rgba(139, 92, 246, 0.15) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=FAMILY"]) [href*="category=FAMILY"],
+:root[data-theme="dark"] section:has([href*="category=FAMILY"]) .from-sky-200 {
+  background: linear-gradient(145deg, #0ea5e9 0%, #06b6d4 50%, #22d3ee 100%) !important;
+  border-color: rgba(34, 211, 238, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3), 0 0 30px rgba(6, 182, 212, 0.15) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=GROUP"]) [href*="category=GROUP"],
+:root[data-theme="dark"] section:has([href*="category=GROUP"]) .from-amber-200 {
+  background: linear-gradient(145deg, #f59e0b 0%, #fbbf24 50%, #fcd34d 100%) !important;
+  border-color: rgba(251, 191, 36, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3), 0 0 30px rgba(245, 158, 11, 0.15) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=PILGRIMAGE"]) [href*="category=PILGRIMAGE"],
+:root[data-theme="dark"] section:has([href*="category=PILGRIMAGE"]) .from-orange-200 {
+  background: linear-gradient(145deg, #f97316 0%, #fb923c 50%, #fdba74 100%) !important;
+  border-color: rgba(251, 146, 60, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3), 0 0 30px rgba(249, 115, 22, 0.15) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=ADVENTURE"]) [href*="category=ADVENTURE"],
+:root[data-theme="dark"] section:has([href*="category=ADVENTURE"]) .from-emerald-200 {
+  background: linear-gradient(145deg, #10b981 0%, #34d399 50%, #6ee7b7 100%) !important;
+  border-color: rgba(52, 211, 153, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3), 0 0 30px rgba(16, 185, 129, 0.15) !important;
+}
+
+:root[data-theme="dark"] .text-indigo-700,
+:root[data-theme="dark"] .text-sky-700,
+:root[data-theme="dark"] .text-amber-700,
+:root[data-theme="dark"] .text-orange-700,
+:root[data-theme="dark"] .text-emerald-700 {
+  color: #ffffff !important;
+}
+
+/* Dark mode - Category cards text visibility */
+:root[data-theme="dark"] section:has([href*="category=GROUP"]) [href*="category=GROUP"] span,
+:root[data-theme="dark"] section:has([href*="category=GROUP"]) .text-amber-700 {
+  color: #1f2937 !important;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+}
+:root[data-theme="dark"] section:has([href*="category=PILGRIMAGE"]) [href*="category=PILGRIMAGE"] span,
+:root[data-theme="dark"] section:has([href*="category=PILGRIMAGE"]) .text-orange-700 {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+:root[data-theme="dark"] section:has([href*="category=SOLO"]) [href*="category=SOLO"] span,
+:root[data-theme="dark"] section:has([href*="category=FAMILY"]) [href*="category=FAMILY"] span,
+:root[data-theme="dark"] section:has([href*="category=ADVENTURE"]) [href*="category=ADVENTURE"] span {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Dark mode - Home page Category card glow effects on hover */
+:root[data-theme="dark"] section:has([href*="category="]) a:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=SOLO"]) a:hover {
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=FAMILY"]) a:hover {
+  box-shadow: 0 8px 30px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.3) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=GROUP"]) a:hover {
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=PILGRIMAGE"]) a:hover {
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.5), 0 0 40px rgba(249, 115, 22, 0.3) !important;
+}
+:root[data-theme="dark"] section:has([href*="category=ADVENTURE"]) a:hover {
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5), 0 0 40px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Dark mode - Category section heading and description */
+:root[data-theme="dark"] section:has([href*="category="]) h2 {
+  background: linear-gradient(90deg, #fb923c, #f97316, #ea580c, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(251, 146, 60, 0.3);
+}
+:root[data-theme="dark"] section:has([href*="category="]) p {
+  color: #cbd5e1 !important;
+}
+
+/* Dark mode - Footer categories (keep clean, no background colors) */
+:root[data-theme="dark"] footer [href*="packages?category="],
+:root[data-theme="dark"] div:has(> h3:contains("Explore")) [href*="category="] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+:root[data-theme="dark"] footer a[href*="category="] {
+  color: #fb923c !important;
+}
+:root[data-theme="dark"] footer a[href*="category="]:hover {
+  color: #f97316 !important;
+}
+
+/* Dark mode - Form elements */
+:root[data-theme="dark"] select {
+  background-color: #0b0b0b !important;
+  color: #f8fafc !important;
+}
+
+/* Dark mode - Buttons */
+:root[data-theme="dark"] .bg-orange-500,
+:root[data-theme="dark"] .bg-orange-600 {
+  background-color: #f97316 !important;
+}
+:root[data-theme="dark"] .bg-white {
+  background-color: rgba(17, 17, 17, 0.94) !important;
+}
+
+/* Dark mode - Table elements */
+:root[data-theme="dark"] .divide-gray-100,
+:root[data-theme="dark"] .divide-slate-100 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark mode - Specific page overrides */
+:root[data-theme="dark"] .animate-fade-up {
+  color: #f8fafc;
 }
 
 @keyframes fade-up {

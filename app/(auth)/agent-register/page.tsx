@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 
 const languageOptions = ['Hindi', 'English', 'Punjabi', 'Bengali', 'Tamil', 'Telugu', 'Gujarati', 'Marathi']
 
@@ -11,6 +12,8 @@ export default function AgentRegisterPage() {
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -117,18 +120,29 @@ export default function AgentRegisterPage() {
             {[
               { label: 'Full Name', field: 'name', type: 'text', placeholder: 'Your full name' },
               { label: 'Email Address', field: 'email', type: 'email', placeholder: 'you@example.com' },
-              { label: 'Password', field: 'password', type: 'password', placeholder: 'Minimum 6 characters' },
-              { label: 'Confirm Password', field: 'confirmPassword', type: 'password', placeholder: 'Re-enter password' },
+              { label: 'Password', field: 'password', type: 'password', placeholder: 'Minimum 6 characters', showToggle: true, showState: showPassword, setShow: setShowPassword },
+              { label: 'Confirm Password', field: 'confirmPassword', type: 'password', placeholder: 'Re-enter password', showToggle: true, showState: showConfirmPassword, setShow: setShowConfirmPassword },
             ].map((item) => (
               <div key={item.field}>
                 <label className="mb-1 block text-sm font-semibold text-slate-700">{item.label}</label>
-                <input
-                  type={item.type}
-                  value={form[item.field as keyof typeof form] as string}
-                  onChange={(e) => update(item.field, e.target.value)}
-                  placeholder={item.placeholder}
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"
-                />
+                <div className="relative">
+                  <input
+                    type={item.showToggle ? (item.showState ? 'text' : 'password') : item.type}
+                    value={form[item.field as keyof typeof form] as string}
+                    onChange={(e) => update(item.field, e.target.value)}
+                    placeholder={item.placeholder}
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 pr-10 text-sm"
+                  />
+                  {item.showToggle && (
+                    <button
+                      type="button"
+                      onClick={() => item.setShow(!item.showState)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    >
+                      {item.showState ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
             <button onClick={() => validateStep1() && setStep(2)} className="w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">

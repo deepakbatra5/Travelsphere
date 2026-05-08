@@ -135,7 +135,7 @@ function CustomPlanForm({ onSubmit }: { onSubmit: (q: string) => void }) {
     style: 'Relaxation and beaches',
     budget: 'Rs 15,000 to 30,000',
     duration: '5 to 7 days',
-    group: 'Couple or honeymoon',
+    group: 'Couple',
     region: 'Anywhere in India',
     interests: '',
   })
@@ -149,10 +149,10 @@ function CustomPlanForm({ onSubmit }: { onSubmit: (q: string) => void }) {
     <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4 mt-2 space-y-3">
       <p className="text-xs font-medium text-gray-500">CUSTOM TRIP PLANNER</p>
       {[
-        { label: 'Travel style', key: 'style', options: ['Relaxation and beaches', 'Adventure and trekking', 'Culture and history', 'Spiritual and pilgrimage', 'Honeymoon and romance', 'Family fun', 'Solo backpacking'] },
+        { label: 'Travel style', key: 'style', options: ['Relaxation and beaches', 'Adventure and trekking', 'Culture and history', 'Spiritual and pilgrimage', 'Romantic getaway', 'Family fun', 'Solo backpacking'] },
         { label: 'Budget', key: 'budget', options: ['Under Rs 15,000', 'Rs 15,000 to 30,000', 'Rs 30,000 to 60,000', 'Rs 60,000 to 1 lakh', 'Above 1 lakh'] },
         { label: 'Duration', key: 'duration', options: ['2 to 3 days', '5 to 7 days', '8 to 12 days', '2 weeks or more'] },
-        { label: 'Group type', key: 'group', options: ['Solo traveler', 'Couple or honeymoon', 'Family with kids', 'Friends group', 'Corporate team'] },
+        { label: 'Group type', key: 'group', options: ['Solo traveler', 'Couple', 'Family with kids', 'Friends group', 'Corporate team'] },
         { label: 'Region', key: 'region', options: ['Anywhere in India', 'North India mountains', 'South India beaches', 'International Southeast Asia', 'International Europe', 'International Middle East'] },
       ].map(({ label, key, options }) => (
         <div key={key} className="flex items-center gap-2">
