@@ -84,12 +84,8 @@ function MessageBubble({ msg }: { msg: Message }) {
   const text = msg.content
 
   const detectPackages = useCallback(() => {
-    const low = text.toLowerCase()
-    return WEBSITE_PACKAGES.filter(p => {
-      const keys = [p.slug, p.category.toLowerCase(), p.destination.toLowerCase().split(' - ')[0]]
-      return keys.some(k => low.includes(k.toLowerCase().substring(0, 6)))
-    }).slice(0, 3)
-  }, [text])
+    return []
+  }, [])
 
   const formatText = (t: string) => {
     return t
@@ -120,11 +116,6 @@ function MessageBubble({ msg }: { msg: Message }) {
       <div className="w-7 h-7 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">🌍</div>
       <div className="max-w-[85%]">
         <div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed text-gray-800" dangerouslySetInnerHTML={{ __html: formatText(text) }} />
-        {relatedPkgs.length > 0 && (
-          <div className="mt-1">
-            {relatedPkgs.map(p => <PackageCard key={p.slug} pkg={p} />)}
-          </div>
-        )}
       </div>
     </div>
   )
@@ -263,7 +254,7 @@ export default function AIAgent() {
           )}
 
           <div className="px-3 py-3 border-t border-gray-100 flex gap-2 items-end flex-shrink-0">
-            <textarea ref={inputRef} value={input} onChange={e => { setInput(e.target.value); e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 96) + 'px' }} onKeyDown={handleKey} placeholder="Ask about destinations, budgets, itineraries..." rows={1} className="flex-1 resize-none text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-orange-400 bg-gray-50 text-gray-800 placeholder-gray-400 leading-snug max-h-24 overflow-y-auto" />
+            <textarea ref={inputRef} value={input} onChange={e => { setInput(e.target.value); e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 96) + 'px' }} onKeyDown={handleKey} placeholder="Ask about travel..." rows={1} className="flex-1 resize-none text-sm border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-orange-400 bg-gray-50 text-gray-800 placeholder-gray-400 leading-snug max-h-24 overflow-y-auto overflow-x-hidden" />
             <button onClick={() => sendMessage(input)} disabled={!input.trim() || loading} className="w-10 h-10 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl flex items-center justify-center flex-shrink-0 transition-colors" aria-label="Send message">
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M2 12L22 2L15 22L11 13L2 12Z"/></svg>
             </button>

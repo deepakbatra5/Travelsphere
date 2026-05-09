@@ -209,6 +209,24 @@ textarea:focus {
   color: #c4b5fd !important;
 }
 
+/* Dark mode - Blue variants */
+:root[data-theme="dark"] .bg-blue-50,
+:root[data-theme="dark"] .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+:root[data-theme="dark"] .text-blue-600,
+:root[data-theme="dark"] .text-blue-500 {
+  color: #60a5fa !important;
+}
+:root[data-theme="dark"] .text-blue-700,
+:root[data-theme="dark"] .text-blue-800 {
+  color: #93c5fd !important;
+}
+:root[data-theme="dark"] .border-blue-200,
+:root[data-theme="dark"] .border-blue-100 {
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
 /* Dark mode - Red variants */
 :root[data-theme="dark"] .text-red-600,
 :root[data-theme="dark"] .text-red-500 {
@@ -393,4 +411,13 @@ textarea:focus {
 
 .animate-fade-up {
   animation: fade-up 480ms ease-out both;
+}
+
+/* Dark mode - Package Card badges over photos */
+:root[data-theme="dark"] .surface-card .absolute.rounded-full.text-xs.font-bold {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(4px);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-shadow: none !important;
 }

@@ -3,7 +3,13 @@ import OpenAI from 'openai'
 import { prisma } from '@/lib/db'
 import { checkRateLimit } from '@/lib/rateLimit'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const isGroq = !!process.env.GROQ_API_KEY;
+const apiKey = process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY;
+
+const openai = new OpenAI({
+  apiKey: apiKey,
+  baseURL: isGroq ? 'https://api.groq.com/openai/v1' : undefined
+})
 
 const SYSTEM_PROMPT = `You are Sphere, the expert AI travel agent for Travel Sphere (travelsphere.sbs), a trusted Indian travel company based in Amritsar, Punjab, India. You are a world-class travel consultant with deep knowledge of every destination on earth.
 
@@ -101,7 +107,8 @@ RESPONSE GUIDELINES:
 - Use Indian Rupee (Rs) for all pricing
 - Be honest about destination challenges (cold weather, altitude, crowds) so traveler can prepare
 - For international trips, mention that Travel Sphere can help plan and arrange the tour
-- Never refuse to answer travel questions — you know everything about world travel`
+- Never refuse to answer travel questions — you know everything about world travel
+- STRICT RULE: You are a travel agent ONLY. If the user asks about anything completely unrelated to travel, tours, destinations, or your packages (e.g., coding, math, politics, general knowledge), you MUST politely decline to answer and steer the conversation back to travel.`
 
 export async function POST(req: Request) {
   try {
@@ -135,14 +142,18 @@ export async function POST(req: Request) {
       ...messages
     ]
 
-    // Check for OpenAI API key
-    if (!process.env.OPENAI_API_KEY) {
+    // Check for API key
+    if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json({ error: 'AI service not configured. Please contact us on WhatsApp at +91 8603606089.' }, { status: 503 })
     }
 
-    // Use OpenAI Chat Completions (OpenAI SDK)
+    const model = isGroq
+      ? (process.env.GROQ_MODEL || 'llama-3.1-8b-instant')
+      : (process.env.OPENAI_MODEL || 'gpt-4o-mini');
+
+    // Use Chat Completions (OpenAI SDK works for Groq too)
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      model: model,
       messages: payloadMessages,
       max_tokens: 1000,
       temperature: 0.7,
