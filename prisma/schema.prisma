@@ -83,6 +83,7 @@ enum Category {
   PILGRIMAGE
   ADVENTURE
   CORPORATE
+  COUPLE
 }
 
 model Booking {
@@ -137,7 +138,6 @@ model Enquiry {
   phone          String
   email          String?
   message        String
-  attachmentUrls String[] // array of image URLs
   packageId      String?
   userId         String?
   createdAt      DateTime @default(now())

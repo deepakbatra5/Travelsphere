@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 
 interface EnquiryCardProps {
   id: string
@@ -9,12 +8,11 @@ interface EnquiryCardProps {
   phone: string
   email: string | null
   message: string
-  attachmentUrls: string[]
   packageTitle: string | null
   createdAt: Date
 }
 
-export default function EnquiryCard({ id, name, phone, email, message, attachmentUrls, packageTitle, createdAt }: EnquiryCardProps) {
+export default function EnquiryCard({ id, name, phone, email, message, packageTitle, createdAt }: EnquiryCardProps) {
   const [expanded, setExpanded] = useState(false)
 
   return (
@@ -93,34 +91,6 @@ export default function EnquiryCard({ id, name, phone, email, message, attachmen
             </div>
           </div>
 
-          {/* Attachments */}
-          {attachmentUrls && attachmentUrls.length > 0 && (
-            <div>
-              <p className="text-xs text-gray-500 font-medium mb-2">Attachments ({attachmentUrls.length})</p>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                {attachmentUrls.map((url, i) => (
-                  <a
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative rounded-lg overflow-hidden bg-gray-200 h-20"
-                  >
-                    <Image
-                      src={url}
-                      alt={`Attachment ${i + 1}`}
-                      fill
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition flex items-center justify-center">
-                      <span className="text-white text-xl opacity-0 group-hover:opacity-100 transition">🔍</span>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
             <a
@@ -132,7 +102,7 @@ export default function EnquiryCard({ id, name, phone, email, message, attachmen
               💬 Reply on WhatsApp
             </a>
             <a
-              href={`mailto:${email || 'deepankumar81c401a1e8@gmail.com'}?subject=Re: ${encodeURIComponent(message.slice(0, 50))}`}
+              href={`mailto:${email || ''}?subject=Re: ${encodeURIComponent(message.slice(0, 50))}`}
               className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium py-2 rounded-lg transition text-center"
             >
               ✉️ Send Email
@@ -143,5 +113,3 @@ export default function EnquiryCard({ id, name, phone, email, message, attachmen
     </div>
   )
 }
-
-

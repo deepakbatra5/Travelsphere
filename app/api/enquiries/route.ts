@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 
 export async function POST(req: Request) {
   try {
-    const { name, phone, email, message, subject, packageId, attachmentUrls } = await req.json()
+    const { name, phone, email, message, subject, packageId } = await req.json()
 
     const enquiry = await prisma.enquiry.create({
       data: {
@@ -11,7 +11,6 @@ export async function POST(req: Request) {
         phone,
         email: email || null,
         message: subject ? `[${subject}] ${message}` : message,
-        attachmentUrls: attachmentUrls && Array.isArray(attachmentUrls) ? attachmentUrls.filter(Boolean) : [],
         packageId: packageId || null,
       }
     })

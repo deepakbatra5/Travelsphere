@@ -72,7 +72,7 @@ export default function ContactPage() {
       await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, attachmentUrls: attachments }),
+        body: JSON.stringify({ ...form }),
       })
       setSent(true)
     } catch {

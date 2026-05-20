@@ -28,7 +28,6 @@ export default async function AdminEnquiriesPage() {
               phone={e.phone}
               email={e.email}
               message={e.message}
-              attachmentUrls={e.attachmentUrls}
               packageTitle={e.package?.title || null}
               createdAt={e.createdAt}
             />
