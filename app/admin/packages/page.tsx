@@ -17,7 +17,10 @@ export default async function AdminPackagesPage() {
 
   const packages = await prisma.package.findMany({
     orderBy: { createdAt: 'desc' },
-    include: { _count: { select: { bookings: true } } },
+    include: {
+      _count: { select: { bookings: true } },
+      tripDates: { orderBy: { startDate: 'asc' }, take: 3 },
+    },
   })
 
   return (
@@ -41,6 +44,7 @@ export default async function AdminPackagesPage() {
                 <th className="px-5 py-4 font-medium">Category</th>
                 <th className="px-5 py-4 font-medium">Duration</th>
                 <th className="px-5 py-4 font-medium">Price</th>
+                <th className="px-5 py-4 font-medium">Trip Dates</th>
                 <th className="px-5 py-4 font-medium">Bookings</th>
                 <th className="px-5 py-4 font-medium">Status</th>
                 <th className="px-5 py-4 font-medium">Actions</th>
@@ -58,6 +62,20 @@ export default async function AdminPackagesPage() {
                   </td>
                   <td className="px-5 py-4 text-gray-600">{pkg.duration} Days</td>
                   <td className="px-5 py-4 font-medium text-gray-800">Rs {pkg.price.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4">
+                    {pkg.tripDates.length > 0 ? (
+                      <div className="space-y-1">
+                        {pkg.tripDates.map((tripDate) => (
+                          <div key={tripDate.id} className="text-xs text-gray-600">
+                            <span className="font-semibold">{new Date(tripDate.startDate).toLocaleDateString('en-IN')}</span>
+                            <span className="text-gray-400"> - {tripDate.availableSeats}/{tripDate.totalSeats} seats</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-400">No dates</span>
+                    )}
+                  </td>
                   <td className="px-5 py-4 text-gray-600">{pkg._count.bookings}</td>
                   <td className="px-5 py-4">
                     <span className={`text-xs font-semibold px-2 py-1 rounded-full ${pkg.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
@@ -66,7 +84,7 @@ export default async function AdminPackagesPage() {
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <Link href={`/admin/packages/${pkg.id}/edit`} className="text-blue-500 hover:underline text-xs font-medium">
+                      <Link href={`/admin/packages/${pkg.id}/edit`} className="text-orange-500 hover:underline text-xs font-medium">
                         Edit
                       </Link>
                       <DeletePackageButton id={pkg.id} />
@@ -89,3 +107,5 @@ export default async function AdminPackagesPage() {
     </div>
   )
 }
+
+

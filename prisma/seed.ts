@@ -17,6 +17,25 @@ const prisma = new PrismaClient({ adapter })
 
 type SeedPackage = Prisma.PackageCreateInput
 
+function buildTripDates(packageIndex: number) {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return Array.from({ length: 4 }, (_, dateIndex) => {
+    const startDate = new Date(today)
+    startDate.setDate(today.getDate() + 14 + packageIndex * 5 + dateIndex * 21)
+
+    const totalSeats = 18 + ((packageIndex + dateIndex) % 5) * 6
+    const bookedPreviewSeats = (packageIndex + dateIndex) % 4
+
+    return {
+      startDate,
+      totalSeats,
+      availableSeats: totalSeats - bookedPreviewSeats,
+    }
+  })
+}
+
 async function repairLegacyCategories() {
   await prisma.$executeRawUnsafe(`ALTER TYPE "Category" ADD VALUE IF NOT EXISTS 'SOLO'`)
   await prisma.$executeRawUnsafe(`
@@ -33,6 +52,33 @@ async function repairAgentPayouts() {
     FROM "Booking" AS booking
     WHERE assignment."bookingId" = booking."id"
   `)
+}
+
+async function ensureTripDatesForEveryPackage() {
+  const allPackages = await prisma.package.findMany({
+    select: {
+      id: true,
+      title: true,
+      tripDates: { select: { id: true } },
+    },
+    orderBy: { createdAt: 'asc' },
+  })
+
+  for (const [packageIndex, pkg] of allPackages.entries()) {
+    if (pkg.tripDates.length > 0) continue
+
+    await prisma.packageTripDate.createMany({
+      data: buildTripDates(packageIndex).map((tripDate) => ({
+        packageId: pkg.id,
+        startDate: tripDate.startDate,
+        totalSeats: tripDate.totalSeats,
+        availableSeats: tripDate.availableSeats,
+      })),
+      skipDuplicates: true,
+    })
+
+    console.log(`Trip dates added: ${pkg.title}`)
+  }
 }
 
 async function main() {
@@ -205,8 +251,8 @@ async function main() {
     },
   ]
 
-  for (const pkg of packages) {
-    await prisma.package.upsert({
+  for (const [packageIndex, pkg] of packages.entries()) {
+    const savedPackage = await prisma.package.upsert({
       where: { slug: pkg.slug },
       update: {
         title: pkg.title,
@@ -223,10 +269,23 @@ async function main() {
       },
       create: pkg,
     })
+
+    await prisma.packageTripDate.createMany({
+      data: buildTripDates(packageIndex).map((tripDate) => ({
+        packageId: savedPackage.id,
+        startDate: tripDate.startDate,
+        totalSeats: tripDate.totalSeats,
+        availableSeats: tripDate.availableSeats,
+      })),
+      skipDuplicates: true,
+    })
+
     console.log(`Created: ${pkg.title}`)
   }
 
-  console.log('Seeding complete! 6 packages added.')
+  await ensureTripDatesForEveryPackage()
+
+  console.log('Seeding complete! 6 packages and trip dates added.')
 }
 
 main()

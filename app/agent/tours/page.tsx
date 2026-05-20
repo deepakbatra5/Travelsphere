@@ -8,10 +8,55 @@ import AgentTourSelector from './AgentTourSelector'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default async function AgentToursPage() {
+function asStringList(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+
+  return value.map((item) => {
+    if (typeof item === 'string') return item
+    if (item && typeof item === 'object') {
+      const entry = item as Record<string, unknown>
+      return String(entry.title || entry.activity || entry.description || entry.details || '')
+    }
+    return ''
+  }).filter(Boolean)
+}
+
+function itineraryRows(value: unknown): { title: string; details: string }[] {
+  if (!value) return []
+
+  if (Array.isArray(value)) {
+    return value.map((item, index) => {
+      if (typeof item === 'string') return { title: `Day ${index + 1}`, details: item }
+      if (item && typeof item === 'object') {
+        const entry = item as Record<string, unknown>
+        return {
+          title: String(entry.day || entry.title || `Day ${index + 1}`),
+          details: String(entry.activity || entry.description || entry.details || entry.plan || ''),
+        }
+      }
+      return { title: `Day ${index + 1}`, details: String(item) }
+    }).filter((row) => row.details)
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value as Record<string, unknown>).map(([title, details]) => ({
+      title,
+      details: typeof details === 'string' ? details : JSON.stringify(details),
+    }))
+  }
+
+  return []
+}
+
+type PageProps = {
+  searchParams?: Promise<{ view?: string }>
+}
+
+export default async function AgentToursPage({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.email) redirect('/agent-login?callbackUrl=/agent/tours')
   const userEmail = session.user.email
+  const resolvedSearchParams = await searchParams
 
   const user = await (async () => {
     try {
@@ -37,19 +82,32 @@ export default async function AgentToursPage() {
     orderBy: { createdAt: 'desc' },
   }).catch(() => [])
   const selectedIds = new Set(agent.preferredTours.map((pref) => pref.packageId))
+  const showCoveredOnly = resolvedSearchParams?.view === 'covered'
+  const visiblePackages = showCoveredOnly ? packages.filter((pkg) => selectedIds.has(pkg.id)) : packages
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Available Tours</h1>
+        <h1 className="text-2xl font-bold text-slate-900">{showCoveredOnly ? 'Tours I Cover' : 'Available Tours'}</h1>
         <p className="mt-1 text-sm text-slate-500">Select tours you are comfortable handling. Admins use this to assign better matches.</p>
       </div>
 
+      <div className="flex flex-wrap gap-2">
+        <a href="/agent/tours" className={`rounded-full px-4 py-2 text-xs font-bold ${!showCoveredOnly ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
+          All tours ({packages.length})
+        </a>
+        <a href="/agent/tours?view=covered" className={`rounded-full px-4 py-2 text-xs font-bold ${showCoveredOnly ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
+          Tours I cover ({selectedIds.size})
+        </a>
+      </div>
+
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        {packages.map((pkg) => {
+        {visiblePackages.map((pkg) => {
           const companyCommission = getCompanyCommission(pkg.price)
           const agentPayout = getAgentPayout(pkg.price)
           const selected = selectedIds.has(pkg.id)
+          const itinerary = itineraryRows(pkg.itinerary)
+          const highlights = asStringList(pkg.inclusions).slice(0, 3)
 
           return (
             <div key={pkg.id} className="rounded-3xl bg-white p-5 shadow-sm">
@@ -78,10 +136,67 @@ export default async function AgentToursPage() {
                   <p className="font-bold text-emerald-700">Rs {agentPayout.toLocaleString('en-IN')}</p>
                 </div>
               </div>
+              {highlights.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {highlights.map((item) => (
+                    <span key={item} className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold text-cyan-700">{item}</span>
+                  ))}
+                </div>
+              )}
+              <details className="group mt-4 rounded-2xl border border-slate-100 bg-slate-50">
+                <summary className="cursor-pointer list-none px-4 py-3 text-sm font-bold text-orange-600">
+                  <span className="group-open:hidden">View details</span>
+                  <span className="hidden group-open:inline">Hide details</span>
+                </summary>
+                <div className="space-y-5 border-t border-slate-100 px-4 py-4">
+                  <p className="text-sm leading-6 text-slate-600">{pkg.description}</p>
+                  {pkg.images.length > 0 && (
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                      {pkg.images.slice(0, 3).map((image) => (
+                        <img key={image} src={image} alt={pkg.title} className="h-28 w-full rounded-2xl object-cover" />
+                      ))}
+                    </div>
+                  )}
+                  {itinerary.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900">Itinerary</h3>
+                      <div className="mt-2 space-y-2">
+                        {itinerary.map((day) => (
+                          <div key={`${pkg.id}-${day.title}`} className="rounded-xl bg-white p-3">
+                            <p className="text-xs font-bold uppercase text-cyan-700">{day.title}</p>
+                            <p className="mt-1 text-sm text-slate-600">{day.details}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900">Inclusions</h3>
+                      <ul className="mt-2 space-y-1 text-sm text-slate-600">
+                        {pkg.inclusions.map((item) => <li key={item}>- {item}</li>)}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900">Exclusions</h3>
+                      <ul className="mt-2 space-y-1 text-sm text-slate-600">
+                        {pkg.exclusions.map((item) => <li key={item}>- {item}</li>)}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </details>
             </div>
           )
         })}
+        {visiblePackages.length === 0 && (
+          <div className="rounded-3xl bg-white p-10 text-center text-slate-400 shadow-sm lg:col-span-2">
+            No covered tours yet. Select tours from the available list.
+          </div>
+        )}
       </div>
     </div>
   )
 }
+
+

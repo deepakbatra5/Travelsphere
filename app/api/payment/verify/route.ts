@@ -22,10 +22,25 @@ export async function POST(req: Request) {
     const isValid = expectedSignature === razorpay_signature
 
     if (!isValid) {
-      // Mark payment as failed
-      await prisma.payment.update({
-        where: { bookingId },
-        data: { status: 'FAILED' }
+      await prisma.$transaction(async (tx) => {
+        const booking = await tx.booking.findUnique({ where: { id: bookingId } })
+
+        await tx.payment.update({
+          where: { bookingId },
+          data: { status: 'FAILED' }
+        })
+
+        if (booking?.tripDateId && booking.status !== 'CANCELLED') {
+          await tx.packageTripDate.update({
+            where: { id: booking.tripDateId },
+            data: { availableSeats: { increment: booking.travellers } },
+          })
+
+          await tx.booking.update({
+            where: { id: bookingId },
+            data: { status: 'CANCELLED' },
+          })
+        }
       })
       return NextResponse.json({ success: false, error: 'Invalid signature' }, { status: 400 })
     }

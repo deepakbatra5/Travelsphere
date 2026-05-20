@@ -165,8 +165,8 @@ export default function CancellationRefundPage() {
 
         <section>
           <h2 className="text-lg font-bold text-gray-800 mb-3">6. Travel Insurance Recommendation</h2>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <p className="text-blue-800">
+          <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
+            <p className="text-orange-800">
               We strongly recommend purchasing comprehensive travel insurance that covers
               trip cancellation, medical emergencies, baggage loss, and personal liability.
               Travel insurance can protect you from financial loss in unexpected circumstances.
@@ -195,3 +195,5 @@ export default function CancellationRefundPage() {
     </div>
   )
 }
+
+

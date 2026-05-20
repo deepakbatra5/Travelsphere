@@ -51,26 +51,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
-    const { bookingId, agentId } = await req.json()
+    const { bookingId, bookingIds, agentId } = await req.json()
+    const ids = Array.isArray(bookingIds) ? bookingIds : bookingId ? [bookingId] : []
 
-    const booking = await prisma.booking.findUnique({ where: { id: bookingId } })
-    if (!booking) return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+    if (ids.length === 0) {
+      return NextResponse.json({ error: 'No bookings selected' }, { status: 400 })
+    }
 
     const agent = await prisma.agent.findUnique({ where: { id: agentId } })
     if (!agent || agent.status !== 'APPROVED') {
       return NextResponse.json({ error: 'Agent is not approved' }, { status: 400 })
     }
 
-    const companyCommission = getCompanyCommission(booking.totalAmount)
-    const agentPayout = getAgentPayout(booking.totalAmount)
+    const bookings = await prisma.booking.findMany({ where: { id: { in: ids } } })
+    if (bookings.length !== ids.length) return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
 
-    await prisma.bookingAgent.upsert({
-      where: { bookingId },
-      update: { agentId, commission: agentPayout, status: 'ASSIGNED', completedAt: null },
-      create: { bookingId, agentId, commission: agentPayout },
-    })
+    for (const booking of bookings) {
+      const agentPayout = getAgentPayout(booking.totalAmount)
 
-    notifyAgent(agentId, bookingId, agentPayout, companyCommission).catch(console.error)
+      await prisma.bookingAgent.upsert({
+        where: { bookingId: booking.id },
+        update: { agentId, commission: agentPayout, status: 'ASSIGNED', completedAt: null },
+        create: { bookingId: booking.id, agentId, commission: agentPayout },
+      })
+
+      notifyAgent(agentId, booking.id, agentPayout, getCompanyCommission(booking.totalAmount)).catch(console.error)
+    }
 
     revalidatePath('/admin/bookings')
     revalidatePath('/admin/agents')

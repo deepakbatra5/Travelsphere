@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
     <div className="bg-white rounded-2xl shadow-sm p-8">
 
       <div className="mb-8 pb-6 border-b border-gray-100">
-        <span className="text-xs font-semibold bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+        <span className="text-xs font-semibold bg-orange-100 text-orange-600 px-3 py-1 rounded-full">
           Privacy
         </span>
         <h1 className="text-2xl font-bold text-gray-800 mt-3">Company Privacy Policy</h1>
@@ -51,7 +51,7 @@ export default function PrivacyPolicyPage() {
                   'Messages and enquiries sent through our contact forms or WhatsApp',
                 ].map((item, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="text-blue-500 flex-shrink-0">›</span>
+                    <span className="text-orange-500 flex-shrink-0">›</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
                   'Cookies and session data',
                 ].map((item, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="text-blue-500 flex-shrink-0">›</span>
+                    <span className="text-orange-500 flex-shrink-0">›</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -212,3 +212,5 @@ export default function PrivacyPolicyPage() {
     </div>
   )
 }
+
+

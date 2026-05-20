@@ -3,8 +3,6 @@ import { Suspense } from 'react'
 import { prisma } from '@/lib/db'
 import { Prisma, Category } from '@/generated/prisma/client'
 import PackageCard from '@/components/packages/PackageCard'
-import PackageFilter from '@/components/packages/PackageFilter'
-
 interface SearchParams {
   search?: string
   category?: string
@@ -99,9 +97,6 @@ export default async function PackagesPage({ searchParams }: Props) {
         </div>
       </div>
 
-      <Suspense fallback={<div>Loading filters...</div>}>
-        <PackageFilter />
-      </Suspense>
 
       {packages.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

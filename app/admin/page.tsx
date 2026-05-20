@@ -36,7 +36,7 @@ function StatusBadge({ status }: { status: string }) {
     CONFIRMED: 'bg-green-100 text-green-700',
     PENDING: 'bg-yellow-100 text-yellow-700',
     CANCELLED: 'bg-red-100 text-red-700',
-    COMPLETED: 'bg-blue-100 text-blue-700',
+    COMPLETED: 'bg-orange-100 text-orange-700',
   }
 
   return <span className={`px-2 py-1 rounded-full text-xs font-semibold ${colors[status] || 'bg-gray-100 text-gray-600'}`}>{status}</span>
@@ -52,7 +52,7 @@ export default async function AdminDashboardPage() {
   const stats = await getStats()
 
   const statCards = [
-    { label: 'Total Bookings', value: stats.totalBookings, bg: 'bg-blue-500', link: '/admin/bookings' },
+    { label: 'Total Bookings', value: stats.totalBookings, bg: 'bg-orange-500', link: '/admin/bookings' },
     { label: 'Total Revenue', value: `Rs ${stats.totalRevenue.toLocaleString('en-IN')}`, bg: 'bg-green-500', link: '/admin/bookings' },
     { label: 'Active Packages', value: stats.totalPackages, bg: 'bg-orange-500', link: '/admin/packages' },
     { label: 'Registered Users', value: stats.totalUsers, bg: 'bg-purple-500', link: '/admin/customers' },
@@ -125,7 +125,7 @@ export default async function AdminDashboardPage() {
         <Link href="/admin/packages/new" className="bg-orange-500 text-white text-center py-4 rounded-2xl font-semibold hover:bg-orange-600 transition">
           Add New Package
         </Link>
-        <Link href="/admin/bookings" className="bg-blue-500 text-white text-center py-4 rounded-2xl font-semibold hover:bg-blue-600 transition">
+        <Link href="/admin/bookings" className="bg-orange-500 text-white text-center py-4 rounded-2xl font-semibold hover:bg-orange-600 transition">
           Manage Bookings
         </Link>
         <Link href="/admin/customers" className="bg-purple-500 text-white text-center py-4 rounded-2xl font-semibold hover:bg-purple-600 transition">
@@ -135,3 +135,5 @@ export default async function AdminDashboardPage() {
     </div>
   )
 }
+
+

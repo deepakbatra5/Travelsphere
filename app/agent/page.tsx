@@ -38,7 +38,14 @@ export default async function AgentDashboard() {
   const totalEarnings = assignments.filter((item) => item.status === 'COMPLETED').reduce((sum, item) => sum + item.commission, 0)
   const completed = assignments.filter((item) => item.status === 'COMPLETED').length
   const active = assignments.filter((item) => item.status === 'ASSIGNED' || item.status === 'IN_PROGRESS').length
-  const preferredCount = await prisma.agentTourPreference.count({ where: { agentId: user.agent.id } }).catch(() => 0)
+  const preferredTours = await prisma.agentTourPreference.findMany({
+    where: { agentId: user.agent.id },
+    include: { package: true },
+    orderBy: { id: 'desc' },
+  }).catch(() => [])
+  const preferredCount = preferredTours.length
+  const activeAssignments = assignments.filter((item) => item.status === 'ASSIGNED' || item.status === 'IN_PROGRESS')
+  const completedAssignments = assignments.filter((item) => item.status === 'COMPLETED')
 
   return (
     <div className="space-y-8">
@@ -53,15 +60,16 @@ export default async function AgentDashboard() {
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: 'Active Assignments', value: active, bg: 'bg-cyan-600' },
-          { label: 'Completed Tours', value: completed, bg: 'bg-emerald-600' },
-          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500' },
-          { label: 'Tours I Cover', value: preferredCount, bg: 'bg-slate-800' },
+          { label: 'Active Assignments', value: active, bg: 'bg-cyan-600', href: '/agent/my-tours?status=active', detail: activeAssignments[0]?.booking.package.title || 'No active tours yet' },
+          { label: 'Completed Tours', value: completed, bg: 'bg-emerald-600', href: '/agent/my-tours?status=completed', detail: completedAssignments[0]?.booking.package.title || 'No completed tours yet' },
+          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500', href: '/agent/earnings#breakdown', detail: `${completed} completed payout record(s)` },
+          { label: 'Tours I Cover', value: preferredCount, bg: 'bg-slate-800', href: '/agent/tours?view=covered', detail: preferredTours[0]?.package.title || 'Select tours you can cover' },
         ].map((stat) => (
-          <div key={stat.label} className={`${stat.bg} rounded-2xl p-5 text-white`}>
+          <Link key={stat.label} href={stat.href} className={`${stat.bg} block rounded-2xl p-5 text-white transition hover:-translate-y-0.5 hover:shadow-lg`}>
             <p className="text-sm opacity-85">{stat.label}</p>
             <p className="mt-1 text-2xl font-bold">{stat.value}</p>
-          </div>
+            <p className="mt-3 line-clamp-2 text-xs text-white/80">{stat.detail}</p>
+          </Link>
         ))}
       </div>
 
@@ -86,3 +94,5 @@ export default async function AgentDashboard() {
     </div>
   )
 }
+
+

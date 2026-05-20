@@ -17,6 +17,8 @@ interface CreatePackageBody {
   itinerary?: Prisma.InputJsonValue
   inclusions?: string[]
   exclusions?: string[]
+  tripDates?: unknown[]
+  agentIds?: string[]
 }
 
 const itineraryDaySchema = z.object({
@@ -32,10 +34,18 @@ const packagePayloadSchema = z.object({
   price: z.coerce.number().positive().max(10000000),
   duration: z.coerce.number().int().min(1).max(365),
   category: z.preprocess((value) => value === 'HONEYMOON' ? 'SOLO' : value, z.nativeEnum(Category)),
-  images: z.array(z.string().url()).max(20).optional().default([]),
+  images: z.array(z.string().url()).max(20).optional().default([]).transform((urls) => urls.filter(Boolean)),
   itinerary: z.array(itineraryDaySchema).max(60).optional().default([]),
   inclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
   exclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
+  tripDates: z.array(z.object({
+    startDate: z.coerce.date(),
+    totalSeats: z.coerce.number().int().min(1).max(10000),
+    availableSeats: z.coerce.number().int().min(0).max(10000).optional(),
+  }).refine((date) => !date.availableSeats || date.availableSeats <= date.totalSeats, {
+    message: 'Available seats cannot be greater than total seats',
+  })).max(100).optional().default([]),
+  agentIds: z.array(z.string().min(1)).max(100).optional().default([]),
 })
 
 export async function GET(req: Request) {
@@ -89,7 +99,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: parsed.error.issues[0]?.message || 'Invalid package payload' }, { status: 400 })
     }
 
-    const { title, destination, description, price, duration, category, images, itinerary, inclusions, exclusions } = parsed.data
+    const { title, destination, description, price, duration, category, images, itinerary, inclusions, exclusions, tripDates, agentIds } = parsed.data
+    const uniqueAgentIds = [...new Set(agentIds)]
 
     const slugify = (await import('slugify')).default
     const slug = slugify(title, { lower: true, strict: true })
@@ -104,6 +115,16 @@ export async function POST(req: Request) {
         itinerary: itinerary as Prisma.InputJsonValue,
         inclusions,
         exclusions,
+        tripDates: {
+          create: tripDates.map((tripDate) => ({
+            startDate: tripDate.startDate,
+            totalSeats: tripDate.totalSeats,
+            availableSeats: tripDate.availableSeats ?? tripDate.totalSeats,
+          })),
+        },
+        agentPreferences: {
+          create: uniqueAgentIds.map((agentId) => ({ agentId })),
+        },
       }
     })
 

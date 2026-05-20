@@ -56,11 +56,17 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
+  // Only redirect ADMIN away from non-admin pages if they're NOT on an auth or public route
+  // Do NOT force-redirect agents/admins away from login pages
   if (token?.role === 'ADMIN' && !isAdminRoute && !isAuthRoute && !isPublicAsset) {
-    return NextResponse.redirect(new URL('/admin', req.url))
+    // Allow admins to also visit agent routes
+    if (!isAgentRoute) {
+      return NextResponse.redirect(new URL('/admin', req.url))
+    }
   }
 
-  if (token?.agentStatus && !isAgentRoute && !isAuthRoute && !isPublicAsset) {
+  // Only redirect agents if NOT on auth routes and NOT logged out
+  if (token?.agentStatus && !isAgentRoute && !isAuthRoute && !isPublicAsset && token?.role !== 'ADMIN') {
     return NextResponse.redirect(new URL('/agent', req.url))
   }
 

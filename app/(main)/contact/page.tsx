@@ -2,29 +2,81 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function ContactPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', subject: '', message: ''
   })
+  const [attachments, setAttachments] = useState<string[]>([])
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file size
+    const maxSizeInBytes = 5 * 1024 * 1024
+    if (file.size > maxSizeInBytes) {
+      setError('Image exceeds 5MB limit. Please choose a smaller image.')
+      e.target.value = ''
+      return
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file (JPG, PNG, etc).')
+      e.target.value = ''
+      return
+    }
+
+    setUploadingImage(true)
+    setError('')
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fetch('/api/upload', { method: 'POST', body: formData })
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Upload failed. Please try again.')
+        e.target.value = ''
+        return
+      }
+
+      if (data.url) {
+        setAttachments((prev) => [...prev, data.url])
+      } else {
+        setError(data.error || 'Upload failed.')
+      }
+    } catch (err) {
+      console.error('Upload error:', err)
+      setError('Network error. Please check your connection and try again.')
+    } finally {
+      setUploadingImage(false)
+      e.target.value = ''
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
 
     // Send to enquiry API
     try {
       await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, attachmentUrls: attachments }),
       })
       setSent(true)
     } catch {
-      // Still show success to user even if API fails
-      setSent(true)
+      setError('Failed to send message. Please try again.')
     }
 
     setLoading(false)
@@ -52,8 +104,8 @@ export default function ContactPage() {
               title: 'Call Us',
               lines: ['+91 8603606089', 'Mon–Sat: 9AM to 7PM'],
               action: { label: 'Call Now', href: 'tel:+918603606089' },
-              bg: 'bg-blue-50',
-              border: 'border-blue-100',
+              bg: 'bg-orange-50',
+              border: 'border-orange-100',
             },
             {
               icon: '💬',
@@ -115,7 +167,7 @@ export default function ContactPage() {
                 For urgent queries please WhatsApp us at +91 8603606089.
               </p>
               <button
-                onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', subject: '', message: '' }) }}
+                onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', subject: '', message: '' }); setAttachments([]) }}
                 className="mt-6 bg-orange-500 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-orange-600 transition"
               >
                 Send Another Message
@@ -194,6 +246,55 @@ export default function ContactPage() {
                   />
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Attach Screenshots or Images (Optional)</label>
+                  <label className="block cursor-pointer">
+                    <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-orange-400 transition">
+                      <p className="text-gray-400 text-sm">{uploadingImage ? 'Uploading...' : '📸 Click to upload an image'}</p>
+                      <p className="text-gray-300 text-xs mt-1">JPG, PNG up to 5MB</p>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploadingImage}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {error && (
+                    <div className="mt-2 text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+                      {error}
+                    </div>
+                  )}
+
+                  {attachments.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-xs font-medium text-gray-600 mb-2">Attached Images ({attachments.length}):</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {attachments.map((url, i) => (
+                          <div key={i} className="relative group">
+                            <Image
+                              src={url}
+                              alt={`Attachment ${i + 1}`}
+                              width={80}
+                              height={80}
+                              className="w-full h-20 object-cover rounded-lg"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setAttachments(attachments.filter((_, idx) => idx !== i))}
+                              className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     type="submit"
@@ -243,3 +344,5 @@ export default function ContactPage() {
     </div>
   )
 }
+
+

@@ -11,6 +11,12 @@ interface Package {
   price: number
   duration: number
   category: string
+  tripDates: {
+    id: string
+    startDate: string
+    totalSeats: number
+    availableSeats: number
+  }[]
 }
 
 interface Traveller {
@@ -64,6 +70,7 @@ export default function BookingPage() {
 
   // Step 1 data
   const [travelDate, setTravelDate] = useState('')
+  const [tripDateId, setTripDateId] = useState('')
   const [travellerCount, setTravellerCount] = useState(1)
 
   // Step 2 data
@@ -97,6 +104,8 @@ export default function BookingPage() {
   }, [travellerCount])
 
   const totalAmount = pkg ? pkg.price * travellerCount : 0
+  const selectedTripDate = pkg?.tripDates.find((date) => date.id === tripDateId)
+  const maxTravellers = Math.min(selectedTripDate?.availableSeats || 0, 10)
 
   const loadRazorpayScript = async () => {
     if (typeof window === 'undefined') {
@@ -165,10 +174,14 @@ export default function BookingPage() {
 
   // Step 1 validation
   const validateStep1 = () => {
-    if (!travelDate) { alert('Please select a travel date.'); return false }
+    if (!tripDateId || !travelDate) { alert('Please select a planned trip date.'); return false }
     const selected = new Date(travelDate)
     const today = new Date()
     if (selected <= today) { alert('Please select a future date.'); return false }
+    if (!selectedTripDate || selectedTripDate.availableSeats < travellerCount) {
+      alert('Not enough seats are available for this date.')
+      return false
+    }
     return true
   }
 
@@ -200,6 +213,7 @@ export default function BookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           packageId,
+          tripDateId,
           travelDate,
           travellers: travellerCount,
           totalAmount,
@@ -332,15 +346,46 @@ export default function BookingPage() {
           <div className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Travel Date
+                Planned Trip Date
               </label>
-              <input
-                type="date"
-                value={travelDate}
-                onChange={(e) => setTravelDate(e.target.value)}
-                min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
+              {pkg.tripDates.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {pkg.tripDates.map((date) => {
+                    const dateValue = new Date(date.startDate).toISOString().split('T')[0]
+                    const isSelected = tripDateId === date.id
+                    const isSoldOut = date.availableSeats <= 0
+
+                    return (
+                      <button
+                        key={date.id}
+                        type="button"
+                        disabled={isSoldOut}
+                        onClick={() => {
+                          setTripDateId(date.id)
+                          setTravelDate(dateValue)
+                          setTravellerCount(1)
+                        }}
+                        className={`rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${isSelected ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}
+                      >
+                        <span className="block text-sm font-bold text-gray-900">
+                          {new Date(date.startDate).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                          })}
+                        </span>
+                        <span className={`mt-1 block text-xs font-semibold ${isSoldOut ? 'text-red-500' : 'text-green-600'}`}>
+                          {isSoldOut ? 'Sold out' : `${date.availableSeats} seats available`}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              ) : (
+                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
+                  No planned dates are available for this package right now.
+                </p>
+              )}
             </div>
 
             <div>
@@ -349,10 +394,11 @@ export default function BookingPage() {
               </label>
               <select
                 value={travellerCount}
-                onChange={(e) => setTravellerCount(parseInt(e.target.value))}
+                onChange={(e) => setTravellerCount(parseInt(e.target.value, 10))}
+                disabled={!selectedTripDate}
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-orange-400"
               >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                {Array.from({ length: maxTravellers }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>{n} {n === 1 ? 'Person' : 'People'}</option>
                 ))}
               </select>

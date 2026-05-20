@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import Image from 'next/image'
 import AdminToast, { AdminToastMessage } from '@/components/ui/AdminToast'
 
 const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'CORPORATE']
@@ -10,6 +11,18 @@ type ItineraryDay = {
   day: number
   title: string
   description: string
+}
+
+type TripDateForm = {
+  id?: string
+  startDate: string
+  totalSeats: string
+  availableSeats: string
+}
+
+type Agent = {
+  id: string
+  user: { name: string; email: string }
 }
 
 export default function EditPackagePage() {
@@ -22,6 +35,9 @@ export default function EditPackagePage() {
   const [uploadingImage, setUploadingImage] = useState(false)
   const [images, setImages] = useState<string[]>([])
   const [toast, setToast] = useState<AdminToastMessage | null>(null)
+  const [agents, setAgents] = useState<Agent[]>([])
+  const [selectedAgentIds, setSelectedAgentIds] = useState<string[]>([])
+  const [tripDates, setTripDates] = useState<TripDateForm[]>([{ startDate: '', totalSeats: '', availableSeats: '' }])
 
   const [form, setForm] = useState({
     title: '',
@@ -56,11 +72,51 @@ export default function EditPackagePage() {
         })
         setItinerary(pkg.itinerary || [{ day: 1, title: '', description: '' }])
         setImages(pkg.images || [])
+        setTripDates(
+          pkg.tripDates?.length
+            ? pkg.tripDates.map((tripDate: { id: string; startDate: string; totalSeats: number; availableSeats: number }) => ({
+              id: tripDate.id,
+              startDate: new Date(tripDate.startDate).toISOString().split('T')[0],
+              totalSeats: String(tripDate.totalSeats),
+              availableSeats: String(tripDate.availableSeats),
+            }))
+            : [{ startDate: '', totalSeats: '', availableSeats: '' }]
+        )
+        setSelectedAgentIds(pkg.agentPreferences?.map((preference: { agentId: string }) => preference.agentId) || [])
         setFetching(false)
       })
   }, [id])
 
+  useEffect(() => {
+    fetch('/api/admin/agents')
+      .then((res) => res.ok ? res.json() : [])
+      .then(setAgents)
+      .catch(() => setAgents([]))
+  }, [])
+
   const updateField = (field: string, value: string | boolean) => setForm((prev) => ({ ...prev, [field]: value }))
+
+  const updateTripDate = (index: number, field: keyof TripDateForm, value: string) => {
+    const updated = [...tripDates]
+    updated[index] = { ...updated[index], [field]: value }
+    if (field === 'totalSeats' && !updated[index].availableSeats) {
+      updated[index].availableSeats = value
+    }
+    setTripDates(updated)
+  }
+
+  const addTripDate = () => setTripDates([...tripDates, { startDate: '', totalSeats: '', availableSeats: '' }])
+
+  const removeTripDate = (index: number) => {
+    if (tripDates.length <= 1) return
+    setTripDates(tripDates.filter((_, i) => i !== index))
+  }
+
+  const toggleAgent = (agentId: string) => {
+    setSelectedAgentIds((current) =>
+      current.includes(agentId) ? current.filter((id) => id !== agentId) : [...current, agentId]
+    )
+  }
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -123,10 +179,19 @@ export default function EditPackagePage() {
         ...form,
         price: parseFloat(form.price),
         duration: parseInt(form.duration, 10),
-        images,
+        images: images.filter(Boolean),
         itinerary,
         inclusions: form.inclusions.split('\n').filter(Boolean),
         exclusions: form.exclusions.split('\n').filter(Boolean),
+        tripDates: tripDates
+          .filter((date) => date.startDate && date.totalSeats)
+          .map((date) => ({
+            id: date.id,
+            startDate: date.startDate,
+            totalSeats: parseInt(date.totalSeats, 10),
+            availableSeats: parseInt(date.availableSeats || date.totalSeats, 10),
+          })),
+        agentIds: selectedAgentIds,
       }),
     })
 
@@ -227,6 +292,82 @@ export default function EditPackagePage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold text-gray-700">Trip Dates and Seats</h2>
+            <button type="button" onClick={addTripDate} className="text-orange-500 text-sm font-medium hover:underline">
+              Add Date
+            </button>
+          </div>
+          <div className="space-y-3">
+            {tripDates.map((tripDate, i) => (
+              <div key={tripDate.id || i} className="grid grid-cols-1 sm:grid-cols-[1fr_120px_140px_auto] gap-3 rounded-xl border border-gray-100 p-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Planned Date</label>
+                  <input
+                    type="date"
+                    value={tripDate.startDate}
+                    onChange={(e) => updateTripDate(i, 'startDate', e.target.value)}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Total Seats</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={tripDate.totalSeats}
+                    onChange={(e) => updateTripDate(i, 'totalSeats', e.target.value)}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Available Seats</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={tripDate.availableSeats}
+                    onChange={(e) => updateTripDate(i, 'availableSeats', e.target.value)}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeTripDate(i)}
+                  disabled={tripDates.length <= 1}
+                  className="self-end rounded-xl border border-red-100 px-4 py-3 text-sm font-medium text-red-500 disabled:opacity-40"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm p-6">
+          <h2 className="font-bold text-gray-700 mb-4">Package Agents</h2>
+          {agents.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {agents.map((agent) => (
+                <label key={agent.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-100 p-3 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={selectedAgentIds.includes(agent.id)}
+                    onChange={() => toggleAgent(agent.id)}
+                    className="h-4 w-4 accent-orange-500"
+                  />
+                  <span>
+                    <span className="block font-semibold text-gray-700">{agent.user.name}</span>
+                    <span className="block text-xs text-gray-400">{agent.user.email}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-400">No approved agents available yet.</p>
+          )}
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm p-6">
           <h2 className="font-bold text-gray-700 mb-4">Package Images</h2>
           <label className="block cursor-pointer">
             <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-orange-400 transition">
@@ -240,7 +381,7 @@ export default function EditPackagePage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
               {images.map((url, i) => (
                 <div key={i} className="relative group">
-                  <img src={url} alt={`Image ${i + 1}`} className="w-full h-24 object-cover rounded-lg" />
+                  <Image src={url} alt={`Image ${i + 1}`} width={240} height={96} className="w-full h-24 object-cover rounded-lg" />
                   <button
                     type="button"
                     onClick={() => setImages(images.filter((_, idx) => idx !== i))}

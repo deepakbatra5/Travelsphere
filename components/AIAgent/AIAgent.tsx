@@ -16,6 +16,26 @@ interface Package {
   duration: number
 }
 
+const WELCOME_MESSAGE: Message = {
+  role: 'assistant',
+  content: 'Namaste! I am Sphere, your personal AI travel agent at Travel Sphere. How can I help you?',
+}
+
+function normalizeMessage(message: Message): Message {
+  const normalizedContent = message.content.toLowerCase()
+
+  if (
+    message.role === 'assistant' &&
+    normalizedContent.includes('personal ai travel agent at travel sphere') &&
+    normalizedContent.includes('budget and preferences') &&
+    normalizedContent.includes('visa tips')
+  ) {
+    return WELCOME_MESSAGE
+  }
+
+  return message
+}
+
 const QUICK_CHIPS = [
   { label: 'All packages', msg: 'Show me all Travel Sphere tour packages with prices' },
   { label: 'Solo travel', msg: 'Suggest the best solo trip for me from Travel Sphere' },
@@ -40,7 +60,7 @@ function PackageCard({ pkg }: { pkg: Package }) {
     ADVENTURE: 'bg-green-100 text-green-700',
     GROUP: 'bg-yellow-100 text-yellow-700',
     PILGRIMAGE: 'bg-orange-100 text-orange-700',
-    FAMILY: 'bg-blue-100 text-blue-700',
+    FAMILY: 'bg-orange-100 text-orange-700',
   }
   return (
     <a
@@ -67,7 +87,7 @@ function PackageCard({ pkg }: { pkg: Package }) {
 function TypingIndicator() {
   return (
     <div className="flex gap-2 items-start">
-      <div className="w-7 h-7 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div>
+      <div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div>
       <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
         <div className="flex gap-1 items-center">
           {[0, 1, 2].map(i => (
@@ -91,7 +111,8 @@ function MessageBubble({ msg }: { msg: Message }) {
     return t
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" class="text-orange-500 hover:underline font-medium">$1 ↗</a>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" class="text-orange-500 hover:underline font-medium">$1</a>')
+      .replace(/(^|[\s>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" class="text-orange-500 hover:underline font-medium break-all">$2</a>')
       .replace(/^### (.*)/gm, '<div class="font-semibold text-gray-800 mt-3 mb-1 text-sm">$1</div>')
       .replace(/^## (.*)/gm, '<div class="font-semibold text-gray-800 mt-3 mb-1">$1</div>')
       .replace(/^- (.*)/gm, '<div class="flex gap-2 my-1"><span class="text-orange-500 flex-shrink-0">›</span><span>$1</span></div>')
@@ -105,7 +126,7 @@ function MessageBubble({ msg }: { msg: Message }) {
   if (isUser) {
     return (
       <div className="flex gap-2 items-start justify-end">
-        <div className="bg-blue-900 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[82%] text-sm leading-relaxed">{text}</div>
+        <div className="bg-orange-900 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[82%] text-sm leading-relaxed">{text}</div>
         <div className="w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 text-white text-xs font-semibold mt-0.5">U</div>
       </div>
     )
@@ -113,7 +134,7 @@ function MessageBubble({ msg }: { msg: Message }) {
 
   return (
     <div className="flex gap-2 items-start">
-      <div className="w-7 h-7 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">🌍</div>
+      <div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">🌍</div>
       <div className="max-w-[85%]">
         <div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed text-gray-800" dangerouslySetInnerHTML={{ __html: formatText(text) }} />
       </div>
@@ -131,6 +152,14 @@ function CustomPlanForm({ onSubmit }: { onSubmit: (q: string) => void }) {
     interests: '',
   })
 
+  const planFields: Array<{ label: string; key: Exclude<keyof typeof form, 'interests'>; options: string[] }> = [
+    { label: 'Travel style', key: 'style', options: ['Relaxation and beaches', 'Adventure and trekking', 'Culture and history', 'Spiritual and pilgrimage', 'Romantic getaway', 'Family fun', 'Solo backpacking'] },
+    { label: 'Budget', key: 'budget', options: ['Under Rs 15,000', 'Rs 15,000 to 30,000', 'Rs 30,000 to 60,000', 'Rs 60,000 to 1 lakh', 'Above 1 lakh'] },
+    { label: 'Duration', key: 'duration', options: ['2 to 3 days', '5 to 7 days', '8 to 12 days', '2 weeks or more'] },
+    { label: 'Group type', key: 'group', options: ['Solo traveler', 'Couple', 'Family with kids', 'Friends group', 'Corporate team'] },
+    { label: 'Region', key: 'region', options: ['Anywhere in India', 'North India mountains', 'South India beaches', 'International Southeast Asia', 'International Europe', 'International Middle East'] },
+  ]
+
   const handleSubmit = () => {
     const q = `Please create a custom trip plan for me with these preferences:\n    - Travel style: ${form.style}\n    - Budget: ${form.budget}\n    - Duration: ${form.duration}\n    - Group type: ${form.group}\n    - Region: ${form.region}\n    ${form.interests ? `- Special interests: ${form.interests}` : ''}\n    Please recommend the best matching Travel Sphere packages and create a detailed day-by-day itinerary.`
     onSubmit(q)
@@ -139,16 +168,10 @@ function CustomPlanForm({ onSubmit }: { onSubmit: (q: string) => void }) {
   return (
     <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4 mt-2 space-y-3">
       <p className="text-xs font-medium text-gray-500">CUSTOM TRIP PLANNER</p>
-      {[
-        { label: 'Travel style', key: 'style', options: ['Relaxation and beaches', 'Adventure and trekking', 'Culture and history', 'Spiritual and pilgrimage', 'Romantic getaway', 'Family fun', 'Solo backpacking'] },
-        { label: 'Budget', key: 'budget', options: ['Under Rs 15,000', 'Rs 15,000 to 30,000', 'Rs 30,000 to 60,000', 'Rs 60,000 to 1 lakh', 'Above 1 lakh'] },
-        { label: 'Duration', key: 'duration', options: ['2 to 3 days', '5 to 7 days', '8 to 12 days', '2 weeks or more'] },
-        { label: 'Group type', key: 'group', options: ['Solo traveler', 'Couple', 'Family with kids', 'Friends group', 'Corporate team'] },
-        { label: 'Region', key: 'region', options: ['Anywhere in India', 'North India mountains', 'South India beaches', 'International Southeast Asia', 'International Europe', 'International Middle East'] },
-      ].map(({ label, key, options }) => (
+      {planFields.map(({ label, key, options }) => (
         <div key={key} className="flex items-center gap-2">
           <span className="text-xs text-gray-500 w-24 flex-shrink-0">{label}</span>
-          <select value={(form as any)[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} className="flex-1 text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:border-orange-400">
+          <select value={form[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} className="flex-1 text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:border-orange-400">
             {options.map(o => <option key={o} value={o}>{o}</option>)}
           </select>
         </div>
@@ -167,22 +190,20 @@ export default function AIAgent() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [showCustomForm, setShowCustomForm] = useState(false)
-  const [unread, setUnread] = useState(1)
+  const [unread, setUnread] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
-  const welcomeMsg: Message = {
-    role: 'assistant',
-    content: `Namaste! I am **Sphere**, your personal AI travel agent at **Travel Sphere**. I can help you with:\n\n- Explore all 9 Travel Sphere tour packages\n- Discover destinations across 195+ countries worldwide\n- Build a custom itinerary based on your budget and preferences\n- Get visa tips, packing lists, best time to visit\n- Compare destinations and find what suits you best\n\nWhat kind of trip are you dreaming of? 🌏`,
+  const openChat = () => {
+    setOpen(true)
+    setUnread(0)
+    setMessages((currentMessages) =>
+      currentMessages.length === 0 ? [WELCOME_MESSAGE] : currentMessages.map(normalizeMessage)
+    )
   }
 
   useEffect(() => {
-    if (open && messages.length === 0) {
-      setMessages([welcomeMsg])
-      setUnread(0)
-    }
     if (open) {
-      setUnread(0)
       setTimeout(() => inputRef.current?.focus(), 300)
     }
   }, [open])
@@ -213,12 +234,12 @@ export default function AIAgent() {
 
   const handleKey = (e: React.KeyboardEvent) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input) } }
 
-  const resetChat = () => { setMessages([welcomeMsg]); setShowCustomForm(false) }
+  const resetChat = () => { setMessages([WELCOME_MESSAGE]); setShowCustomForm(false) }
 
   return (
     <>
       {!open && (
-        <button onClick={() => setOpen(true)} className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95" aria-label="Open AI Travel Agent">
+        <button onClick={openChat} className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95" aria-label="Open AI Travel Agent">
           <span className="text-2xl">🌍</span>
           {unread > 0 && (<span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">{unread}</span>)}
         </button>
@@ -226,30 +247,30 @@ export default function AIAgent() {
 
       {open && (
         <div className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-24px)] h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-100">
-          <div className="bg-blue-900 px-4 py-3 flex items-center gap-3 flex-shrink-0">
+          <div className="bg-orange-900 px-4 py-3 flex items-center gap-3 flex-shrink-0">
             <div className="w-9 h-9 bg-orange-500 rounded-full flex items-center justify-center text-lg flex-shrink-0">🌍</div>
             <div className="flex-1 min-w-0">
               <p className="text-white font-semibold text-sm font-sans">Sphere — AI Travel Agent</p>
-              <p className="text-blue-300 text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block animate-pulse" />Online · Travel Sphere</p>
+              <p className="text-orange-300 text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block animate-pulse" />Online · Travel Sphere</p>
             </div>
             <div className="flex items-center gap-1">
-              <button onClick={resetChat} className="text-blue-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors">New Chat</button>
-              <a href="https://travelsphere.sbs/packages" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors">Tours ↗</a>
-              <button onClick={() => setOpen(false)} className="text-blue-300 hover:text-white ml-1 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-800 transition-colors" aria-label="Close chat">✕</button>
+              <button onClick={resetChat} className="text-orange-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-orange-800 transition-colors">New Chat</button>
+              <a href="https://travelsphere.sbs/packages" target="_blank" rel="noopener noreferrer" className="text-orange-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-orange-800 transition-colors">Tours ↗</a>
+              <button onClick={() => setOpen(false)} className="text-orange-300 hover:text-white ml-1 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-orange-800 transition-colors" aria-label="Close chat">✕</button>
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scroll-smooth">
-            {messages.map((msg, i) => (<MessageBubble key={i} msg={msg} />))}
+            {messages.map((msg, i) => (<MessageBubble key={i} msg={normalizeMessage(msg)} />))}
             {loading && <TypingIndicator />}
-            {showCustomForm && (<div className="flex gap-2 items-start"><div className="w-7 h-7 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div><div className="flex-1"><div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-700 mb-1">Let me build a custom trip plan for you! Fill in your preferences:</div><CustomPlanForm onSubmit={(q) => { setShowCustomForm(false); sendMessage(q) }} /></div></div>)}
+            {showCustomForm && (<div className="flex gap-2 items-start"><div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div><div className="flex-1"><div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-700 mb-1">Let me build a custom trip plan for you! Fill in your preferences:</div><CustomPlanForm onSubmit={(q) => { setShowCustomForm(false); sendMessage(q) }} /></div></div>)}
             <div ref={messagesEndRef} />
           </div>
 
           {messages.length <= 2 && (
             <div className="px-3 pt-2 pb-0 flex flex-wrap gap-1.5 flex-shrink-0">
               {QUICK_CHIPS.map((c) => (<button key={c.label} onClick={() => sendMessage(c.msg)} className="text-xs bg-orange-50 text-orange-700 border border-orange-200 rounded-full px-3 py-1.5 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">{c.label}</button>))}
-              <button onClick={() => setShowCustomForm(true)} className="text-xs bg-blue-50 text-blue-700 border border-blue-200 rounded-full px-3 py-1.5 hover:bg-blue-900 hover:text-white hover:border-blue-900 transition-colors">Custom trip planner</button>
+              <button onClick={() => setShowCustomForm(true)} className="text-xs bg-orange-50 text-orange-700 border border-orange-200 rounded-full px-3 py-1.5 hover:bg-orange-900 hover:text-white hover:border-orange-900 transition-colors">Custom trip planner</button>
             </div>
           )}
 
@@ -266,3 +287,5 @@ export default function AIAgent() {
     </>
   )
 }
+
+

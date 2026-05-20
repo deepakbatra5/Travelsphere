@@ -4,17 +4,17 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon, GlobeAltIcon, BriefcaseIcon } from '@heroicons/react/24/outline'
 import { clearAuthSession } from '@/lib/browser-session'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'All Packages', href: '/packages' },
-  { label: 'Solo Trips', href: '/packages?category=SOLO' },
-  { label: 'Family', href: '/packages?category=FAMILY' },
-  { label: 'Pilgrimage', href: '/packages?category=PILGRIMAGE' },
-  { label: 'Group Tours', href: '/packages?category=GROUP' },
+  { label: 'Packages', href: '/packages' },
+  { label: 'Search', href: '/search' },
+  { label: 'Customise', href: '/customised-tour' },
+  { label: 'Help', href: '/help' },
+  { label: 'About Us', href: '/about-us' },
 ]
 
 export default function Navbar() {
@@ -32,7 +32,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="shrink-0">
-          <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-orange-700 md:text-base">
+          <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-orange-700 md:text-base shadow-sm">
+            <GlobeAltIcon className="h-5 w-5 text-orange-600" />
             Travel Sphere
           </span>
         </Link>
@@ -44,17 +45,17 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`rounded-full px-3 py-2 text-sm font-semibold transition ${
-                    (link.href === '/packages' && isPackagesPage) || pathname === link.href
-                      ? 'bg-slate-900 text-white'
-                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                  }`}
+                  className={`rounded-full px-3 py-2 text-sm font-semibold transition ${(link.href === '/packages' && isPackagesPage) || pathname === link.href
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
                 >
                   {link.label}
                 </Link>
               ))}
               {showBecomeAgent && (
-                <Link href="/agent-register" className="rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
+                <Link href="/agent-register" className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
+                  <BriefcaseIcon className="h-4 w-4" />
                   Business
                 </Link>
               )}
@@ -69,7 +70,7 @@ export default function Navbar() {
           {session?.user ? (
             <>
               {session.user.role === 'ADMIN' && (
-                <Link href="/admin" className="whitespace-nowrap text-sm font-semibold text-blue-600 hover:text-blue-700">
+                <Link href="/admin" className="whitespace-nowrap text-sm font-semibold text-orange-600 hover:text-orange-700">
                   Admin Panel
                 </Link>
               )}
@@ -133,17 +134,17 @@ export default function Navbar() {
                     key={link.label}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`rounded-xl px-3 py-2 ${
-                      (link.href === '/packages' && isPackagesPage) || pathname === link.href
-                        ? 'bg-slate-900 text-white'
-                        : 'hover:bg-slate-100'
-                    }`}
+                    className={`rounded-xl px-3 py-2 ${(link.href === '/packages' && isPackagesPage) || pathname === link.href
+                      ? 'bg-slate-900 text-white'
+                      : 'hover:bg-slate-100'
+                      }`}
                   >
                     {link.label}
                   </Link>
                 ))}
                 {showBecomeAgent && (
-                  <Link href="/agent-register" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
+                  <Link href="/agent-register" onClick={() => setMenuOpen(false)} className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
+                    <BriefcaseIcon className="h-4 w-4" />
                     Business
                   </Link>
                 )}
@@ -192,3 +193,5 @@ export default function Navbar() {
     </nav>
   )
 }
+
+

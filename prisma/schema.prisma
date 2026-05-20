@@ -53,9 +53,26 @@ model Package {
   updatedAt   DateTime @updatedAt
 
   bookings    Booking[]
+  tripDates   PackageTripDate[]
   reviews     Review[]
   enquiries   Enquiry[]
   agentPreferences AgentTourPreference[]
+}
+
+model PackageTripDate {
+  id             String   @id @default(cuid())
+  packageId      String
+  startDate      DateTime
+  totalSeats     Int
+  availableSeats Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  package  Package   @relation(fields: [packageId], references: [id])
+  bookings Booking[]
+
+  @@unique([packageId, startDate])
+  @@index([startDate])
 }
 
 enum Category {
@@ -72,6 +89,7 @@ model Booking {
   id          String        @id @default(cuid())
   userId      String
   packageId   String
+  tripDateId  String?
   travelDate  DateTime
   travellers  Int
   totalAmount Float
@@ -81,6 +99,7 @@ model Booking {
 
   user        User          @relation(fields: [userId], references: [id])
   package     Package       @relation(fields: [packageId], references: [id])
+  tripDate    PackageTripDate? @relation(fields: [tripDateId], references: [id])
   payment     Payment?
   travellersInfo Json?      // traveller names, ages etc
   agentAssignment BookingAgent?
@@ -113,14 +132,15 @@ enum PaymentStatus {
 }
 
 model Enquiry {
-  id        String   @id @default(cuid())
-  name      String
-  phone     String
-  email     String?
-  message   String
-  packageId String?
-  userId    String?
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  name           String
+  phone          String
+  email          String?
+  message        String
+  attachmentUrls String[] // array of image URLs
+  packageId      String?
+  userId         String?
+  createdAt      DateTime @default(now())
 
   package   Package? @relation(fields: [packageId], references: [id])
   user      User?    @relation(fields: [userId], references: [id])

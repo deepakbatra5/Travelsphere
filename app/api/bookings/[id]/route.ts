@@ -26,9 +26,26 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       return NextResponse.json({ error: parsed.error.issues[0]?.message || 'Invalid booking status' }, { status: 400 })
     }
 
-    const booking = await prisma.booking.update({
-      where: { id },
-      data: { status: parsed.data.status },
+    const booking = await prisma.$transaction(async (tx) => {
+      const existing = await tx.booking.findUnique({ where: { id } })
+
+      if (!existing) {
+        throw new Error('BOOKING_NOT_FOUND')
+      }
+
+      const updated = await tx.booking.update({
+        where: { id },
+        data: { status: parsed.data.status },
+      })
+
+      if (parsed.data.status === 'CANCELLED' && existing.status !== 'CANCELLED' && existing.tripDateId) {
+        await tx.packageTripDate.update({
+          where: { id: existing.tripDateId },
+          data: { availableSeats: { increment: existing.travellers } },
+        })
+      }
+
+      return updated
     })
 
     if (parsed.data.status === 'COMPLETED') {
@@ -52,7 +69,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     revalidatePath('/agent/earnings')
 
     return NextResponse.json(booking)
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message === 'BOOKING_NOT_FOUND') {
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
+    }
+
     return NextResponse.json({ error: 'Failed to update booking' }, { status: 500 })
   }
 }
