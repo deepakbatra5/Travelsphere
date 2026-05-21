@@ -12,6 +12,7 @@ const navItems = [
   { href: '/agent/tours', label: 'Available Tours' },
   { href: '/agent/my-tours', label: 'My Assignments' },
   { href: '/agent/earnings', label: 'Earnings' },
+  { href: '/agent/help', label: 'Help & Support' },
 ]
 
 export default function AgentLayout({ children }: { children: React.ReactNode }) {

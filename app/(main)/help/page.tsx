@@ -79,7 +79,7 @@ export default function HelpPage() {
               <div>
                 <h3 className="font-bold text-slate-900">WhatsApp Support</h3>
                 <p className="mt-1 text-sm text-slate-500">Fastest way to reach us. Text us anytime.</p>
-                <p className="mt-1 font-semibold text-slate-700">+91 98765 43210</p>
+                <a href="https://wa.me/918603606089" target="_blank" rel="noopener noreferrer" className="mt-1 font-semibold text-green-700 hover:underline">+91 8603606089</a>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -89,7 +89,7 @@ export default function HelpPage() {
               <div>
                 <h3 className="font-bold text-slate-900">Call Us</h3>
                 <p className="mt-1 text-sm text-slate-500">Available Mon-Sat from 9 AM to 8 PM.</p>
-                <p className="mt-1 font-semibold text-slate-700">+91 1800 123 4567</p>
+                <a href="tel:+918603606089" className="mt-1 font-semibold text-orange-700 hover:underline">+91 8603606089</a>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -99,7 +99,7 @@ export default function HelpPage() {
               <div>
                 <h3 className="font-bold text-slate-900">Email Support</h3>
                 <p className="mt-1 text-sm text-slate-500">For detailed queries and booking modifications.</p>
-                <p className="mt-1 font-semibold text-slate-700">support@travelsphere.com</p>
+                <a href="mailto:deepankumar81c401a1e8@gmail.com" className="mt-1 break-all font-semibold text-indigo-700 hover:underline">deepankumar81c401a1e8@gmail.com</a>
               </div>
             </div>
           </div>
