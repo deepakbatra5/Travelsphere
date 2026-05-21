@@ -10,9 +10,9 @@ import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Packages', href: '/packages' },
+  { label: 'All Packages', href: '/packages' },
   { label: 'Search', href: '/search' },
-  { label: 'Customise', href: '/customised-tour' },
+  { label: 'Customised Tours', href: '/customised-tour' },
   { label: 'Help', href: '/help' },
   { label: 'About Us', href: '/about-us' },
 ]

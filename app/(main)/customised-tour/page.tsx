@@ -13,8 +13,8 @@ export default function CustomisedTourPage() {
     phone: '',
     email: '',
     destination: '',
-    duration: '',
-    budget: '',
+    city: '',
+    travellers: '',
     message: '',
   })
 
@@ -29,8 +29,8 @@ export default function CustomisedTourPage() {
     
     try {
       const detailedMessage = `Destination: ${formData.destination}
-Duration: ${formData.duration} Days
-Budget: ₹${formData.budget}
+Your City: ${formData.city}
+No. of Travellers: ${formData.travellers}
       
 Special Requests:
 ${formData.message}`
@@ -50,7 +50,7 @@ ${formData.message}`
       if (!res.ok) throw new Error('Failed to submit request')
       
       setSuccess(true)
-      setFormData({ name: '', phone: '', email: '', destination: '', duration: '', budget: '', message: '' })
+      setFormData({ name: '', phone: '', email: '', destination: '', city: '', travellers: '', message: '' })
     } catch (err: any) {
       setError(err.message || 'Something went wrong')
     } finally {
@@ -159,14 +159,14 @@ ${formData.message}`
                   <input required type="text" name="destination" value={formData.destination} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="Where do you want to go?" />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Duration (Days)</label>
-                  <input type="number" name="duration" value={formData.duration} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="e.g. 5" />
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Your City</label>
+                  <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="e.g. Mumbai" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Estimated Budget (₹)</label>
-                <input type="number" name="budget" value={formData.budget} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="e.g. 50000" />
+                <label className="block text-sm font-semibold text-slate-700 mb-1">No. of Travellers</label>
+                <input type="number" name="travellers" min="1" value={formData.travellers} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="e.g. 2" />
               </div>
 
               <div>

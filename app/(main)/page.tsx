@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db'
 import PackageCarousel from '@/components/packages/PackageCarousel'
 import DestinationCarousel from '@/components/ui/DestinationCarousel'
 import HeroCarousel from '@/components/ui/HeroCarousel'
+import CustomerReviews from '@/components/ui/CustomerReviews'
 import {
   GlobeAsiaAustraliaIcon,
   PhoneIcon,
@@ -101,6 +102,10 @@ export default async function HomePage() {
 
         <PackageCarousel packages={packages} />
       </section>
+
+      {/* Customer Reviews */}
+      <CustomerReviews />
+
       <section className="mx-auto max-w-7xl px-4 pb-14">
         <div className="rounded-[2.5rem] bg-slate-50 px-6 py-16 md:px-12 border border-slate-200 shadow-sm relative overflow-hidden">
           {/* Subtle background decoration */}
