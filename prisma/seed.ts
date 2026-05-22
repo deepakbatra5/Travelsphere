@@ -1,6 +1,6 @@
 import { config as loadEnv } from 'dotenv'
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient, type Prisma } from '../generated/prisma/client.ts'
+import { PrismaClient, type Prisma } from './generated/prisma/client.ts'
 import bcrypt from 'bcryptjs'
 
 loadEnv({ path: '.env.local' })

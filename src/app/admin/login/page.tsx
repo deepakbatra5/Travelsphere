@@ -9,22 +9,30 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 function getSafeCallbackPath() {
   if (typeof window === 'undefined') return '/admin'
 
+  const isAdminSubdomain = window.location.hostname.startsWith('admin.')
+  const defaultPath = isAdminSubdomain ? '/dashboard' : '/admin'
+
   const rawCallback = new URLSearchParams(window.location.search).get('callbackUrl')
-  if (!rawCallback) return '/admin'
+  if (!rawCallback) return defaultPath
 
   try {
     const callbackUrl = new URL(rawCallback, window.location.origin)
 
-    if (callbackUrl.origin !== window.location.origin) return '/admin'
+    if (callbackUrl.origin !== window.location.origin) return defaultPath
 
     const pathWithQuery = `${callbackUrl.pathname}${callbackUrl.search}${callbackUrl.hash}`
-    if (!pathWithQuery.startsWith('/admin') || pathWithQuery === '/admin/login') {
-      return '/admin'
+    const isSafeAdminPath = pathWithQuery.startsWith('/admin') && pathWithQuery !== '/admin/login'
+    const isSafeSubdomainPath = isAdminSubdomain && pathWithQuery.startsWith('/dashboard')
+
+    if (!isSafeAdminPath && !isSafeSubdomainPath) {
+      return defaultPath
     }
 
     return pathWithQuery
   } catch {
-    return rawCallback.startsWith('/admin') && rawCallback !== '/admin/login' ? rawCallback : '/admin'
+    if (rawCallback.startsWith('/admin') && rawCallback !== '/admin/login') return rawCallback
+    if (isAdminSubdomain && rawCallback.startsWith('/dashboard')) return rawCallback
+    return defaultPath
   }
 }
 

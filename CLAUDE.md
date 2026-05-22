@@ -116,7 +116,7 @@ travel-sphere/
 │   │   │   └── page.tsx
 │   │   └── register/
 │   │       └── page.tsx
-│   ├── (main)/
+│   ├── (customer)/
 │   │   ├── page.tsx                   ← Home page
 │   │   ├── packages/
 │   │   │   ├── page.tsx               ← All packages listing
@@ -152,8 +152,8 @@ Run these commands to create all folders at once:
 
 ```bash
 mkdir -p app/\(auth\)/login app/\(auth\)/register
-mkdir -p "app/(main)/packages/[slug]"
-mkdir -p "app/(main)/booking/[packageId]"
+mkdir -p "app/(customer)/packages/[slug]"
+mkdir -p "app/(customer)/booking/[packageId]"
 mkdir -p app/admin/packages app/admin/bookings
 mkdir -p app/api/auth app/api/packages app/api/bookings app/api/payment
 mkdir -p components/ui components/layout components/packages components/booking
@@ -807,7 +807,7 @@ export default function Footer() {
 
 ### 4a. Layout File
 
-Create file: app/(main)/layout.tsx
+Create file: app/(customer)/layout.tsx
 
 ```tsx
 import Navbar from '@/components/layout/Navbar'
@@ -828,7 +828,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
 ### 4b. Home Page
 
-Create file: app/(main)/page.tsx
+Create file: app/(customer)/page.tsx
 
 ```tsx
 import Link from 'next/link'
@@ -1175,7 +1175,7 @@ export default function PackageFilter() {
 
 ## 7. Package Listing Page
 
-Create file: app/(main)/packages/page.tsx
+Create file: app/(customer)/packages/page.tsx
 
 ```tsx
 import { prisma } from '@/lib/db'
@@ -1264,7 +1264,7 @@ export default async function PackagesPage({ searchParams }: Props) {
 
 ## 8. Package Detail Page
 
-Create file: app/(main)/packages/[slug]/page.tsx
+Create file: app/(customer)/packages/[slug]/page.tsx
 
 ```tsx
 import { prisma } from '@/lib/db'
@@ -1787,7 +1787,7 @@ Test these URLs in your browser:
 |--------|------|------|
 | 1 | Navbar.tsx created with mobile menu | No |
 | 2 | Footer.tsx created | No |
-| 3 | app/(main)/layout.tsx created | No |
+| 3 | app/(customer)/layout.tsx created | No |
 | 4 | Home page built with hero and categories | No |
 | 5 | PackageCard.tsx component created | No |
 | 6 | PackageFilter.tsx component created | No |
@@ -2169,7 +2169,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
 This is a 3-step booking page. We use React state to manage which step the user is on.
 
-Create file: app/(main)/booking/[packageId]/page.tsx
+Create file: app/(customer)/booking/[packageId]/page.tsx
 
 ```tsx
 'use client'
@@ -2808,7 +2808,7 @@ export async function POST(req: Request) {
 
 ## 9. Booking Confirmation Page
 
-Create file: app/(main)/booking/confirmation/[bookingId]/page.tsx
+Create file: app/(customer)/booking/confirmation/[bookingId]/page.tsx
 
 ```tsx
 import { prisma } from '@/lib/db'
@@ -3072,7 +3072,7 @@ export async function sendBookingConfirmationEmail(booking: any) {
 
 ## 11. Add Razorpay Script to Layout
 
-Open app/(main)/layout.tsx and add the Razorpay script tag:
+Open app/(customer)/layout.tsx and add the Razorpay script tag:
 
 ```tsx
 import Navbar from '@/components/layout/Navbar'

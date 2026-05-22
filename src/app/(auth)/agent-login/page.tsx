@@ -9,22 +9,30 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 function getSafeCallbackPath() {
   if (typeof window === 'undefined') return '/agent'
 
+  const isAgentSubdomain = window.location.hostname.startsWith('agent.')
+  const defaultPath = isAgentSubdomain ? '/dashboard' : '/agent'
+
   const rawCallback = new URLSearchParams(window.location.search).get('callbackUrl')
-  if (!rawCallback) return '/agent'
+  if (!rawCallback) return defaultPath
 
   try {
     const callbackUrl = new URL(rawCallback, window.location.origin)
 
-    if (callbackUrl.origin !== window.location.origin) return '/agent'
+    if (callbackUrl.origin !== window.location.origin) return defaultPath
 
     const pathWithQuery = `${callbackUrl.pathname}${callbackUrl.search}${callbackUrl.hash}`
-    if (!pathWithQuery.startsWith('/agent') || pathWithQuery === '/agent-login') {
-      return '/agent'
+    const isSafeAgentPath = pathWithQuery.startsWith('/agent') && pathWithQuery !== '/agent-login'
+    const isSafeSubdomainPath = isAgentSubdomain && pathWithQuery.startsWith('/dashboard')
+
+    if (!isSafeAgentPath && !isSafeSubdomainPath) {
+      return defaultPath
     }
 
     return pathWithQuery
   } catch {
-    return rawCallback.startsWith('/agent') && rawCallback !== '/agent-login' ? rawCallback : '/agent'
+    if (rawCallback.startsWith('/agent') && rawCallback !== '/agent-login') return rawCallback
+    if (isAgentSubdomain && rawCallback.startsWith('/dashboard')) return rawCallback
+    return defaultPath
   }
 }
 

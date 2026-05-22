@@ -1,5 +1,5 @@
 {
-  "name": "travel",
+  "name": "travelsphere",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -13,6 +13,7 @@
     "postinstall": "prisma generate",
     "dev:raw": "next dev --webpack",
     "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1",
+    "setup-hosts": "node scripts/setup-local-hosts.js",
     "build": "next build",
     "vercel-build": "npm run prisma:generate && (npm run db:migrate:deploy || npm run db:push) && npm run seed && next build",
     "start": "next start",
