@@ -67,14 +67,28 @@ export default function ContactPage() {
     setLoading(true)
     setError('')
 
-    // Send to enquiry API
     try {
-      await fetch('/api/enquiries', {
+      const detailedMessage = `Contact Reason: ${form.subject}
+
+${form.message}`
+
+      const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form }),
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          subject: 'Help & Support Request',
+          message: detailedMessage,
+        }),
       })
+
+      if (!res.ok) throw new Error('Failed to send message')
+
       setSent(true)
+      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+      setAttachments([])
     } catch {
       setError('Failed to send message. Please try again.')
     }

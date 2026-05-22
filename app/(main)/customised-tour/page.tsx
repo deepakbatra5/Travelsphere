@@ -159,7 +159,7 @@ ${formData.message}`
                   <input required type="text" name="destination" value={formData.destination} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="Where do you want to go?" />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Your City</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Your City <span className="text-red-500">*</span></label>
                   <input type="text" name="city" value={formData.city} onChange={handleChange} className="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-orange-500 focus:bg-white focus:ring-1 focus:ring-orange-500 transition" placeholder="e.g. Mumbai" />
                 </div>
               </div>
