@@ -157,11 +157,32 @@ export async function POST(req: Request) {
       messages: payloadMessages,
       max_tokens: 1000,
       temperature: 0.7,
+      stream: true,
     })
 
-    const reply = completion.choices?.[0]?.message?.content || 'I apologize, I could not process that request. Please try again.'
+    const encoder = new TextEncoder()
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of completion) {
+            const content = chunk.choices[0]?.delta?.content || ''
+            if (content) {
+              controller.enqueue(encoder.encode(content))
+            }
+          }
+          controller.close()
+        } catch (err) {
+          controller.error(err)
+        }
+      }
+    })
 
-    return NextResponse.json({ reply })
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
+      }
+    })
   } catch (error: any) {
     console.error('AI Agent error:', error)
     console.error('Error type:', error?.type)

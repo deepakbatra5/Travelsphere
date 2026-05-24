@@ -220,22 +220,66 @@ export default function AIAgent() {
     setInput('')
     setLoading(true)
 
-    try {
-      const res = await fetch('/api/ai-agent', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: newMessages.map(m => ({ role: m.role, content: m.content })) }) })
-      const data = await res.json()
-      const reply = data.reply || data.error || 'Something went wrong. Please try again.'
-      setMessages(prev => [...prev, { role: 'assistant', content: reply }])
-    } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'I am having a connection issue right now. Please try again or contact us on WhatsApp at +91 8603606089.' }])
-    }
+    setMessages(prev => [...prev, { role: 'assistant', content: '' }])
 
-    setLoading(false)
+    try {
+      const res = await fetch('/api/ai-agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages.map(m => ({ role: m.role, content: m.content })) })
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        const errorMsg = data.error || 'Something went wrong. Please try again.'
+        setMessages(prev => {
+          const updated = [...prev]
+          if (updated.length > 0) {
+            updated[updated.length - 1] = { role: 'assistant', content: errorMsg }
+          }
+          return updated
+        })
+        setLoading(false)
+        return
+      }
+
+      const reader = res.body?.getReader()
+      if (!reader) {
+        throw new Error('No stream reader available')
+      }
+
+      const decoder = new TextDecoder()
+      let replyContent = ''
+
+      while (true) {
+        const { value, done } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        replyContent += chunk
+        setMessages(prev => {
+          const updated = [...prev]
+          if (updated.length > 0) {
+            updated[updated.length - 1] = { role: 'assistant', content: replyContent }
+          }
+          return updated
+        })
+      }
+    } catch {
+      setMessages(prev => {
+        const updated = [...prev]
+        if (updated.length > 0) {
+          updated[updated.length - 1] = { role: 'assistant', content: 'I am having a connection issue right now. Please try again or contact us on WhatsApp at +91 8603606089.' }
+        }
+        return updated
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleKey = (e: React.KeyboardEvent) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input) } }
 
   const resetChat = () => { setMessages([WELCOME_MESSAGE]); setShowCustomForm(false) }
-
   return (
     <>
       {!open && (
@@ -262,7 +306,7 @@ export default function AIAgent() {
 
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scroll-smooth">
             {messages.map((msg, i) => (<MessageBubble key={i} msg={normalizeMessage(msg)} />))}
-            {loading && <TypingIndicator />}
+            {loading && !messages[messages.length - 1]?.content && <TypingIndicator />}
             {showCustomForm && (<div className="flex gap-2 items-start"><div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div><div className="flex-1"><div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-700 mb-1">Let me build a custom trip plan for you! Fill in your preferences:</div><CustomPlanForm onSubmit={(q) => { setShowCustomForm(false); sendMessage(q) }} /></div></div>)}
             <div ref={messagesEndRef} />
           </div>

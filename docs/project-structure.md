@@ -25,6 +25,7 @@ travel/                              ← Monorepo root
 │
 ├── src/                             ← ALL source code
 │   │
+│   ├── proxy.ts                     ← 🔀 Next.js proxy (subdomain routing + auth guard)
 │   ├── app/                         ← Next.js App Router
 │   │   ├── (customer)/              ← 👥 Customer portal pages
 │   │   │   ├── page.tsx             ←    travelsphere.sbs/
@@ -124,7 +125,6 @@ travel/                              ← Monorepo root
 │   ├── setup-local-hosts.js         ←    Add subdomain entries to hosts file
 │   └── download_states.js
 │
-├── proxy.ts                         ← 🔀 Next.js proxy (subdomain routing + auth guard)
 ├── next.config.ts                   ← Next.js configuration
 ├── tsconfig.json                    ← TypeScript paths (@/lib, @/components, etc.)
 ├── prisma.config.ts                 ← Prisma config (schema path)
@@ -144,7 +144,7 @@ travel/                              ← Monorepo root
 | `src/components/` | Frontend UI components — shared across all portals                   |
 | `src/lib/` | Server logic (auth, db, email) — used by API routes and Server Components    |
 | `prisma/` | Database schema at root — Vercel and standard tooling expect this location    |
-| `proxy.ts` | At root — Next.js 16 convention for the request proxy/middleware file        |
+| `src/proxy.ts` | In src/ — Next.js 16 convention for the request proxy/middleware file      |
 
 ---
 

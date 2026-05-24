@@ -11,7 +11,7 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
     "postinstall": "prisma generate",
-    "dev:raw": "next dev --webpack",
+    "dev:raw": "node --no-deprecation scripts/dev-wrapper.js",
     "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev.ps1",
     "setup-hosts": "node scripts/setup-local-hosts.js",
     "build": "next build",

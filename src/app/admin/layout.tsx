@@ -14,6 +14,7 @@ const navItems = [
   { href: '/admin/enquiries', label: 'Enquiries' },
   { href: '/admin/agents', label: 'Agents' },
   { href: '/admin/customers', label: 'Customers' },
+  { href: '/admin/team', label: 'Manage Team' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

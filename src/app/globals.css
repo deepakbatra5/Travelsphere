@@ -442,8 +442,7 @@ textarea:focus {
 }
 
 /* Dark mode - Footer categories (keep clean, no background colors) */
-:root[data-theme="dark"] footer [href*="packages?category="],
-:root[data-theme="dark"] div:has(> h3:contains("Explore")) [href*="category="] {
+:root[data-theme="dark"] footer [href*="category="] {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;

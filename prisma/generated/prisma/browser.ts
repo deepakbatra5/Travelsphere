@@ -67,3 +67,8 @@ export type AgentTourPreference = Prisma.AgentTourPreferenceModel
  * 
  */
 export type BookingAgent = Prisma.BookingAgentModel
+/**
+ * Model TeamMember
+ * 
+ */
+export type TeamMember = Prisma.TeamMemberModel

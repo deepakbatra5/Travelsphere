@@ -23,6 +23,7 @@ const navLinks = [
   { label: 'Customised Tours', href: '/customised-tour' },
   { label: 'Help', href: '/help' },
   { label: 'Blog', href: '/blog' },
+  { label: 'About Us', href: '/about-us' },
 ]
 
 export default function Navbar() {

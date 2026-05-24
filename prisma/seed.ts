@@ -285,6 +285,57 @@ async function main() {
 
   await ensureTripDatesForEveryPackage()
 
+  // Seed team members
+  console.log('Seeding team members...')
+  await prisma.teamMember.deleteMany({})
+
+  const teamMembers = [
+    {
+      name: 'Deepak Kumar',
+      role: 'Founder & CEO',
+      moto: 'To inspire every Indian to explore the world with absolute trust and zero hassle.',
+      linkedin: 'https://www.linkedin.com/in/deepakumar04/',
+      imageUrl: '/images/team/deepak.png',
+      order: 1
+    },
+    {
+      name: 'Harsh Raj',
+      role: 'Co-Founder & Operations Head',
+      moto: 'Building the strongest local partner network to guarantee 100% safety and premium comfort for every traveler.',
+      linkedin: 'https://www.linkedin.com/in/harshraj04/',
+      imageUrl: '/images/team/harsh.png',
+      order: 2
+    },
+    {
+      name: 'Nikhil Singhal',
+      role: 'Chief Technology Officer (CTO)',
+      linkedin: 'https://www.linkedin.com/in/nikhil-singhal04/',
+      moto: 'Powering smart travel with cutting-edge tech and seamless itineraries.',
+      imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+      order: 3
+    },
+    {
+      name: 'Pratik Kumar',
+      role: 'Head of Marketing & Strategy',
+      linkedin: 'https://www.linkedin.com/in/pratik70/',
+      moto: 'Connecting people with their dream destinations through authentic stories.',
+      imageUrl: '/images/team/pratik.png',
+      order: 4
+    },
+    {
+      name: 'Abhishek Dixit',
+      role: 'Head of Customer Experience',
+      linkedin: 'https://www.linkedin.com/in/abhishek-dixitt-/',
+      moto: 'Ensuring 24/7 support so that every trip with us is completely memorable.',
+      imageUrl: '/images/team/abhishek.png',
+      order: 5
+    }
+  ]
+
+  await prisma.teamMember.createMany({
+    data: teamMembers
+  })
+
   console.log('Seeding complete! 6 packages and trip dates added.')
 }
 

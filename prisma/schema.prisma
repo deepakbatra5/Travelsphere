@@ -221,3 +221,15 @@ enum AssignmentStatus {
   COMPLETED
   CANCELLED
 }
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  moto      String
+  linkedin  String
+  imageUrl  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

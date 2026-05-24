@@ -60,7 +60,8 @@ export const ModelName = {
   Review: 'Review',
   Agent: 'Agent',
   AgentTourPreference: 'AgentTourPreference',
-  BookingAgent: 'BookingAgent'
+  BookingAgent: 'BookingAgent',
+  TeamMember: 'TeamMember'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -236,6 +237,21 @@ export const BookingAgentScalarFieldEnum = {
 } as const
 
 export type BookingAgentScalarFieldEnum = (typeof BookingAgentScalarFieldEnum)[keyof typeof BookingAgentScalarFieldEnum]
+
+
+export const TeamMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  moto: 'moto',
+  linkedin: 'linkedin',
+  imageUrl: 'imageUrl',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeamMemberScalarFieldEnum = (typeof TeamMemberScalarFieldEnum)[keyof typeof TeamMemberScalarFieldEnum]
 
 
 export const SortOrder = {
