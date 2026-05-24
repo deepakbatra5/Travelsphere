@@ -1,17 +1,14 @@
-import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import PackageCarousel from '@/components/packages/PackageCarousel'
 import DestinationCarousel from '@/components/ui/DestinationCarousel'
 import HeroCarousel from '@/components/ui/HeroCarousel'
 import CustomerReviews from '@/components/ui/CustomerReviews'
+import TrendingTours from '@/components/home/TrendingTours'
 import {
   GlobeAsiaAustraliaIcon,
   PhoneIcon,
   ShieldCheckIcon,
   SparklesIcon,
-  UserGroupIcon,
-  UserIcon,
-  HeartIcon,
 } from '@heroicons/react/24/outline'
 
 export const dynamic = 'force-dynamic'
@@ -19,7 +16,7 @@ export const dynamic = 'force-dynamic'
 async function getFeaturedPackages() {
   try {
     return await prisma.package.findMany({
-      where: { isActive: true },
+      where: { isActive: true, isFeatured: true },
       take: 9,
       orderBy: { createdAt: 'desc' }
     })
@@ -29,44 +26,42 @@ async function getFeaturedPackages() {
   }
 }
 
-const categories = [
-  { label: 'Solo Tours', value: 'SOLO', icon: UserIcon, style: 'from-indigo-200 to-indigo-100 text-indigo-700' },
-  { label: 'Family Tours', value: 'FAMILY', icon: UserGroupIcon, style: 'from-sky-200 to-sky-100 text-sky-700' },
-  { label: 'Group Tours', value: 'GROUP', icon: GlobeAsiaAustraliaIcon, style: 'from-amber-200 to-amber-100 text-amber-700' },
-  { label: 'Pilgrimage Tours', value: 'PILGRIMAGE', icon: SparklesIcon, style: 'from-orange-200 to-orange-100 text-orange-700' },
-  { label: 'Adventure Tours', value: 'ADVENTURE', icon: ShieldCheckIcon, style: 'from-emerald-200 to-emerald-100 text-emerald-700' },
-  { label: 'Couple Tours', value: 'COUPLE', icon: HeartIcon, style: 'from-red-200 to-red-100 text-red-700' },
-]
+async function getTrendingPackages() {
+  try {
+    return await prisma.package.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        destination: true,
+        price: true,
+        duration: true,
+        category: true,
+        images: true,
+      },
+    })
+  } catch (error) {
+    console.error('Failed to load trending packages:', error)
+    return []
+  }
+}
 
-const destinations = [
-  { label: 'Kashmir', value: 'kashmir', color: 'from-orange-500 to-cyan-500', desc: 'Snow & Valleys' },
-  { label: 'Kerala', value: 'kerala', color: 'from-green-500 to-emerald-500', desc: 'Backwaters & Nature' },
-  { label: 'Goa', value: 'goa', color: 'from-orange-500 to-amber-500', desc: 'Beaches & Nightlife' },
-  { label: 'Rajasthan', value: 'rajasthan', color: 'from-rose-500 to-red-500', desc: 'Forts & Culture' },
-]
-
-const budgets = [
-  { label: 'Under ₹10,000', value: 'budget', icon: '₹', desc: 'Pocket Friendly' },
-  { label: '₹10,000 - ₹25,000', value: 'mid', icon: '₹₹', desc: 'Value for Money' },
-  { label: 'Premium & Luxury', value: 'luxury', icon: '₹₹₹', desc: 'Ultimate Comfort' },
-]
-
-const seasons = [
-  { label: 'Summer Escapes', value: 'summer', icon: '☀️', color: 'bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100' },
-  { label: 'Winter Wonderland', value: 'winter', icon: '❄️', color: 'bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100' },
-  { label: 'Monsoon Magic', value: 'monsoon', icon: '🌧️', color: 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' },
-]
+import TripSearch from '@/components/home/TripSearch'
 
 export default async function HomePage() {
   const packages = await getFeaturedPackages()
-
+  const trendingPackages = await getTrendingPackages()
   return (
     <div className="animate-fade-up">
-      <section className="w-full">
+      <section className="w-full relative">
         <HeroCarousel />
+        {/* Search bar inside hero image, centered */}
+        <TripSearch />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 md:py-16 mt-8">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-16 mt-6">
         <div className="mb-10 text-center">
           <h2 className="text-4xl font-extrabold text-orange-500 mt-1">Featured Packages</h2>
           <p className="mt-3 text-slate-600">Most loved trips this season</p>
@@ -78,32 +73,7 @@ export default async function HomePage() {
       <DestinationCarousel />
 
 
-      <section className="mx-auto max-w-7xl px-4 py-12 md:py-16 mt-4">
-        <div className="mb-8 text-center">
-          <h2 className="text-4xl font-extrabold text-orange-500 mt-1">Trending Tours</h2>
-          <p className="mt-3 text-slate-600">Handpicked experiences for your next holiday</p>
-        </div>
-
-        <div className="mb-10 flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {categories.map((cat) => {
-            const Icon = cat.icon
-            return (
-              <Link
-                key={cat.value}
-                href={`/packages?category=${cat.value}`}
-                className={`relative flex h-[5.5rem] w-48 shrink-0 snap-start flex-col justify-between rounded-xl bg-gradient-to-br p-4 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md ${cat.style}`}
-              >
-                <Icon className="h-6 w-6" strokeWidth={2} />
-                <span className="text-sm font-bold">{cat.label}</span>
-              </Link>
-            )
-          })}
-        </div>
-
-        <PackageCarousel packages={packages} />
-      </section>
-
-      {/* Customer Reviews */}
+      <TrendingTours packages={trendingPackages} />
       <CustomerReviews />
 
       <section className="mx-auto max-w-7xl px-4 pb-14">

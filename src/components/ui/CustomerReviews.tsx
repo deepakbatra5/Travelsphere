@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import Link from 'next/link'
 
 interface Review {
   id: string
@@ -287,7 +288,7 @@ export default function CustomerReviews() {
   return (
     <section ref={sectionRef} className="mx-auto max-w-7xl px-4 py-14 md:py-20">
       {/* Header */}
-      <div className="mb-12 text-center">
+      <div className="mb-10 text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-100 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-600 shadow-sm mb-4">
           <span>★</span> Traveller Stories
         </span>
@@ -297,7 +298,18 @@ export default function CustomerReviews() {
         <p className="mt-4 text-base text-slate-600 max-w-xl mx-auto font-medium">
           Real experiences shared by thousands of happy travellers across India.
         </p>
+      </div>
 
+      {/* See All Reviews — above carousel */}
+      <div className="flex items-center justify-end mb-6">
+        <Link
+          href="/reviews"
+          id="see-all-reviews-btn"
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-200 px-4 py-2 rounded-full transition-all duration-200 hover:shadow-md group"
+        >
+          See All Reviews
+          <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </Link>
       </div>
 
       {/* Carousel + Controls */}
@@ -357,11 +369,11 @@ export default function CustomerReviews() {
         ))}
       </div>
 
-      {/* CTA — Leave a Review */}
+      {/* CTA — Share Your Experience */}
       <div className="mt-10 text-center">
-        <button
+        <Link
+          href="/reviews?write=true"
           id="leave-review-btn"
-          onClick={() => setShowModal(true)}
           className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-rose-500 px-8 py-3.5 text-sm font-bold text-white shadow-lg hover:shadow-orange-300/50 hover:shadow-xl active:scale-95 transition-all duration-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
@@ -369,13 +381,13 @@ export default function CustomerReviews() {
             <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
           </svg>
           Share Your Experience
-        </button>
+        </Link>
       </div>
 
-      {/* Review Modal */}
+      {/* Review Modal — Share Your Experience */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
           style={{ background: 'rgba(15,23,42,0.65)', backdropFilter: 'blur(6px)' }}
           onClick={(e) => e.target === e.currentTarget && setShowModal(false)}
           role="dialog"

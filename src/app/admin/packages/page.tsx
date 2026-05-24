@@ -46,6 +46,7 @@ export default async function AdminPackagesPage() {
                 <th className="px-5 py-4 font-medium">Price</th>
                 <th className="px-5 py-4 font-medium">Trip Dates</th>
                 <th className="px-5 py-4 font-medium">Bookings</th>
+                <th className="px-5 py-4 font-medium">Featured</th>
                 <th className="px-5 py-4 font-medium">Status</th>
                 <th className="px-5 py-4 font-medium">Actions</th>
               </tr>
@@ -77,6 +78,11 @@ export default async function AdminPackagesPage() {
                     )}
                   </td>
                   <td className="px-5 py-4 text-gray-600">{pkg._count.bookings}</td>
+                  <td className="px-5 py-4">
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${pkg.isFeatured ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-500'}`}>
+                      {pkg.isFeatured ? 'Featured' : 'Not Featured'}
+                    </span>
+                  </td>
                   <td className="px-5 py-4">
                     <span className={`text-xs font-semibold px-2 py-1 rounded-full ${pkg.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
                       {pkg.isActive ? 'Active' : 'Inactive'}

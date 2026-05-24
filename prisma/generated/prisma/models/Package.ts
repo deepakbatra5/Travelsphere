@@ -45,6 +45,7 @@ export type PackageMinAggregateOutputType = {
   price: number | null
   duration: number | null
   category: $Enums.Category | null
+  isFeatured: boolean | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +60,7 @@ export type PackageMaxAggregateOutputType = {
   price: number | null
   duration: number | null
   category: $Enums.Category | null
+  isFeatured: boolean | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -77,6 +79,7 @@ export type PackageCountAggregateOutputType = {
   itinerary: number
   inclusions: number
   exclusions: number
+  isFeatured: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -103,6 +106,7 @@ export type PackageMinAggregateInputType = {
   price?: true
   duration?: true
   category?: true
+  isFeatured?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -117,6 +121,7 @@ export type PackageMaxAggregateInputType = {
   price?: true
   duration?: true
   category?: true
+  isFeatured?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -135,6 +140,7 @@ export type PackageCountAggregateInputType = {
   itinerary?: true
   inclusions?: true
   exclusions?: true
+  isFeatured?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -240,6 +246,7 @@ export type PackageGroupByOutputType = {
   itinerary: runtime.JsonValue
   inclusions: string[]
   exclusions: string[]
+  isFeatured: boolean
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -281,6 +288,7 @@ export type PackageWhereInput = {
   itinerary?: Prisma.JsonFilter<"Package">
   inclusions?: Prisma.StringNullableListFilter<"Package">
   exclusions?: Prisma.StringNullableListFilter<"Package">
+  isFeatured?: Prisma.BoolFilter<"Package"> | boolean
   isActive?: Prisma.BoolFilter<"Package"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Package"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Package"> | Date | string
@@ -304,6 +312,7 @@ export type PackageOrderByWithRelationInput = {
   itinerary?: Prisma.SortOrder
   inclusions?: Prisma.SortOrder
   exclusions?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -330,6 +339,7 @@ export type PackageWhereUniqueInput = Prisma.AtLeast<{
   itinerary?: Prisma.JsonFilter<"Package">
   inclusions?: Prisma.StringNullableListFilter<"Package">
   exclusions?: Prisma.StringNullableListFilter<"Package">
+  isFeatured?: Prisma.BoolFilter<"Package"> | boolean
   isActive?: Prisma.BoolFilter<"Package"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Package"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Package"> | Date | string
@@ -353,6 +363,7 @@ export type PackageOrderByWithAggregationInput = {
   itinerary?: Prisma.SortOrder
   inclusions?: Prisma.SortOrder
   exclusions?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -379,6 +390,7 @@ export type PackageScalarWhereWithAggregatesInput = {
   itinerary?: Prisma.JsonWithAggregatesFilter<"Package">
   inclusions?: Prisma.StringNullableListFilter<"Package">
   exclusions?: Prisma.StringNullableListFilter<"Package">
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"Package"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"Package"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Package"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Package"> | Date | string
@@ -397,6 +409,7 @@ export type PackageCreateInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -420,6 +433,7 @@ export type PackageUncheckedCreateInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -443,6 +457,7 @@ export type PackageUpdateInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -466,6 +481,7 @@ export type PackageUncheckedUpdateInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,6 +505,7 @@ export type PackageCreateManyInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -507,6 +524,7 @@ export type PackageUpdateManyMutationInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -525,6 +543,7 @@ export type PackageUncheckedUpdateManyInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -551,6 +570,7 @@ export type PackageCountOrderByAggregateInput = {
   itinerary?: Prisma.SortOrder
   inclusions?: Prisma.SortOrder
   exclusions?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -570,6 +590,7 @@ export type PackageMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   duration?: Prisma.SortOrder
   category?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -584,6 +605,7 @@ export type PackageMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   duration?: Prisma.SortOrder
   category?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -728,6 +750,7 @@ export type PackageCreateWithoutTripDatesInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -750,6 +773,7 @@ export type PackageUncheckedCreateWithoutTripDatesInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -788,6 +812,7 @@ export type PackageUpdateWithoutTripDatesInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -810,6 +835,7 @@ export type PackageUncheckedUpdateWithoutTripDatesInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -832,6 +858,7 @@ export type PackageCreateWithoutBookingsInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -854,6 +881,7 @@ export type PackageUncheckedCreateWithoutBookingsInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -892,6 +920,7 @@ export type PackageUpdateWithoutBookingsInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -914,6 +943,7 @@ export type PackageUncheckedUpdateWithoutBookingsInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -936,6 +966,7 @@ export type PackageCreateWithoutEnquiriesInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -958,6 +989,7 @@ export type PackageUncheckedCreateWithoutEnquiriesInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -996,6 +1028,7 @@ export type PackageUpdateWithoutEnquiriesInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1018,6 +1051,7 @@ export type PackageUncheckedUpdateWithoutEnquiriesInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1040,6 +1074,7 @@ export type PackageCreateWithoutReviewsInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1062,6 +1097,7 @@ export type PackageUncheckedCreateWithoutReviewsInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1100,6 +1136,7 @@ export type PackageUpdateWithoutReviewsInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1122,6 +1159,7 @@ export type PackageUncheckedUpdateWithoutReviewsInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1144,6 +1182,7 @@ export type PackageCreateWithoutAgentPreferencesInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1166,6 +1205,7 @@ export type PackageUncheckedCreateWithoutAgentPreferencesInput = {
   itinerary: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageCreateinclusionsInput | string[]
   exclusions?: Prisma.PackageCreateexclusionsInput | string[]
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1204,6 +1244,7 @@ export type PackageUpdateWithoutAgentPreferencesInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1226,6 +1267,7 @@ export type PackageUncheckedUpdateWithoutAgentPreferencesInput = {
   itinerary?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   inclusions?: Prisma.PackageUpdateinclusionsInput | string[]
   exclusions?: Prisma.PackageUpdateexclusionsInput | string[]
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1315,6 +1357,7 @@ export type PackageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   itinerary?: boolean
   inclusions?: boolean
   exclusions?: boolean
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1339,6 +1382,7 @@ export type PackageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   itinerary?: boolean
   inclusions?: boolean
   exclusions?: boolean
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1357,6 +1401,7 @@ export type PackageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   itinerary?: boolean
   inclusions?: boolean
   exclusions?: boolean
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1375,12 +1420,13 @@ export type PackageSelectScalar = {
   itinerary?: boolean
   inclusions?: boolean
   exclusions?: boolean
+  isFeatured?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PackageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "destination" | "description" | "price" | "duration" | "category" | "images" | "itinerary" | "inclusions" | "exclusions" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["package"]>
+export type PackageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "destination" | "description" | "price" | "duration" | "category" | "images" | "itinerary" | "inclusions" | "exclusions" | "isFeatured" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["package"]>
 export type PackageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.Package$bookingsArgs<ExtArgs>
   tripDates?: boolean | Prisma.Package$tripDatesArgs<ExtArgs>
@@ -1414,6 +1460,7 @@ export type $PackagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     itinerary: runtime.JsonValue
     inclusions: string[]
     exclusions: string[]
+    isFeatured: boolean
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1857,6 +1904,7 @@ export interface PackageFieldRefs {
   readonly itinerary: Prisma.FieldRef<"Package", 'Json'>
   readonly inclusions: Prisma.FieldRef<"Package", 'String[]'>
   readonly exclusions: Prisma.FieldRef<"Package", 'String[]'>
+  readonly isFeatured: Prisma.FieldRef<"Package", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"Package", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Package", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Package", 'DateTime'>

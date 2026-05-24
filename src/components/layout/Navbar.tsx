@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
@@ -11,10 +11,9 @@ import ThemeToggle from '@/components/theme/ThemeToggle'
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'All Packages', href: '/packages' },
-  { label: 'Search', href: '/search' },
   { label: 'Customised Tours', href: '/customised-tour' },
   { label: 'Help', href: '/help' },
-  { label: 'About Us', href: '/about-us' },
+  { label: 'Blog', href: '/blog' },
 ]
 
 export default function Navbar() {
@@ -27,6 +26,16 @@ export default function Navbar() {
   const isAgent = Boolean(session?.user?.agentStatus)
   const showPublicLinks = !isAdmin && !isAgent
   const showBecomeAgent = !session?.user
+
+  // Fix hydration: always start with prod URLs, update to localhost after mount
+  const [agentUrl, setAgentUrl] = useState('https://agent.travelsphere.sbs')
+  const [adminUrl, setAdminUrl] = useState('https://admin.travelsphere.sbs')
+  useEffect(() => {
+    if (window.location.hostname.includes('localhost')) {
+      setAgentUrl('http://agent.localhost:3000')
+      setAdminUrl('http://admin.localhost:3000')
+    }
+  }, [])
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur">
@@ -54,10 +63,10 @@ export default function Navbar() {
                 </Link>
               ))}
               {showBecomeAgent && (
-                <Link href="/agent-register" className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
+                <a href={agentUrl} className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-slate-100 hover:text-cyan-800">
                   <BriefcaseIcon className="h-4 w-4" />
                   Business
-                </Link>
+                </a>
               )}
             </>
           )}
@@ -70,14 +79,14 @@ export default function Navbar() {
           {session?.user ? (
             <>
               {session.user.role === 'ADMIN' && (
-                <Link href="/admin" className="whitespace-nowrap text-sm font-semibold text-orange-600 hover:text-orange-700">
+                <a href={adminUrl} className="whitespace-nowrap text-sm font-semibold text-orange-600 hover:text-orange-700">
                   Admin Panel
-                </Link>
+                </a>
               )}
               {!isAdmin && isAgent && (
-                <Link href="/agent" className="whitespace-nowrap text-sm font-semibold text-cyan-700 hover:text-cyan-800">
+                <a href={agentUrl} className="whitespace-nowrap text-sm font-semibold text-cyan-700 hover:text-cyan-800">
                   Agent Portal
-                </Link>
+                </a>
               )}
               <Link href="/dashboard" className="whitespace-nowrap text-sm font-semibold text-slate-600 hover:text-slate-900">
                 Dashboard
@@ -143,24 +152,24 @@ export default function Navbar() {
                   </Link>
                 ))}
                 {showBecomeAgent && (
-                  <Link href="/agent-register" onClick={() => setMenuOpen(false)} className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
+                  <a href={agentUrl} onClick={() => setMenuOpen(false)} className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-cyan-700 hover:bg-slate-100">
                     <BriefcaseIcon className="h-4 w-4" />
                     Business
-                  </Link>
+                  </a>
                 )}
               </>
             )}
             {session?.user ? (
               <>
                 {session.user.role === 'ADMIN' && (
-                  <Link href="/admin" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
+                  <a href={adminUrl} className="rounded-xl px-3 py-2 hover:bg-slate-100">
                     Admin Panel
-                  </Link>
+                  </a>
                 )}
                 {!isAdmin && isAgent && (
-                  <Link href="/agent" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
+                  <a href={agentUrl} className="rounded-xl px-3 py-2 hover:bg-slate-100">
                     Agent Portal
-                  </Link>
+                  </a>
                 )}
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
                   Dashboard
@@ -193,5 +202,3 @@ export default function Navbar() {
     </nav>
   )
 }
-
-

@@ -34,13 +34,15 @@ export const authOptions: NextAuthOptions = {
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
+        password: { label: 'Password', type: 'password' },
+        portal: { label: 'Portal', type: 'text' }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
         const email = credentials.email.trim()
         const password = credentials.password
+        const portal = credentials.portal
 
         let user = await prisma.user.findUnique({
           where: { email }
@@ -65,6 +67,11 @@ export const authOptions: NextAuthOptions = {
         )
 
         if (!passwordMatch) return null
+
+        // Enforce portal-specific access
+        if (portal === 'admin' && userWithAgent.role !== 'ADMIN') return null
+        if (portal === 'agent' && !userWithAgent.agent) return null
+        if (portal === 'customer' && (userWithAgent.role === 'ADMIN' || userWithAgent.agent)) return null
 
         if (!userWithAgent.isEmailVerified && userWithAgent.role !== 'ADMIN') {
           throw new Error('EMAIL_NOT_VERIFIED')

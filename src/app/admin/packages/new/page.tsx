@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import AdminToast, { AdminToastMessage } from '@/components/ui/AdminToast'
 
-const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'CORPORATE']
+const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'COUPLE', 'CORPORATE']
 
 interface ItineraryDay {
   day: number
@@ -43,6 +43,7 @@ export default function AddPackagePage() {
     category: 'FAMILY',
     inclusions: '',
     exclusions: '',
+    isFeatured: false,
   })
 
   const [itinerary, setItinerary] = useState<ItineraryDay[]>([{ day: 1, title: '', description: '' }])
@@ -54,7 +55,7 @@ export default function AddPackagePage() {
       .catch(() => setAgents([]))
   }, [])
 
-  const updateField = (field: string, value: string) => setForm((prev) => ({ ...prev, [field]: value }))
+  const updateField = (field: string, value: string | boolean) => setForm((prev) => ({ ...prev, [field]: value }))
 
   const updateTripDate = (index: number, field: keyof TripDateForm, value: string) => {
     const updated = [...tripDates]
@@ -264,6 +265,19 @@ export default function AddPackagePage() {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="isFeatured"
+              checked={form.isFeatured}
+              onChange={(e) => updateField('isFeatured', e.target.checked)}
+              className="h-4 w-4 accent-orange-500"
+            />
+            <label htmlFor="isFeatured" className="text-sm text-gray-700">
+              Show in Featured Packages on home page
+            </label>
           </div>
         </div>
 

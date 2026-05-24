@@ -1,16 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { markAuthSessionActive } from '@/lib/browser-session'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+
+const REMEMBER_EMAIL_KEY = 'travel-sphere-customer-email'
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+
+  useEffect(() => {
+    const rememberedEmail = window.localStorage.getItem(REMEMBER_EMAIL_KEY)
+    if (rememberedEmail) {
+      setForm((prev) => ({ ...prev, email: rememberedEmail }))
+      setRememberMe(true)
+    }
+  }, [])
 
   const getSafeCallbackPath = () => {
     const rawCallback = new URLSearchParams(window.location.search).get('callbackUrl')
@@ -41,6 +52,7 @@ export default function LoginPage() {
     const result = await signIn('credentials', {
       email: form.email,
       password: form.password,
+      portal: 'customer',
       callbackUrl: safeCallbackPath,
       redirect: false,
     })
@@ -57,6 +69,11 @@ export default function LoginPage() {
       setError('Unable to login right now. Please try again.')
     } else {
       // Use sanitized callback path directly to avoid callback URL loop issues in production.
+      if (rememberMe) {
+        window.localStorage.setItem(REMEMBER_EMAIL_KEY, form.email.trim())
+      } else {
+        window.localStorage.removeItem(REMEMBER_EMAIL_KEY)
+      }
       markAuthSessionActive()
       window.location.assign(safeCallbackPath)
     }
@@ -113,6 +130,21 @@ export default function LoginPage() {
                 {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
               </button>
             </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <label className="flex items-center gap-2 font-semibold text-slate-600">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 rounded border-slate-300 accent-orange-500"
+              />
+              Remember me
+            </label>
+            <Link href={`/forgot-password?portal=customer&email=${encodeURIComponent(form.email)}`} className="font-semibold text-orange-600 hover:underline">
+              Forgot password?
+            </Link>
           </div>
 
           <button

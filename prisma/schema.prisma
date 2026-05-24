@@ -21,6 +21,10 @@ model User {
   emailOtpAttempts Int @default(0)
   emailOtpSentAt DateTime?
   emailOtpResendCount Int @default(0)
+  passwordResetOtpHash String?
+  passwordResetOtpExpiresAt DateTime?
+  passwordResetOtpAttempts Int @default(0)
+  passwordResetOtpSentAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -48,6 +52,7 @@ model Package {
   itinerary   Json     // day-wise itinerary
   inclusions  String[]
   exclusions  String[]
+  isFeatured  Boolean  @default(false)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

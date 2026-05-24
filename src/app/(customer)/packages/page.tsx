@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import { Suspense } from 'react'
 import { prisma } from '@/lib/db'
 import { Prisma, Category } from '@/generated/prisma/client'
 import PackageCard from '@/components/packages/PackageCard'
+import PackageFilter from '@/components/packages/PackageFilter'
 interface SearchParams {
   search?: string
   category?: string
@@ -13,14 +13,6 @@ interface SearchParams {
 interface Props {
   searchParams?: Promise<SearchParams>
 }
-
-const quickCategories = [
-  { label: 'All Packages', value: 'ALL' },
-  { label: 'Solo Trips', value: 'SOLO' },
-  { label: 'Family', value: 'FAMILY' },
-  { label: 'Pilgrimage', value: 'PILGRIMAGE' },
-  { label: 'Group Tours', value: 'GROUP' },
-]
 
 async function getPackages(filters: SearchParams) {
   try {
@@ -66,38 +58,23 @@ async function getPackages(filters: SearchParams) {
 export default async function PackagesPage({ searchParams }: Props) {
   const filters = (await searchParams) ?? {}
   const packages = await getPackages(filters)
-  const selectedCategory = filters.category === 'HONEYMOON' ? 'SOLO' : filters.category || 'ALL'
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
       <div className="section-shell mb-8 rounded-3xl p-6 md:p-8">
         <h1 className="text-3xl font-extrabold text-slate-900 md:text-4xl">All Tour Packages</h1>
         <p className="mt-2 text-sm text-slate-600 md:text-base">
-          {packages.length} package{packages.length !== 1 ? 's' : ''} found
+          Search by destination, budget, duration, or tour category.
         </p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {quickCategories.map((cat) => {
-            const isActive = selectedCategory === cat.value
-            const href = cat.value === 'ALL' ? '/packages' : `/packages?category=${cat.value}`
-
-            return (
-              <Link
-                key={cat.value}
-                href={href}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-white text-slate-700 hover:bg-slate-100'
-                }`}
-              >
-                {cat.label}
-              </Link>
-            )
-          })}
-        </div>
       </div>
 
+      <Suspense fallback={<div className="surface-card mb-8 rounded-3xl p-8 text-sm text-slate-500">Loading filters...</div>}>
+        <PackageFilter />
+      </Suspense>
 
+      <p className="mb-4 text-sm font-semibold text-slate-500">
+        {packages.length} package{packages.length !== 1 ? 's' : ''} found
+      </p>
       {packages.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {packages.map((pkg) => (

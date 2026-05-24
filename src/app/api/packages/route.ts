@@ -17,6 +17,7 @@ interface CreatePackageBody {
   itinerary?: Prisma.InputJsonValue
   inclusions?: string[]
   exclusions?: string[]
+  isFeatured?: boolean
   tripDates?: unknown[]
   agentIds?: string[]
 }
@@ -38,6 +39,7 @@ const packagePayloadSchema = z.object({
   itinerary: z.array(itineraryDaySchema).max(60).optional().default([]),
   inclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
   exclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
+  isFeatured: z.boolean().optional().default(false),
   tripDates: z.array(z.object({
     startDate: z.coerce.date(),
     totalSeats: z.coerce.number().int().min(1).max(10000),
@@ -99,7 +101,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: parsed.error.issues[0]?.message || 'Invalid package payload' }, { status: 400 })
     }
 
-    const { title, destination, description, price, duration, category, images, itinerary, inclusions, exclusions, tripDates, agentIds } = parsed.data
+    const { title, destination, description, price, duration, category, images, itinerary, inclusions, exclusions, isFeatured, tripDates, agentIds } = parsed.data
     const uniqueAgentIds = [...new Set(agentIds)]
 
     const slugify = (await import('slugify')).default
@@ -115,6 +117,7 @@ export async function POST(req: Request) {
         itinerary: itinerary as Prisma.InputJsonValue,
         inclusions,
         exclusions,
+        isFeatured,
         tripDates: {
           create: tripDates.map((tripDate) => ({
             startDate: tripDate.startDate,

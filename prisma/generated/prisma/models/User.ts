@@ -29,11 +29,13 @@ export type AggregateUser = {
 export type UserAvgAggregateOutputType = {
   emailOtpAttempts: number | null
   emailOtpResendCount: number | null
+  passwordResetOtpAttempts: number | null
 }
 
 export type UserSumAggregateOutputType = {
   emailOtpAttempts: number | null
   emailOtpResendCount: number | null
+  passwordResetOtpAttempts: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -50,6 +52,10 @@ export type UserMinAggregateOutputType = {
   emailOtpAttempts: number | null
   emailOtpSentAt: Date | null
   emailOtpResendCount: number | null
+  passwordResetOtpHash: string | null
+  passwordResetOtpExpiresAt: Date | null
+  passwordResetOtpAttempts: number | null
+  passwordResetOtpSentAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,6 +74,10 @@ export type UserMaxAggregateOutputType = {
   emailOtpAttempts: number | null
   emailOtpSentAt: Date | null
   emailOtpResendCount: number | null
+  passwordResetOtpHash: string | null
+  passwordResetOtpExpiresAt: Date | null
+  passwordResetOtpAttempts: number | null
+  passwordResetOtpSentAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -86,6 +96,10 @@ export type UserCountAggregateOutputType = {
   emailOtpAttempts: number
   emailOtpSentAt: number
   emailOtpResendCount: number
+  passwordResetOtpHash: number
+  passwordResetOtpExpiresAt: number
+  passwordResetOtpAttempts: number
+  passwordResetOtpSentAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -95,11 +109,13 @@ export type UserCountAggregateOutputType = {
 export type UserAvgAggregateInputType = {
   emailOtpAttempts?: true
   emailOtpResendCount?: true
+  passwordResetOtpAttempts?: true
 }
 
 export type UserSumAggregateInputType = {
   emailOtpAttempts?: true
   emailOtpResendCount?: true
+  passwordResetOtpAttempts?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -116,6 +132,10 @@ export type UserMinAggregateInputType = {
   emailOtpAttempts?: true
   emailOtpSentAt?: true
   emailOtpResendCount?: true
+  passwordResetOtpHash?: true
+  passwordResetOtpExpiresAt?: true
+  passwordResetOtpAttempts?: true
+  passwordResetOtpSentAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -134,6 +154,10 @@ export type UserMaxAggregateInputType = {
   emailOtpAttempts?: true
   emailOtpSentAt?: true
   emailOtpResendCount?: true
+  passwordResetOtpHash?: true
+  passwordResetOtpExpiresAt?: true
+  passwordResetOtpAttempts?: true
+  passwordResetOtpSentAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -152,6 +176,10 @@ export type UserCountAggregateInputType = {
   emailOtpAttempts?: true
   emailOtpSentAt?: true
   emailOtpResendCount?: true
+  passwordResetOtpHash?: true
+  passwordResetOtpExpiresAt?: true
+  passwordResetOtpAttempts?: true
+  passwordResetOtpSentAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -257,6 +285,10 @@ export type UserGroupByOutputType = {
   emailOtpAttempts: number
   emailOtpSentAt: Date | null
   emailOtpResendCount: number
+  passwordResetOtpHash: string | null
+  passwordResetOtpExpiresAt: Date | null
+  passwordResetOtpAttempts: number
+  passwordResetOtpSentAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -298,6 +330,10 @@ export type UserWhereInput = {
   emailOtpAttempts?: Prisma.IntFilter<"User"> | number
   emailOtpSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   emailOtpResendCount?: Prisma.IntFilter<"User"> | number
+  passwordResetOtpHash?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetOtpExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFilter<"User"> | number
+  passwordResetOtpSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -320,6 +356,10 @@ export type UserOrderByWithRelationInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetOtpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
+  passwordResetOtpSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   bookings?: Prisma.BookingOrderByRelationAggregateInput
@@ -345,6 +385,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailOtpAttempts?: Prisma.IntFilter<"User"> | number
   emailOtpSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   emailOtpResendCount?: Prisma.IntFilter<"User"> | number
+  passwordResetOtpHash?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordResetOtpExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFilter<"User"> | number
+  passwordResetOtpSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -367,6 +411,10 @@ export type UserOrderByWithAggregationInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetOtpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
+  passwordResetOtpSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -393,6 +441,10 @@ export type UserScalarWhereWithAggregatesInput = {
   emailOtpAttempts?: Prisma.IntWithAggregatesFilter<"User"> | number
   emailOtpSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   emailOtpResendCount?: Prisma.IntWithAggregatesFilter<"User"> | number
+  passwordResetOtpHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  passwordResetOtpExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntWithAggregatesFilter<"User"> | number
+  passwordResetOtpSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -411,6 +463,10 @@ export type UserCreateInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
@@ -433,6 +489,10 @@ export type UserUncheckedCreateInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
@@ -455,6 +515,10 @@ export type UserUpdateInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
@@ -477,6 +541,10 @@ export type UserUncheckedUpdateInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
@@ -499,6 +567,10 @@ export type UserCreateManyInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -517,6 +589,10 @@ export type UserUpdateManyMutationInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -535,6 +611,10 @@ export type UserUncheckedUpdateManyInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -553,6 +633,10 @@ export type UserCountOrderByAggregateInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpSentAt?: Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpHash?: Prisma.SortOrder
+  passwordResetOtpExpiresAt?: Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
+  passwordResetOtpSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -560,6 +644,7 @@ export type UserCountOrderByAggregateInput = {
 export type UserAvgOrderByAggregateInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -576,6 +661,10 @@ export type UserMaxOrderByAggregateInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpSentAt?: Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpHash?: Prisma.SortOrder
+  passwordResetOtpExpiresAt?: Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
+  passwordResetOtpSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -594,6 +683,10 @@ export type UserMinOrderByAggregateInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpSentAt?: Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpHash?: Prisma.SortOrder
+  passwordResetOtpExpiresAt?: Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
+  passwordResetOtpSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -601,6 +694,7 @@ export type UserMinOrderByAggregateInput = {
 export type UserSumOrderByAggregateInput = {
   emailOtpAttempts?: Prisma.SortOrder
   emailOtpResendCount?: Prisma.SortOrder
+  passwordResetOtpAttempts?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -717,6 +811,10 @@ export type UserCreateWithoutBookingsInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
@@ -738,6 +836,10 @@ export type UserUncheckedCreateWithoutBookingsInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
@@ -775,6 +877,10 @@ export type UserUpdateWithoutBookingsInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
@@ -796,6 +902,10 @@ export type UserUncheckedUpdateWithoutBookingsInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
@@ -817,6 +927,10 @@ export type UserCreateWithoutEnquiriesInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
@@ -838,6 +952,10 @@ export type UserUncheckedCreateWithoutEnquiriesInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
@@ -875,6 +993,10 @@ export type UserUpdateWithoutEnquiriesInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
@@ -896,6 +1018,10 @@ export type UserUncheckedUpdateWithoutEnquiriesInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
@@ -917,6 +1043,10 @@ export type UserCreateWithoutReviewsInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
@@ -938,6 +1068,10 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
@@ -975,6 +1109,10 @@ export type UserUpdateWithoutReviewsInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
@@ -996,6 +1134,10 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
@@ -1017,6 +1159,10 @@ export type UserCreateWithoutAgentInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
@@ -1038,6 +1184,10 @@ export type UserUncheckedCreateWithoutAgentInput = {
   emailOtpAttempts?: number
   emailOtpSentAt?: Date | string | null
   emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
@@ -1075,6 +1225,10 @@ export type UserUpdateWithoutAgentInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
@@ -1096,6 +1250,10 @@ export type UserUncheckedUpdateWithoutAgentInput = {
   emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
   emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
@@ -1166,6 +1324,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailOtpAttempts?: boolean
   emailOtpSentAt?: boolean
   emailOtpResendCount?: boolean
+  passwordResetOtpHash?: boolean
+  passwordResetOtpExpiresAt?: boolean
+  passwordResetOtpAttempts?: boolean
+  passwordResetOtpSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
@@ -1189,6 +1351,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailOtpAttempts?: boolean
   emailOtpSentAt?: boolean
   emailOtpResendCount?: boolean
+  passwordResetOtpHash?: boolean
+  passwordResetOtpExpiresAt?: boolean
+  passwordResetOtpAttempts?: boolean
+  passwordResetOtpSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1207,6 +1373,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailOtpAttempts?: boolean
   emailOtpSentAt?: boolean
   emailOtpResendCount?: boolean
+  passwordResetOtpHash?: boolean
+  passwordResetOtpExpiresAt?: boolean
+  passwordResetOtpAttempts?: boolean
+  passwordResetOtpSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1225,11 +1395,15 @@ export type UserSelectScalar = {
   emailOtpAttempts?: boolean
   emailOtpSentAt?: boolean
   emailOtpResendCount?: boolean
+  passwordResetOtpHash?: boolean
+  passwordResetOtpExpiresAt?: boolean
+  passwordResetOtpAttempts?: boolean
+  passwordResetOtpSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "role" | "isEmailVerified" | "emailVerifiedAt" | "emailOtpHash" | "emailOtpExpiresAt" | "emailOtpAttempts" | "emailOtpSentAt" | "emailOtpResendCount" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "role" | "isEmailVerified" | "emailVerifiedAt" | "emailOtpHash" | "emailOtpExpiresAt" | "emailOtpAttempts" | "emailOtpSentAt" | "emailOtpResendCount" | "passwordResetOtpHash" | "passwordResetOtpExpiresAt" | "passwordResetOtpAttempts" | "passwordResetOtpSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
@@ -1262,6 +1436,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emailOtpAttempts: number
     emailOtpSentAt: Date | null
     emailOtpResendCount: number
+    passwordResetOtpHash: string | null
+    passwordResetOtpExpiresAt: Date | null
+    passwordResetOtpAttempts: number
+    passwordResetOtpSentAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1704,6 +1882,10 @@ export interface UserFieldRefs {
   readonly emailOtpAttempts: Prisma.FieldRef<"User", 'Int'>
   readonly emailOtpSentAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly emailOtpResendCount: Prisma.FieldRef<"User", 'Int'>
+  readonly passwordResetOtpHash: Prisma.FieldRef<"User", 'String'>
+  readonly passwordResetOtpExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly passwordResetOtpAttempts: Prisma.FieldRef<"User", 'Int'>
+  readonly passwordResetOtpSentAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

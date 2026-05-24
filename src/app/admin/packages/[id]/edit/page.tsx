@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import AdminToast, { AdminToastMessage } from '@/components/ui/AdminToast'
 
-const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'CORPORATE']
+const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'COUPLE', 'CORPORATE']
 
 type ItineraryDay = {
   day: number
@@ -48,6 +48,7 @@ export default function EditPackagePage() {
     category: 'FAMILY',
     inclusions: '',
     exclusions: '',
+    isFeatured: false,
     isActive: true,
   })
 
@@ -68,6 +69,7 @@ export default function EditPackagePage() {
           category: pkg.category,
           inclusions: pkg.inclusions.join('\n'),
           exclusions: pkg.exclusions.join('\n'),
+          isFeatured: pkg.isFeatured,
           isActive: pkg.isActive,
         })
         setItinerary(pkg.itinerary || [{ day: 1, title: '', description: '' }])
@@ -275,6 +277,19 @@ export default function EditPackagePage() {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="isFeatured"
+              checked={form.isFeatured}
+              onChange={(e) => updateField('isFeatured', e.target.checked)}
+              className="w-4 h-4 accent-orange-500"
+            />
+            <label htmlFor="isFeatured" className="text-sm text-gray-700">
+              Show in Featured Packages on home page
+            </label>
           </div>
 
           <div className="flex items-center gap-3">

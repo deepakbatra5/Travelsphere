@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { markAuthSessionActive } from '@/lib/browser-session'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+
+const REMEMBER_EMAIL_KEY = 'travel-sphere-agent-email'
 
 function getSafeCallbackPath() {
   if (typeof window === 'undefined') return '/agent'
@@ -41,6 +43,15 @@ export default function AgentLoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+
+  useEffect(() => {
+    const rememberedEmail = window.localStorage.getItem(REMEMBER_EMAIL_KEY)
+    if (rememberedEmail) {
+      setForm((prev) => ({ ...prev, email: rememberedEmail }))
+      setRememberMe(true)
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,6 +63,7 @@ export default function AgentLoginPage() {
     const result = await signIn('credentials', {
       email: form.email,
       password: form.password,
+      portal: 'agent',
       redirect: false,
       callbackUrl: safeCallbackPath,
     })
@@ -62,6 +74,11 @@ export default function AgentLoginPage() {
       return
     }
 
+    if (rememberMe) {
+      window.localStorage.setItem(REMEMBER_EMAIL_KEY, form.email.trim())
+    } else {
+      window.localStorage.removeItem(REMEMBER_EMAIL_KEY)
+    }
     markAuthSessionActive()
     window.location.assign(safeCallbackPath)
   }
@@ -117,6 +134,21 @@ export default function AgentLoginPage() {
                 {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
               </button>
             </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <label className="flex items-center gap-2 font-semibold text-slate-600">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 rounded border-slate-300 accent-cyan-600"
+              />
+              Remember me
+            </label>
+            <Link href={`/forgot-password?portal=agent&email=${encodeURIComponent(form.email)}`} className="font-semibold text-cyan-700 hover:underline">
+              Forgot password?
+            </Link>
           </div>
 
           <button

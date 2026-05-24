@@ -93,6 +93,10 @@ export const UserScalarFieldEnum = {
   emailOtpAttempts: 'emailOtpAttempts',
   emailOtpSentAt: 'emailOtpSentAt',
   emailOtpResendCount: 'emailOtpResendCount',
+  passwordResetOtpHash: 'passwordResetOtpHash',
+  passwordResetOtpExpiresAt: 'passwordResetOtpExpiresAt',
+  passwordResetOtpAttempts: 'passwordResetOtpAttempts',
+  passwordResetOtpSentAt: 'passwordResetOtpSentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -113,6 +117,7 @@ export const PackageScalarFieldEnum = {
   itinerary: 'itinerary',
   inclusions: 'inclusions',
   exclusions: 'exclusions',
+  isFeatured: 'isFeatured',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

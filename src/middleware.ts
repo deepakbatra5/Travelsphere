@@ -64,10 +64,20 @@ export default async function proxy(req: NextRequest) {
     '/login',
     '/register',
     '/verify-otp',
+    '/forgot-password',
     '/agent-login',
     '/agent-register',
     '/admin/login',
   ].includes(path)
+
+  // Prevent accessing admin or agent portals from the customer domain
+  if (portal === 'customer') {
+    if (isAdminRoute || isAgentRoute || path === '/agent-login' || path === '/agent-register' || path === '/admin/login') {
+      const url = req.nextUrl.clone()
+      url.pathname = '/404'
+      return NextResponse.rewrite(url)
+    }
+  }
 
   if (portal === 'admin' && !isAdminRoute && !isAuthRoute) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
@@ -113,15 +123,7 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  if (token?.role === 'ADMIN' && !isAdminRoute && !isAuthRoute) {
-    if (!isAgentRoute) {
-      return NextResponse.redirect(new URL('/admin', req.url))
-    }
-  }
-
-  if (token?.agentStatus && !isAgentRoute && !isAuthRoute && token?.role !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/agent', req.url))
-  }
+  // Removed legacy redirects for agents and admins. They can now browse the customer portal freely.
 
   return originalPath === path ? NextResponse.next() : rewriteUrl(req, path)
 }

@@ -23,6 +23,7 @@ const updatePackagePayloadSchema = z.object({
   itinerary: z.array(itineraryDaySchema).max(60).optional().default([]),
   inclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
   exclusions: z.array(z.string().trim().min(1).max(240)).max(100).optional().default([]),
+  isFeatured: z.boolean().optional().default(false),
   isActive: z.boolean().optional().default(true),
   tripDates: z.array(z.object({
     id: z.string().optional(),
@@ -134,6 +135,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
           itinerary: payload.itinerary as Prisma.InputJsonValue,
           inclusions: payload.inclusions,
           exclusions: payload.exclusions,
+          isFeatured: payload.isFeatured,
           isActive: payload.isActive,
         }
       })
