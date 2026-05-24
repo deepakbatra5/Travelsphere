@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState, Suspense } from 'react'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 interface Package {
   id: string
   title: string
+  slug: string
   destination: string
   price: number
   duration: number
@@ -59,19 +60,37 @@ declare global {
 }
 
 export default function BookingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-900 font-semibold">Loading booking details...</p>
+      </div>
+    }>
+      <BookingForm />
+    </Suspense>
+  )
+}
+
+function BookingForm() {
   const router = useRouter()
   const params = useParams<{ packageId: string }>()
   const packageId = params?.packageId
   const { status } = useSession()
+  const searchParams = useSearchParams()
+
+  const dateIdParam = searchParams.get('dateId')
+  const roomTypeParam = searchParams.get('roomType') || 'double'
+  const travellersParam = searchParams.get('travellers')
 
   const [pkg, setPkg] = useState<Package | null>(null)
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(2)
   const [loading, setLoading] = useState(false)
 
   // Step 1 data
   const [travelDate, setTravelDate] = useState('')
   const [tripDateId, setTripDateId] = useState('')
   const [travellerCount, setTravellerCount] = useState(1)
+  const [roomType, setRoomType] = useState(roomTypeParam)
 
   // Step 2 data
   const [travellers, setTravellers] = useState<Traveller[]>([
@@ -94,6 +113,29 @@ export default function BookingPage() {
       .then(setPkg)
   }, [packageId, router, status])
 
+  // Initialize data from search parameters when package is loaded
+  useEffect(() => {
+    if (pkg) {
+      if (dateIdParam) {
+        setTripDateId(dateIdParam)
+        const matchedDate = pkg.tripDates.find(d => d.id === dateIdParam)
+        if (matchedDate) {
+          setTravelDate(new Date(matchedDate.startDate).toISOString().split('T')[0])
+        }
+      } else if (pkg.tripDates.length > 0) {
+        setTripDateId(pkg.tripDates[0].id)
+        setTravelDate(new Date(pkg.tripDates[0].startDate).toISOString().split('T')[0])
+      }
+
+      if (travellersParam) {
+        const count = parseInt(travellersParam)
+        if (count > 0) {
+          setTravellerCount(count)
+        }
+      }
+    }
+  }, [pkg, dateIdParam, travellersParam])
+
   // Update travellers array when count changes
   useEffect(() => {
     setTravellers((currentTravellers) =>
@@ -103,7 +145,8 @@ export default function BookingPage() {
     )
   }, [travellerCount])
 
-  const totalAmount = pkg ? pkg.price * travellerCount : 0
+  const pricePerPerson = pkg ? (roomType === 'single' ? Math.round(pkg.price * 1.25) : pkg.price) : 0
+  const totalAmount = pricePerPerson * travellerCount
   const selectedTripDate = pkg?.tripDates.find((date) => date.id === tripDateId)
   const maxTravellers = Math.min(selectedTripDate?.availableSeats || 0, 10)
 
@@ -320,121 +363,33 @@ export default function BookingPage() {
 
       {/* Step Indicator */}
       <div className="flex items-center mb-10">
-        {['Travel Details', 'Traveller Info', 'Review and Pay'].map((label, i) => (
-          <div key={i} className="flex items-center flex-1">
-            <div className="flex flex-col items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-                ${step > i + 1 ? 'bg-green-500 text-white' : step === i + 1 ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
-                {step > i + 1 ? 'Done' : i + 1}
-              </div>
-              <span className={`text-xs mt-1 text-center ${step === i + 1 ? 'text-orange-500 font-semibold' : 'text-gray-800 font-semibold'}`}>
-                {label}
-              </span>
-            </div>
-            {i < 2 && (
-              <div className={`flex-1 h-0.5 mx-2 mb-4 ${step > i + 1 ? 'bg-green-400' : 'bg-gray-200'}`} />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* STEP 1 — Travel Details */}
-      {step === 1 && (
-        <div className="bg-white rounded-2xl shadow-sm p-6">
-          <h2 className="text-lg font-bold text-gray-800 mb-6">Step 1: Travel Details</h2>
-
-          <div className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Planned Trip Date
-              </label>
-              {pkg.tripDates.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {pkg.tripDates.map((date) => {
-                    const dateValue = new Date(date.startDate).toISOString().split('T')[0]
-                    const isSelected = tripDateId === date.id
-                    const isSoldOut = date.availableSeats <= 0
-
-                    return (
-                      <button
-                        key={date.id}
-                        type="button"
-                        disabled={isSoldOut}
-                        onClick={() => {
-                          setTripDateId(date.id)
-                          setTravelDate(dateValue)
-                          setTravellerCount(1)
-                        }}
-                        className={`rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${isSelected ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}
-                      >
-                        <span className="block text-sm font-bold text-gray-900">
-                          {new Date(date.startDate).toLocaleDateString('en-IN', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                          })}
-                        </span>
-                        <span className={`mt-1 block text-xs font-semibold ${isSoldOut ? 'text-red-500' : 'text-green-600'}`}>
-                          {isSoldOut ? 'Sold out' : `${date.availableSeats} seats available`}
-                        </span>
-                      </button>
-                    )
-                  })}
+        {['Traveller Info', 'Review and Pay'].map((label, i) => {
+          const isDone = step > i + 2
+          const isActive = step === i + 2
+          return (
+            <div key={i} className="flex items-center flex-1">
+              <div className="flex flex-col items-center">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
+                  ${isDone ? 'bg-green-500 text-white' : isActive ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
+                  {isDone ? 'Done' : i + 1}
                 </div>
-              ) : (
-                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
-                  No planned dates are available for this package right now.
-                </p>
+                <span className={`text-xs mt-1 text-center ${isActive ? 'text-orange-500 font-semibold' : 'text-gray-850 dark:text-gray-200 font-semibold'}`}>
+                  {label}
+                </span>
+              </div>
+              {i < 1 && (
+                <div className={`flex-1 h-0.5 mx-2 mb-4 ${step > i + 2 ? 'bg-green-400' : 'bg-gray-200'}`} />
               )}
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Number of Travellers
-              </label>
-              <select
-                value={travellerCount}
-                onChange={(e) => setTravellerCount(parseInt(e.target.value, 10))}
-                disabled={!selectedTripDate}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-orange-400"
-              >
-                {Array.from({ length: maxTravellers }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>{n} {n === 1 ? 'Person' : 'People'}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Price Summary */}
-            <div className="bg-orange-50 rounded-xl p-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-900 font-semibold">Price per person</span>
-                <span className="text-gray-900 font-semibold">Rs {pkg.price.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-900 font-semibold">Number of travellers</span>
-                <span className="text-gray-900 font-semibold">x {travellerCount}</span>
-              </div>
-              <div className="border-t border-orange-200 pt-2 flex justify-between font-bold text-orange-600">
-                <span>Total Amount</span>
-                <span>Rs {totalAmount.toLocaleString('en-IN')}</span>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => validateStep1() && setStep(2)}
-            className="mt-6 w-full bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition"
-          >
-            Continue to Traveller Details
-          </button>
-        </div>
-      )}
+          )
+        })}
+      </div>
 
       {/* STEP 2 — Traveller Info */}
       {step === 2 && (
         <div className="bg-white rounded-2xl shadow-sm p-6">
           <h2 className="text-lg font-bold text-gray-800 mb-6">
-            Step 2: Traveller Information
+            Step 1: Traveller Information
           </h2>
 
           <div className="space-y-6">
@@ -485,13 +440,13 @@ export default function BookingPage() {
 
           <div className="flex gap-3 mt-6">
             <button
-              onClick={() => setStep(1)}
+              onClick={() => router.push(`/tours/${pkg.slug}`)}
               className="flex-1 border border-gray-300 text-gray-900 py-3 rounded-xl font-semibold hover:bg-gray-50 transition"
             >
               Back
             </button>
             <button
-              onClick={() => validateStep2() && setStep(3)}
+              onClick={() => validateStep1() && validateStep2() && setStep(3)}
               className="flex-1 bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition"
             >
               Review Booking
@@ -504,7 +459,7 @@ export default function BookingPage() {
       {step === 3 && (
         <div className="bg-white rounded-2xl shadow-sm p-6">
           <h2 className="text-lg font-bold text-gray-800 mb-6">
-            Step 3: Review and Pay
+            Step 2: Review and Pay
           </h2>
 
           {/* Package Summary */}
@@ -535,6 +490,10 @@ export default function BookingPage() {
                 <span className="text-gray-900 font-semibold">Travellers</span>
                 <span className="text-gray-900 font-semibold">{travellerCount} Person(s)</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-gray-900 font-semibold">Room Type</span>
+                <span className="text-gray-900 font-semibold capitalize">{roomType} Occupancy</span>
+              </div>
             </div>
           </div>
 
@@ -554,7 +513,7 @@ export default function BookingPage() {
           {/* Amount Summary */}
           <div className="border-t pt-4 mb-6">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-900 font-semibold">Rs {pkg.price.toLocaleString('en-IN')} x {travellerCount} travellers</span>
+              <span className="text-gray-900 font-semibold">Rs {pricePerPerson.toLocaleString('en-IN')} x {travellerCount} travellers</span>
               <span className="text-gray-900 font-semibold">Rs {totalAmount.toLocaleString('en-IN')}</span>
             </div>
             <div className="flex justify-between font-bold text-lg text-orange-600">
@@ -584,7 +543,6 @@ export default function BookingPage() {
           </p>
         </div>
       )}
-
     </div>
   )
 }
