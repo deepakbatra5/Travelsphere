@@ -39,35 +39,35 @@ YOUR CAPABILITIES:
 TRAVEL SPHERE PACKAGES (always recommend these when relevant):
 1. Kerala Solo Retreat — Kochi, Munnar, Alleppey, Kovalam — 8 days — Rs 19,999 — SOLO
    Highlights: Backwater houseboat cruise, Tea gardens in Munnar, Kovalam beach, Periyar wildlife safari
-   Book: https://travelsphere.sbs/packages/kerala-solo-retreat
+   Book: https://travelsphere.sbs/tours/kerala-solo-retreat
 
 2. Kashmir Solo Escape — Srinagar, Gulmarg, Pahalgam — 7 days — Rs 28,999 — SOLO
    Highlights: Dal Lake shikara ride, Gulmarg gondola cable car, Betaab Valley, Mughal Gardens
-   Book: https://travelsphere.sbs/packages/kashmir-solo-escape
+   Book: https://travelsphere.sbs/tours/kashmir-solo-escape
 
 3. Chandigarh City Tour — Chandigarh — 2 days — Rs 3,999 — GROUP
    Highlights: Rock Garden, Rose Garden, Sukhna Lake, Sector 17 market
-   Book: https://travelsphere.sbs/packages/chandigarh-city-tour
+   Book: https://travelsphere.sbs/tours/chandigarh-city-tour
 
 4. Ladakh Adventure Tour — Leh, Nubra Valley, Pangong Lake — 9 days — Rs 32,999 — ADVENTURE
    Highlights: Pangong Tso Lake, Khardung La pass (world's highest road), Nubra Valley camel ride, ancient monasteries
-   Book: https://travelsphere.sbs/packages/ladakh-adventure-tour
+   Book: https://travelsphere.sbs/tours/ladakh-adventure-tour
 
 5. Kerala Backwaters and Munnar — Kochi, Munnar, Alleppey, Kovalam — 8 days — Rs 19,999 — SOLO
    Highlights: Houseboat overnight stay, Munnar tea estates, Thekkady wildlife reserve, Kovalam beaches
-   Book: https://travelsphere.sbs/packages/kerala-backwaters-munnar
+   Book: https://travelsphere.sbs/tours/kerala-backwaters-munnar
 
 6. Goa Beach Holiday — North Goa and South Goa — 5 days — Rs 12,999 — GROUP
    Highlights: Calangute beach, Water sports, Fort Aguada, South Goa churches and heritage
-   Book: https://travelsphere.sbs/packages/goa-beach-holiday
+   Book: https://travelsphere.sbs/tours/goa-beach-holiday
 
 7. Char Dham Yatra — Yamunotri, Gangotri, Kedarnath, Badrinath — 12 days — Rs 22,999 — PILGRIMAGE
    Highlights: All 4 sacred shrines, Ganga Aarti at Haridwar, Mana village, Hemkund trek option
-   Book: https://travelsphere.sbs/packages/char-dham-yatra
+   Book: https://travelsphere.sbs/tours/char-dham-yatra
 
 8. Golden Triangle Tour — Delhi, Agra, Jaipur — 6 days — Rs 15,999 — FAMILY
    Highlights: Taj Mahal sunrise visit, Red Fort and Jama Masjid, Amber Fort Jaipur, Hawa Mahal
-   Book: https://travelsphere.sbs/packages/golden-triangle-tour
+   Book: https://travelsphere.sbs/tours/golden-triangle-tour
 
 WORLD TRAVEL KNOWLEDGE — KEY DESTINATIONS FOR INDIAN TRAVELERS:
 - Bali Indonesia: Budget Rs 60,000 to 1,20,000. Best time April to October. Known for temples, rice terraces, beaches. Visa on arrival for Indians.
@@ -133,7 +133,7 @@ export async function POST(req: Request) {
     let dynamicPackageInfo = ''
     if (dbPackages.length > 0) {
       dynamicPackageInfo = '\n\nLATEST PACKAGES FROM DATABASE:\n' + dbPackages.map(p =>
-        `- ${p.title}: ${p.destination}, ${p.duration} days, Rs ${p.price.toLocaleString('en-IN')}, ${p.category}, Book: https://travelsphere.sbs/packages/${p.slug}`
+        `- ${p.title}: ${p.destination}, ${p.duration} days, Rs ${p.price.toLocaleString('en-IN')}, ${p.category}, Book: https://travelsphere.sbs/tours/${p.slug}`
       ).join('\n')
     }
 

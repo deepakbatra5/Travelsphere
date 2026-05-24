@@ -64,7 +64,7 @@ function PackageCard({ pkg }: { pkg: Package }) {
   }
   return (
     <a
-      href={`https://travelsphere.sbs/packages/${pkg.slug}`}
+      href={`https://travelsphere.sbs/tours/${pkg.slug}`}
       target="_blank"
       rel="noopener noreferrer"
       className="block border border-gray-100 rounded-xl p-3 hover:border-orange-400 transition-colors mt-2 no-underline bg-white"
@@ -255,7 +255,7 @@ export default function AIAgent() {
             </div>
             <div className="flex items-center gap-1">
               <button onClick={resetChat} className="text-orange-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-orange-800 transition-colors">New Chat</button>
-              <a href="https://travelsphere.sbs/packages" target="_blank" rel="noopener noreferrer" className="text-orange-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-orange-800 transition-colors">Tours ↗</a>
+              <a href="https://travelsphere.sbs/tours" target="_blank" rel="noopener noreferrer" className="text-orange-300 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-orange-800 transition-colors">Tours ↗</a>
               <button onClick={() => setOpen(false)} className="text-orange-300 hover:text-white ml-1 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-orange-800 transition-colors" aria-label="Close chat">✕</button>
             </div>
           </div>

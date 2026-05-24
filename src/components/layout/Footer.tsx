@@ -1,6 +1,17 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Footer() {
+  const [agentUrl, setAgentUrl] = useState('https://agent.travelsphere.sbs')
+
+  useEffect(() => {
+    if (window.location.hostname.includes('localhost')) {
+      setAgentUrl('http://agent.localhost:3000')
+    }
+  }, [])
+
   return (
     <footer className="bg-gray-900 text-gray-300 pt-12 pb-6 mt-16">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -35,33 +46,38 @@ export default function Footer() {
           <h3 className="text-white font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/packages" className="hover:text-orange-400 transition">
+              <Link href="/tours" className="hover:text-orange-400 transition">
                 All Packages
               </Link>
             </li>
             <li>
-              <Link href="/packages?category=FAMILY" className="hover:text-orange-400 transition">
+              <Link href="/tours?category=FAMILY" className="hover:text-orange-400 transition">
                 Family Tours
               </Link>
             </li>
             <li>
-              <Link href="/packages?category=PILGRIMAGE" className="hover:text-orange-400 transition">
+              <Link href="/tours?category=PILGRIMAGE" className="hover:text-orange-400 transition">
                 Pilgrimage Tours
               </Link>
             </li>
             <li>
-              <Link href="/packages?category=ADVENTURE" className="hover:text-orange-400 transition">
+              <Link href="/tours?category=ADVENTURE" className="hover:text-orange-400 transition">
                 Adventure Tours
               </Link>
             </li>
             <li>
-              <Link href="/packages?category=GROUP" className="hover:text-orange-400 transition">
+              <Link href="/tours?category=GROUP" className="hover:text-orange-400 transition">
                 Group Tours
               </Link>
             </li>
             <li>
-              <Link href="/agent-register" className="hover:text-orange-400 transition">
-                Become an Agent
+              <a href={agentUrl} className="hover:text-orange-400 transition">
+                Business
+              </a>
+            </li>
+            <li>
+              <Link href="/reviews" className="hover:text-orange-400 transition">
+                Reviews
               </Link>
             </li>
           </ul>
@@ -118,7 +134,7 @@ export default function Footer() {
             ].map((dest) => (
               <li key={dest.query}>
                 <Link
-                  href={`/packages?search=${dest.query}`}
+                  href={`/tours?search=${dest.query}`}
                   className="hover:text-orange-400 transition flex items-center gap-1.5"
                 >
                   <span className="text-orange-400 text-xs">›</span>

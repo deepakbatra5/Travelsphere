@@ -117,7 +117,7 @@ export default async function ConfirmationPage({ params }: Props) {
           Back to Home
         </Link>
         <Link
-          href="/packages"
+          href="/tours"
           className="flex-1 rounded-2xl border border-slate-300 py-3 text-center font-medium text-slate-600 hover:bg-slate-100"
         >
           Explore More Packages

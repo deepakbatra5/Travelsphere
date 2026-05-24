@@ -12,7 +12,7 @@ const slides = [
     title: 'Shimla Manali Couple Special From Delhi',
     subtitle: 'Shimla, kullu Manali',
     details: '7 Days, 6 Nights Starting from ₹ 12,699/-',
-    link: '/packages?search=kashmir',
+    link: '/tours?search=kashmir',
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const slides = [
     title: 'Kerala Backwaters Couple Special',
     subtitle: 'Munnar, Thekkady, Alleppey',
     details: '6 Days, 5 Nights Starting from ₹ 14,499/-',
-    link: '/packages?search=kerala',
+    link: '/tours?search=kerala',
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const slides = [
     title: 'Goa Beaches & Nightlife Explorer',
     subtitle: 'North Goa, South Goa',
     details: '5 Days, 4 Nights Starting from ₹ 9,999/-',
-    link: '/packages?search=goa',
+    link: '/tours?search=goa',
   }
 ]
 

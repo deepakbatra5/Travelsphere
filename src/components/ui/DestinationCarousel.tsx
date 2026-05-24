@@ -63,7 +63,7 @@ export default function DestinationCarousel() {
           {states.map((state, idx) => (
             <Link
               key={state.name}
-              href={`/packages?search=${state.name.toLowerCase()}`}
+              href={`/tours?search=${state.name.toLowerCase()}`}
               className="relative h-64 w-60 shrink-0 snap-center overflow-hidden rounded-2xl group/card"
             >
               <img

@@ -133,6 +133,7 @@ export async function POST(req: Request) {
 
     revalidatePath('/')
     revalidatePath('/packages')
+    revalidatePath('/tours')
     revalidatePath('/admin')
     revalidatePath('/admin/packages')
 

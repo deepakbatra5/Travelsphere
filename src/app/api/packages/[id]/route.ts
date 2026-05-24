@@ -143,7 +143,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
     revalidatePath('/')
     revalidatePath('/packages')
+    revalidatePath('/tours')
     revalidatePath(`/packages/${pkg.slug}`)
+    revalidatePath(`/tours/${pkg.slug}`)
     revalidatePath('/admin')
     revalidatePath('/admin/packages')
     revalidatePath(`/admin/packages/${id}/edit`)
@@ -170,6 +172,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
     revalidatePath('/')
     revalidatePath('/packages')
+    revalidatePath('/tours')
     revalidatePath('/admin')
     revalidatePath('/admin/packages')
 

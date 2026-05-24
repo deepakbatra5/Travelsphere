@@ -114,7 +114,7 @@ export default function TripSearch() {
     if (destination) params.append('search', destination)
     if (budget) params.append('budget', budget)
     if (type) params.append('category', type)
-    router.push(`/packages?${params.toString()}`)
+    router.push(`/tours?${params.toString()}`)
   }
 
   return (

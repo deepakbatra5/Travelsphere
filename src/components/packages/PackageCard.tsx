@@ -22,14 +22,15 @@ interface Props {
     category: string
     images: string[]
   }
+  detailBasePath?: string
 }
 
-export default function PackageCard({ package: pkg }: Props) {
+export default function PackageCard({ package: pkg, detailBasePath = '/tours' }: Props) {
   const image = pkg.images?.[0] || '/travel-placeholder.svg'
   const category = pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category
 
   return (
-    <Link href={`/packages/${pkg.slug}`} className="group block">
+    <Link href={`${detailBasePath}/${pkg.slug}`} className="group block">
       <article className="surface-card overflow-hidden rounded-3xl transition hover:-translate-y-1 hover:shadow-xl">
         <div className="relative h-56 w-full overflow-hidden">
           <Image

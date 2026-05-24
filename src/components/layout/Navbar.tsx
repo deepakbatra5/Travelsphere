@@ -4,13 +4,22 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { Bars3Icon, XMarkIcon, GlobeAltIcon, BriefcaseIcon } from '@heroicons/react/24/outline'
+import {
+  Bars3Icon,
+  XMarkIcon,
+  GlobeAltIcon,
+  BriefcaseIcon,
+  UserIcon,
+  CalendarDaysIcon,
+  StarIcon,
+  Cog6ToothIcon
+} from '@heroicons/react/24/outline'
 import { clearAuthSession } from '@/lib/browser-session'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'All Packages', href: '/packages' },
+  { label: 'All Packages', href: '/tours' },
   { label: 'Customised Tours', href: '/customised-tour' },
   { label: 'Help', href: '/help' },
   { label: 'Blog', href: '/blog' },
@@ -20,8 +29,13 @@ export default function Navbar() {
   const { data: session } = useSession()
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const userName = session?.user?.name?.split(' ')[0] || 'Traveler'
-  const isPackagesPage = pathname?.startsWith('/packages')
+  const [isSearchActive, setIsSearchActive] = useState(false)
+
+  useEffect(() => {
+    setIsSearchActive(!!window.location.search)
+  }, [pathname])
   const isAdmin = session?.user?.role === 'ADMIN'
   const isAgent = Boolean(session?.user?.agentStatus)
   const showPublicLinks = !isAdmin && !isAgent
@@ -54,9 +68,10 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`rounded-full px-3 py-2 text-sm font-semibold transition ${(link.href === '/packages' && isPackagesPage) || pathname === link.href
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  className={`rounded-full px-3 py-2 text-sm font-semibold transition ${
+                    (link.href === '/tours' ? (pathname === '/tours' && !isSearchActive) : pathname === link.href)
+                      ? 'bg-slate-900 text-white'
+                      : 'text-slate-650 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                 >
                   {link.label}
@@ -88,20 +103,83 @@ export default function Navbar() {
                   Agent Portal
                 </a>
               )}
-              <Link href="/dashboard" className="whitespace-nowrap text-sm font-semibold text-slate-600 hover:text-slate-900">
-                Dashboard
-              </Link>
-              <span className="whitespace-nowrap text-sm font-semibold text-slate-500">Hi, {userName}</span>
-              <button
-                type="button"
-                onClick={() => {
-                  clearAuthSession()
-                  void signOut()
-                }}
-                className="rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-700"
+              <div
+                className="relative"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={() => setDropdownOpen(false)}
               >
-                Logout
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen((prev) => !prev)}
+                  className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100 transition shadow-xs"
+                >
+                  <UserIcon className="h-4.5 w-4.5 text-slate-500" />
+                  Hi, {userName}
+                  <svg
+                    className={`ml-0.5 h-4 w-4 text-slate-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-1.5 w-52 origin-top-right rounded-2xl border border-slate-100 bg-white p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in duration-100">
+                    <Link
+                      href="/dashboard?tab=personal"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition"
+                    >
+                      <UserIcon className="h-4 w-4 text-slate-455" />
+                      Personal Details
+                    </Link>
+                    <Link
+                      href="/dashboard?tab=bookings"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition"
+                    >
+                      <CalendarDaysIcon className="h-4 w-4 text-slate-455" />
+                      My Bookings
+                    </Link>
+                    <Link
+                      href="/dashboard?tab=reviews"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition"
+                    >
+                      <StarIcon className="h-4 w-4 text-slate-455" />
+                      Write Reviews
+                    </Link>
+                    <Link
+                      href="/dashboard?tab=settings"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition"
+                    >
+                      <Cog6ToothIcon className="h-4 w-4 text-slate-455" />
+                      Account Settings
+                    </Link>
+                    <hr className="my-1 border-slate-100" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDropdownOpen(false)
+                        clearAuthSession()
+                        void signOut()
+                      }}
+                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-xs font-bold text-rose-600 hover:bg-rose-50 transition"
+                    >
+                      <svg className="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <>
@@ -143,9 +221,10 @@ export default function Navbar() {
                     key={link.label}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`rounded-xl px-3 py-2 ${(link.href === '/packages' && isPackagesPage) || pathname === link.href
-                      ? 'bg-slate-900 text-white'
-                      : 'hover:bg-slate-100'
+                    className={`rounded-xl px-3 py-2 ${
+                      (link.href === '/tours' ? (pathname === '/tours' && !isSearchActive) : pathname === link.href)
+                        ? 'bg-slate-900 text-white'
+                        : 'hover:bg-slate-100'
                       }`}
                   >
                     {link.label}
@@ -171,18 +250,30 @@ export default function Navbar() {
                     Agent Portal
                   </a>
                 )}
-                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-slate-100">
-                  Dashboard
+                <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-405">Account Menu</span>
+                <Link href="/dashboard?tab=personal" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-sm font-semibold hover:bg-slate-100 flex items-center gap-2">
+                  <UserIcon className="h-4.5 w-4.5 text-slate-400" /> Personal Details
                 </Link>
-                <span className="px-3 text-slate-500">Hi, {userName}</span>
+                <Link href="/dashboard?tab=bookings" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-sm font-semibold hover:bg-slate-100 flex items-center gap-2">
+                  <CalendarDaysIcon className="h-4.5 w-4.5 text-slate-400" /> My Bookings
+                </Link>
+                <Link href="/dashboard?tab=reviews" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-sm font-semibold hover:bg-slate-100 flex items-center gap-2">
+                  <StarIcon className="h-4.5 w-4.5 text-slate-400" /> Write Reviews
+                </Link>
+                <Link href="/dashboard?tab=settings" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 text-sm font-semibold hover:bg-slate-100 flex items-center gap-2">
+                  <Cog6ToothIcon className="h-4.5 w-4.5 text-slate-400" /> Account Settings
+                </Link>
                 <button
                   onClick={() => {
                     setMenuOpen(false)
                     clearAuthSession()
                     void signOut()
                   }}
-                  className="rounded-xl px-3 py-2 text-left text-red-600 hover:bg-red-50"
+                  className="rounded-xl px-3 py-2 text-left text-sm font-bold text-red-650 hover:bg-red-50 flex items-center gap-2"
                 >
+                  <svg className="h-4.5 w-4.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013 3v1" />
+                  </svg>
                   Logout
                 </button>
               </>

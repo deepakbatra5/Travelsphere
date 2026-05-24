@@ -18,7 +18,7 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
-export default async function PackageDetailPage({ params }: Props) {
+export default async function TourDetailPage({ params }: Props) {
   const { slug } = await params
   const session = await getServerSession(authOptions)
 
@@ -51,7 +51,7 @@ export default async function PackageDetailPage({ params }: Props) {
       <div className="mb-5 text-sm font-semibold text-slate-600">
         <Link href="/" className="hover:text-orange-600">Home</Link>
         {' / '}
-        <Link href="/packages" className="hover:text-orange-600">Packages</Link>
+        <Link href="/tours" className="hover:text-orange-600">All Packages</Link>
         {' / '}
         <span className="text-slate-900">{pkg.title}</span>
       </div>
