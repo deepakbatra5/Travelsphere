@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -74,7 +75,7 @@ function ReviewCard({ review }: { review: Review }) {
   )
 }
 
-export default function ReviewsPage() {
+function ReviewsContent() {
   const [reviews, setReviews] = useState<Review[]>(SEED_REVIEWS)
   const [filterRating, setFilterRating] = useState(0)
   const [showModal, setShowModal] = useState(false)
@@ -283,3 +284,12 @@ export default function ReviewsPage() {
     </div>
   )
 }
+
+export default function ReviewsPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" /></div>}>
+      <ReviewsContent />
+    </Suspense>
+  )
+}
+
