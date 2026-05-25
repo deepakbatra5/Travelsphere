@@ -647,33 +647,105 @@ export default function AgentLoginPage() {
         </div>
       </section>
 
-      {/* Watch Step-by-Step Agent Registration Section */}
-      <section className="mx-auto max-w-7xl px-6 py-16 w-full">
-        <div className="bg-white rounded-3xl p-8 shadow-xs border border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-7 space-y-4">
-            <span className="text-xs uppercase tracking-wider text-orange-500 font-bold bg-orange-50 px-3 py-1 rounded-full border border-orange-100">Video Guide</span>
-            <h2 className="text-2xl font-black text-slate-900 md:text-3xl">How to Register an Agent Account</h2>
-            <p className="text-slate-650 text-sm leading-relaxed">
-              Watch this short step-by-step video guide to learn how to create your travel agent profile, link your verification credentials, and configure your destination preferences so you can start receiving tour assignments within minutes.
-            </p>
-            <div className="flex items-center gap-3 pt-2">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600">
-                <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </span>
-              <span className="text-xs font-bold text-slate-800">Watch the 2-minute setup guide</span>
-            </div>
-          </div>
-          <div className="md:col-span-5">
-            <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 flex items-center justify-center shadow-lg border border-slate-800 group cursor-pointer">
-              {/* Mock Video Placeholder */}
-              <div className="absolute inset-0 bg-cover bg-center opacity-60" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800')" }}></div>
-              <div className="relative z-10 w-14 h-14 rounded-full bg-white text-slate-950 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
-                <svg className="h-6 w-6 fill-current text-orange-500 ml-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      {/* How to Register an Agent Account - Process Steps */}
+      <section className="mx-auto max-w-7xl px-6 py-20 w-full relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-orange-500/5 blur-3xl pointer-events-none"></div>
+        
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="text-xs uppercase tracking-wider text-orange-500 font-bold bg-orange-50 dark:bg-orange-950/30 px-3 py-1 rounded-full border border-orange-100 dark:border-orange-900/30">
+            Simple 4-Step Process
+          </span>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
+            How to Register an Agent Account
+          </h2>
+          <p className="text-slate-550 dark:text-slate-400 text-sm md:text-base leading-relaxed">
+            Create your travel agent profile, link your verification credentials, and configure your preferences to start receiving assignments in four simple steps.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {[
+            {
+              num: '01',
+              title: 'Create Your Profile',
+              desc: 'Enter your basic details including name, contact number, and your travel agency name.',
+              icon: (
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              ),
+              color: 'from-orange-400 to-amber-500 shadow-orange-500/20'
+            },
+            {
+              num: '02',
+              title: 'Provide Verification',
+              desc: 'Securely link your identity document numbers (Aadhar card, PAN card, and optional GST).',
+              icon: (
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              ),
+              color: 'from-blue-400 to-indigo-500 shadow-blue-500/20'
+            },
+            {
+              num: '03',
+              title: 'Credentials Review',
+              desc: 'Our administrative team quickly checks and approves your agent registration within 24 hours.',
+              icon: (
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              ),
+              color: 'from-emerald-400 to-teal-500 shadow-emerald-500/20'
+            },
+            {
+              num: '04',
+              title: 'Receive Assignments',
+              desc: 'Log in to select your preferred destinations and start accepting direct client bookings.',
+              icon: (
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              ),
+              color: 'from-purple-400 to-pink-500 shadow-purple-500/20'
+            }
+          ].map((step, idx) => (
+            <div 
+              key={idx}
+              className="group relative bg-white dark:bg-slate-900/60 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow-2xl hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between overflow-hidden"
+            >
+              {/* Card background glowing gradient ring */}
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="space-y-6 relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${step.color} text-white flex items-center justify-center shadow-lg`}>
+                    {step.icon}
+                  </div>
+                  <span className="text-4xl font-black text-slate-150 dark:text-slate-800 group-hover:text-orange-500/20 transition-colors duration-500">
+                    {step.num}
+                  </span>
+                </div>
+                
+                <div className="space-y-2">
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors duration-300">
+                    {step.title}
+                  </h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+              </div>
+
+              {/* Card footer decorative accent line */}
+              <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full mt-6 overflow-hidden relative">
+                <div className={`absolute top-0 left-0 h-full w-0 group-hover:w-full bg-gradient-to-r ${step.color} transition-all duration-700 ease-out`} />
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
+
 
       {/* Why Choose Section */}
       <section className="bg-slate-100 px-6 py-20 rounded-t-[3.5rem] w-full">
