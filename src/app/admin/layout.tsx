@@ -37,8 +37,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       `}
       >
         <div className="px-6 py-5 border-b border-gray-700">
-          <Link href="/" className="text-xl font-bold text-orange-400">
-            Travel Sphere Admin
+          <Link href="/" className="flex items-center gap-2.5 text-xl font-bold text-orange-400">
+            <img src="/logo-transparent.png" alt="Logo" className="h-8 w-8 object-contain" />
+            <span>Travel Sphere Admin</span>
           </Link>
           <p className="text-xs text-gray-400 mt-1">Management Panel</p>
         </div>

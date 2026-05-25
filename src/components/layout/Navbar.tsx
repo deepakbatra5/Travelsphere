@@ -57,7 +57,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="shrink-0">
           <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-orange-700 md:text-base shadow-sm">
-            <GlobeAltIcon className="h-5 w-5 text-orange-600" />
+            <img src="/logo-transparent.png" alt="Logo" className="h-6 w-6 object-contain" />
             Travel Sphere
           </span>
         </Link>

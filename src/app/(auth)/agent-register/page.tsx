@@ -90,7 +90,8 @@ export default function AgentRegisterPage() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
       <div className="surface-card relative w-full max-w-lg rounded-3xl p-8">
         <div className="mb-6 text-center">
-          <Link href="/" className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700">
+          <Link href="/" className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-700">
+            <img src="/logo-transparent.png" alt="Logo" className="h-4 w-4 object-contain" />
             Travel Sphere
           </Link>
           <h1 className="mt-4 text-2xl font-extrabold text-slate-900">Become a Travel Agent</h1>

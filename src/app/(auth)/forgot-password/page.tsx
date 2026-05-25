@@ -80,7 +80,8 @@ function ForgotPasswordContent() {
       <div className="absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-orange-300/30 blur-3xl" />
       <div className="surface-card relative w-full max-w-md rounded-3xl p-8">
         <div className="mb-8 text-center">
-          <Link href="/" className={`inline-flex rounded-full border px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] ${accent === 'cyan' ? 'border-cyan-200 bg-cyan-50 text-cyan-700' : 'border-orange-200 bg-orange-50 text-orange-700'}`}>
+          <Link href="/" className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-xs font-bold uppercase tracking-[0.2em] ${accent === 'cyan' ? 'border-cyan-200 bg-cyan-50 text-cyan-700' : 'border-orange-200 bg-orange-50 text-orange-700'}`}>
+            <img src="/logo-transparent.png" alt="Logo" className="h-4 w-4 object-contain" />
             Travel Sphere
           </Link>
           <h1 className="mt-4 text-2xl font-extrabold text-slate-900">Reset Password</h1>

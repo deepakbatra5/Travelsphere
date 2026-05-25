@@ -18,7 +18,10 @@ export default function Footer() {
 
         {/* Brand */}
         <div>
-          <h2 className="text-white text-xl font-bold mb-3">Travel Sphere</h2>
+          <div className="flex items-center gap-2.5 mb-3">
+            <img src="/logo-transparent.png" alt="Travel Sphere Logo" className="h-8 w-8 object-contain" />
+            <h2 className="text-white text-xl font-bold">Travel Sphere</h2>
+          </div>
           <p className="text-sm leading-relaxed text-gray-400">
             India's trusted travel company. Curated tours for families,
             couples, groups and solo travelers since 2013.

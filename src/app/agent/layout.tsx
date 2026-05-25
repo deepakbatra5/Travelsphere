@@ -25,7 +25,10 @@ export default function AgentLayout({ children }: { children: React.ReactNode })
     <div className="flex min-h-screen bg-slate-100">
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-cyan-950 text-white transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:flex lg:translate-x-0 lg:flex-col`}>
         <div className="border-b border-cyan-900 px-6 py-5">
-          <Link href="/" className="text-xl font-bold text-orange-300">Travel Sphere Agent</Link>
+          <Link href="/" className="flex items-center gap-2.5 text-xl font-bold text-orange-300">
+            <img src="/logo-transparent.png" alt="Logo" className="h-8 w-8 object-contain" />
+            <span>Travel Sphere Agent</span>
+          </Link>
           <p className="mt-1 text-xs text-cyan-300">Agent Portal</p>
         </div>
         <nav className="flex-1 space-y-1 px-4 py-6">
