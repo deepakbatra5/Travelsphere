@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
-        const email = credentials.email.trim()
+        const email = credentials.email.trim().toLowerCase()
         const password = credentials.password
         const portal = credentials.portal
 
@@ -92,6 +92,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role
         token.id = user.id
+        token.email = user.email
         token.agentStatus = user.agentStatus ?? null
       }
       return token
@@ -100,6 +101,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.role = token.role
         session.user.id = token.id
+        session.user.email = token.email as string
         session.user.agentStatus = token.agentStatus ?? null
       }
       return session
