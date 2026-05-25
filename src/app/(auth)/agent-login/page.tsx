@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { markAuthSessionActive } from '@/lib/browser-session'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const REMEMBER_EMAIL_KEY = 'travel-sphere-agent-email'
 const languageOptions = ['Hindi', 'English', 'Punjabi', 'Bengali', 'Tamil', 'Telugu', 'Gujarati', 'Marathi']
@@ -204,16 +205,7 @@ export default function AgentLoginPage() {
                 +91-9773335623
               </a>
             </div>
-            <a 
-              href="#form-section" 
-              onClick={() => {
-                setActiveTab('register')
-                setRegStep(1)
-              }} 
-              className="rounded-full bg-slate-900 px-5 py-2 text-xs font-bold text-white shadow-md hover:bg-slate-800 transition-all hover:scale-105 active:scale-95"
-            >
-              Join Network
-            </a>
+            <ThemeToggle />
           </div>
         </div>
       </header>

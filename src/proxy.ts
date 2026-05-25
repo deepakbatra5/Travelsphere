@@ -3,7 +3,17 @@ import { getToken } from 'next-auth/jwt'
 import { getPortalFromHost } from '@/lib/portal-host'
 
 function isPublicAsset(path: string) {
-  return path.startsWith('/_next') || path === '/favicon.ico' || path === '/icon.png'
+  if (path.startsWith('/_next') || path === '/favicon.ico' || path === '/icon.png') {
+    return true
+  }
+  const ext = path.split('.').pop()?.toLowerCase()
+  if (ext && ['png', 'jpg', 'jpeg', 'svg', 'ico', 'webp', 'mp4', 'js', 'css', 'woff', 'woff2', 'ttf'].includes(ext)) {
+    return true
+  }
+  if (path.startsWith('/images/') || path.startsWith('/states/')) {
+    return true
+  }
+  return false
 }
 
 function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost>) {

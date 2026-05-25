@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { clearAuthSession } from '@/lib/browser-session'
+import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navItems = [
   { href: '/agent', label: 'Dashboard' },
@@ -63,7 +64,10 @@ export default function AgentLayout({ children }: { children: React.ReactNode })
         <header className="flex items-center justify-between bg-white px-6 py-4 shadow-sm">
           <button onClick={() => setSidebarOpen(true)} className="text-xl text-slate-500 lg:hidden" type="button">Menu</button>
           <h1 className="text-lg font-semibold text-slate-700">Agent Portal</h1>
-          <span className="text-sm text-slate-400">Travel Sphere</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-400">Travel Sphere</span>
+            <ThemeToggle />
+          </div>
         </header>
         <main className="flex-1 overflow-auto p-6">{children}</main>
       </div>
