@@ -35,7 +35,7 @@ export default async function AdminBookingsPage({ searchParams }: Props) {
   const session = await getServerSession(authOptions)
 
   if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/admin/login')
+    redirect('/?callbackUrl=/bookings')
   }
 
   const resolved = (await searchParams) ?? {}

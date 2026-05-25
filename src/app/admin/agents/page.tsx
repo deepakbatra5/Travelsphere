@@ -11,7 +11,7 @@ export default async function AdminAgentsPage() {
   const session = await getServerSession(authOptions)
 
   if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/admin/login')
+    redirect('/?callbackUrl=/agents')
   }
 
   const agents = await prisma.agent.findMany({

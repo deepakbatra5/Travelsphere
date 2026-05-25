@@ -150,7 +150,7 @@ export default async function AdminEnquiriesPage({ searchParams }: Props) {
   const session = await getServerSession(authOptions)
 
   if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/admin/login')
+    redirect('/?callbackUrl=/enquiries')
   }
 
   const resolvedSearchParams = (await searchParams) ?? {}

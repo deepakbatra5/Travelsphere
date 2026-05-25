@@ -46,7 +46,7 @@ export default async function AdminDashboardPage() {
   const session = await getServerSession(authOptions)
 
   if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/admin/login')
+    redirect('/?callbackUrl=/dashboard')
   }
 
   const stats = await getStats()

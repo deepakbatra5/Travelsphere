@@ -12,7 +12,7 @@ export default async function AdminPackagesPage() {
   const session = await getServerSession(authOptions)
 
   if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/admin/login')
+    redirect('/?callbackUrl=/packages')
   }
 
   const packages = await prisma.package.findMany({

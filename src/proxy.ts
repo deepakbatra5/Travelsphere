@@ -18,7 +18,8 @@ function isPublicAsset(path: string) {
 
 function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost>) {
   if (portal === 'admin') {
-    if (path === '/' || path === '/dashboard') return '/admin'
+    if (path === '/') return '/admin/login'
+    if (path === '/dashboard') return '/admin'
     if (path === '/login') return '/admin/login'
     if (path === '/packages') return '/admin/packages'
     if (path === '/packages/new') return '/admin/packages/new'
@@ -27,6 +28,7 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
     if (path === '/enquiries') return '/admin/enquiries'
     if (path === '/agents') return '/admin/agents'
     if (path === '/customers') return '/admin/customers'
+    if (path === '/team') return '/admin/team'
     return path
   }
 
@@ -96,10 +98,16 @@ export default async function proxy(req: NextRequest) {
 
   if (path === '/admin/login') {
     if (token?.role === 'ADMIN') {
-      return NextResponse.redirect(new URL(portal === 'admin' ? '/dashboard' : '/admin', req.url))
+      return NextResponse.redirect(new URL('/dashboard', req.url))
     }
 
     return originalPath === path ? NextResponse.next() : rewriteUrl(req, path)
+  }
+
+  if (portal === 'admin' && originalPath === '/login') {
+    const url = req.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
   }
 
   if (path === '/agent-login') {
@@ -136,8 +144,11 @@ export default async function proxy(req: NextRequest) {
   }
 
   if (isAdminRoute && token?.role !== 'ADMIN') {
-    const loginUrl = new URL(portal === 'admin' ? '/login' : '/admin/login', req.url)
-    loginUrl.searchParams.set('callbackUrl', portal === 'admin' ? '/dashboard' : `${path}${req.nextUrl.search}`)
+    const loginUrl = new URL(portal === 'admin' ? '/' : '/admin/login', req.url)
+    const callbackPath = portal === 'admin'
+      ? (originalPath === '/' ? '/dashboard' : originalPath)
+      : `${path}${req.nextUrl.search}`
+    loginUrl.searchParams.set('callbackUrl', callbackPath)
     return NextResponse.redirect(loginUrl)
   }
 

@@ -10,7 +10,7 @@ export default async function AdminCustomersPage() {
   const session = await getServerSession(authOptions)
 
   if (!session?.user || session.user.role !== 'ADMIN') {
-    redirect('/admin/login')
+    redirect('/?callbackUrl=/customers')
   }
 
   const users = await prisma.user.findMany({

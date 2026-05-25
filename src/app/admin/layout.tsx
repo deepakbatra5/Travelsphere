@@ -7,14 +7,14 @@ import { signOut } from 'next-auth/react'
 import { clearAuthSession } from '@/lib/browser-session'
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard' },
-  { href: '/admin/packages', label: 'Packages' },
-  { href: '/admin/packages/new', label: 'Add Package' },
-  { href: '/admin/bookings', label: 'Bookings' },
-  { href: '/admin/enquiries', label: 'Enquiries' },
-  { href: '/admin/agents', label: 'Agents' },
-  { href: '/admin/customers', label: 'Customers' },
-  { href: '/admin/team', label: 'Manage Team' },
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/packages', label: 'Packages' },
+  { href: '/packages/new', label: 'Add Package' },
+  { href: '/bookings', label: 'Bookings' },
+  { href: '/enquiries', label: 'Enquiries' },
+  { href: '/agents', label: 'Agents' },
+  { href: '/customers', label: 'Customers' },
+  { href: '/team', label: 'Manage Team' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Hide sidebar on login page — covers both direct (/admin/login) and proxy-rewritten (/login via admin subdomain)
-  const isLoginPage = pathname === '/admin/login' || pathname === '/login'
+  const isLoginPage = pathname === '/admin/login' || pathname === '/login' || pathname === '/'
   if (isLoginPage) {
     return <>{children}</>
   }
@@ -65,7 +65,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <button
             onClick={() => {
               clearAuthSession()
-              signOut({ callbackUrl: '/admin/login' })
+              signOut({ callbackUrl: '/' })
             }}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-400 hover:bg-gray-800 transition"
           >
