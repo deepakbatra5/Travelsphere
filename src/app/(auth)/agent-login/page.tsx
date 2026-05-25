@@ -191,17 +191,15 @@ export default function AgentLoginPage() {
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4 shadow-xs">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center p-1 shadow-md shadow-orange-500/20">
-              <img src="/logo-transparent.png" alt="Travel Sphere Logo" className="w-full h-full object-contain" />
-            </div>
+            <img src="/logo-transparent.png" alt="Travel Sphere Logo" className="h-9 w-9 object-contain" />
             <span className="text-xl font-black tracking-tight text-slate-900">
-              TRAVEL SPHERE <span className="text-orange-500 font-bold text-xs uppercase tracking-widest ml-1 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">B2B</span>
+              TRAVEL SPHERE <span className="text-orange-500 font-bold text-xs uppercase tracking-widest ml-1 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">AGENT</span>
             </span>
           </Link>
 
           <div className="flex items-center gap-6">
             <div className="hidden sm:flex flex-col items-end">
-              <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">B2B Helpline</span>
+              <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Agent Helpline</span>
               <a href="tel:+919773335623" className="text-sm font-black text-slate-800 hover:text-orange-500 transition-colors">
                 +91-9773335623
               </a>
@@ -232,7 +230,7 @@ export default function AgentLoginPage() {
           {/* Hero Left Info */}
           <div className="lg:col-span-7 space-y-6">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-400 ring-1 ring-orange-500/30">
-              ⭐ India's Leading B2B Travel Network
+              ⭐ India's Leading Agent Travel Network
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
               Grow Your Business as a <br />
@@ -308,7 +306,7 @@ export default function AgentLoginPage() {
                       : 'text-slate-500 hover:text-slate-950'
                   }`}
                 >
-                  Register B2B Account
+                  Register Agent Account
                 </button>
               </div>
 
@@ -645,7 +643,7 @@ export default function AgentLoginPage() {
                           disabled={regLoading}
                           className="flex-1 rounded-xl bg-orange-500 py-2.5 text-xs font-bold text-white hover:bg-orange-600 disabled:opacity-60"
                         >
-                          {regLoading ? 'Registering...' : 'Register B2B'}
+                          {regLoading ? 'Registering...' : 'Register Account'}
                         </button>
                       </div>
                     </form>
@@ -657,14 +655,14 @@ export default function AgentLoginPage() {
         </div>
       </section>
 
-      {/* Watch Step-by-Step B2B Registration Section */}
+      {/* Watch Step-by-Step Agent Registration Section */}
       <section className="mx-auto max-w-7xl px-6 py-16 w-full">
         <div className="bg-white rounded-3xl p-8 shadow-xs border border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-7 space-y-4">
             <span className="text-xs uppercase tracking-wider text-orange-500 font-bold bg-orange-50 px-3 py-1 rounded-full border border-orange-100">Video Guide</span>
-            <h2 className="text-2xl font-black text-slate-900 md:text-3xl">How to Register a B2B Account</h2>
+            <h2 className="text-2xl font-black text-slate-900 md:text-3xl">How to Register an Agent Account</h2>
             <p className="text-slate-650 text-sm leading-relaxed">
-              Watch this short step-by-step video guide to learn how to create your B2B travel agent profile, link your verification credentials, and configure your destination preferences so you can start receiving tour assignments within minutes.
+              Watch this short step-by-step video guide to learn how to create your travel agent profile, link your verification credentials, and configure your destination preferences so you can start receiving tour assignments within minutes.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600">
@@ -690,8 +688,8 @@ export default function AgentLoginPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-orange-500">Key Benefits</span>
-            <h2 className="text-3xl font-black text-slate-900 md:text-4xl">Why Choose Travel Sphere B2B Travel Portal?</h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+            <h2 className="text-3xl font-black text-slate-900 md:text-4xl">Why Choose Travel Sphere Agent Portal?</h2>
+            <p className="text-slate-650 text-sm leading-relaxed">
               Gain a massive competitive edge by leveraging our resources. We supply agents with real inquiries, verified payments, and tools to run operations flawlessly.
             </p>
           </div>
@@ -699,7 +697,7 @@ export default function AgentLoginPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Fast Growing B2B Network',
+                title: 'Fast Growing Agent Network',
                 desc: 'Become part of one of the fastest growing travel networks in India with agents spanning 20+ states.',
                 icon: (
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -730,7 +728,7 @@ export default function AgentLoginPage() {
               },
               {
                 title: 'Best Commissions (80% Payout)',
-                desc: 'Retain 80% of all assigned tour package values. Unmatched commission rates in the B2B travel industry.',
+                desc: 'Retain 80% of all assigned tour package values. Unmatched commission rates in the travel agent industry.',
                 icon: (
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -750,7 +748,7 @@ export default function AgentLoginPage() {
               },
               {
                 title: 'Latest Deals & Offers',
-                desc: 'Deliver seasonal deals, flight rates, and discounted hotels straight to your clients using our B2B catalog.',
+                desc: 'Deliver seasonal deals, flight rates, and discounted hotels straight to your clients using our agent portal catalog.',
                 icon: (
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -774,7 +772,7 @@ export default function AgentLoginPage() {
         </div>
       </section>
 
-      {/* Travel Sphere B2B Advantages Section */}
+      {/* Travel Sphere Agent Advantages Section */}
       <section id="advantages-section" className="mx-auto max-w-7xl px-6 py-20 w-full">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-orange-500">Travel Sphere Advantages</span>
@@ -871,7 +869,7 @@ export default function AgentLoginPage() {
             </span>
             <h2 className="text-3xl font-black md:text-4xl">Contact Our Noida Branch</h2>
             <p className="text-slate-350 text-sm leading-relaxed max-w-md">
-              Have specific B2B onboarding questions or corporate queries? Feel free to contact our Noida branch team via phone, email, or by scheduling an in-person meeting.
+              Have specific agent onboarding questions or corporate queries? Feel free to contact our Noida branch team via phone, email, or by scheduling an in-person meeting.
             </p>
             
             <div className="space-y-4 pt-4 border-t border-slate-800">
@@ -897,7 +895,7 @@ export default function AgentLoginPage() {
                   </svg>
                 </span>
                 <div>
-                  <h4 className="text-sm font-bold text-white">B2B Helpline</h4>
+                  <h4 className="text-sm font-bold text-white">Agent Helpline</h4>
                   <a href="tel:+919773335623" className="text-orange-400 text-xs font-black hover:underline mt-1 block">
                     +91-9773335623
                   </a>
@@ -913,7 +911,7 @@ export default function AgentLoginPage() {
             </div>
             <h3 className="text-xl font-black">Ready to Grow Your Income?</h3>
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Create a free B2B agent profile and upload your documents to be verified. Once approved by our administrators, you will start receiving verified tour assignments straight to your inbox.
+              Create a free agent profile and upload your documents to be verified. Once approved by our administrators, you will start receiving verified tour assignments straight to your inbox.
             </p>
             <a 
               href="#form-section"
@@ -931,11 +929,9 @@ export default function AgentLoginPage() {
         {/* Footer info */}
         <div className="mx-auto max-w-7xl border-t border-slate-800/80 mt-16 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center p-0.5">
-              <img src="/logo-transparent.png" alt="Logo" className="w-full h-full object-contain" />
-            </div>
+            <img src="/logo-transparent.png" alt="Logo" className="h-6 w-6 object-contain" />
             <span className="text-xs font-bold text-slate-400">
-              Travel Sphere Agent B2B Portal
+              Travel Sphere Agent Portal
             </span>
           </div>
           <p className="text-xs text-slate-500">
