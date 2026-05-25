@@ -12,7 +12,7 @@ const navItems = [
   { href: '/profile', label: 'Profile' },
   { href: '/tours', label: 'Available Tours' },
   { href: '/my-tours', label: 'My Assignments' },
-  { href: '/earning', label: 'Earnings' },
+  { href: '/earnings', label: 'Earnings' },
   { href: '/help', label: 'Help & Support' },
 ]
 
@@ -49,7 +49,7 @@ export default function AgentLayout({ children }: { children: React.ReactNode })
             onClick={async () => {
               clearAuthSession()
               await signOut({ redirect: false })
-              window.location.href = '/login'
+              window.location.href = '/'
             }}
             className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-red-300 hover:bg-cyan-900"
           >

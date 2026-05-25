@@ -31,6 +31,7 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
   }
 
   if (portal === 'agent') {
+    if (path === '/') return '/agent-login'
     if (path === '/dashboard' || path === '/dashbaord') return '/agent'
     if (path === '/profile') return '/agent/profile'
     if (path === '/tours') return '/agent/tours'
@@ -64,8 +65,8 @@ export default async function proxy(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  const isAdminRoute = path.startsWith('/admin')
-  const isAgentRoute = path.startsWith('/agent')
+  const isAdminRoute = path.startsWith('/admin') && path !== '/admin/login'
+  const isAgentRoute = path.startsWith('/agent') && path !== '/agent-login' && path !== '/agent-register'
   const isAuthRoute = [
     '/login',
     '/register',
@@ -145,8 +146,11 @@ export default async function proxy(req: NextRequest) {
   }
 
   if (isAgentRoute && !token?.agentStatus) {
-    const loginUrl = new URL(portal === 'agent' ? '/login' : '/agent-login', req.url)
-    loginUrl.searchParams.set('callbackUrl', portal === 'agent' ? '/agent' : `${path}${req.nextUrl.search}`)
+    const loginUrl = new URL(portal === 'agent' ? '/' : '/agent-login', req.url)
+    const callbackPath = portal === 'agent'
+      ? (originalPath === '/' ? '/dashboard' : originalPath)
+      : `${path}${req.nextUrl.search}`
+    loginUrl.searchParams.set('callbackUrl', callbackPath)
     return NextResponse.redirect(loginUrl)
   }
 

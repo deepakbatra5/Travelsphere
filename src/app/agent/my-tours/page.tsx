@@ -27,7 +27,7 @@ function filterAssignments<T extends { status: string }>(assignments: T[], statu
 
 export default async function AgentMyToursPage({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions)
-	if (!session?.user?.email) redirect('/login?callbackUrl=/my-tours')
+  if (!session?.user?.email) redirect('/?callbackUrl=/my-tours')
   const userEmail = session.user.email
   const resolvedSearchParams = await searchParams
 

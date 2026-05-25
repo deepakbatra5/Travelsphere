@@ -9,7 +9,7 @@ export const revalidate = 0
 
 export default async function AgentDashboard() {
   const session = await getServerSession(authOptions)
-	if (!session?.user?.email) redirect('/login?callbackUrl=/dashboard')
+  if (!session?.user?.email) redirect('/?callbackUrl=/dashboard')
   const userEmail = session.user.email
 
   const user = await (async () => {
@@ -78,7 +78,7 @@ export default async function AgentDashboard() {
         {[
           { label: 'Active Assignments', value: active, bg: 'bg-cyan-600', href: '/my-tours?status=active', detail: activeAssignments[0]?.booking.package.title || 'No active tours yet' },
           { label: 'Completed Tours', value: completed, bg: 'bg-emerald-600', href: '/my-tours?status=completed', detail: completedAssignments[0]?.booking.package.title || 'No completed tours yet' },
-          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500', href: '/earning#breakdown', detail: `${completed} completed payout record(s)` },
+          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500', href: '/earnings#breakdown', detail: `${completed} completed payout record(s)` },
           { label: 'Tours I Cover', value: preferredCount, bg: 'bg-slate-800', href: '/tours?view=covered', detail: preferredTours[0]?.package.title || 'Select tours you can cover' },
         ].map((stat) => (
           <Link key={stat.label} href={stat.href} className={`${stat.bg} block rounded-2xl p-5 text-white transition hover:-translate-y-0.5 hover:shadow-lg`}>

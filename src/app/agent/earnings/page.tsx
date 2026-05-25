@@ -12,7 +12,7 @@ function monthKey(date: Date) {
 
 export default async function AgentEarningsPage() {
   const session = await getServerSession(authOptions)
-	if (!session?.user?.email) redirect('/login?callbackUrl=/earning')
+  if (!session?.user?.email) redirect('/?callbackUrl=/earnings')
   const userEmail = session.user.email
 
   const user = await (async () => {

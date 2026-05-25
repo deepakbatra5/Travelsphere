@@ -54,7 +54,7 @@ type PageProps = {
 
 export default async function AgentToursPage({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions)
-	if (!session?.user?.email) redirect('/login?callbackUrl=/tours')
+  if (!session?.user?.email) redirect('/?callbackUrl=/tours')
   const userEmail = session.user.email
   const resolvedSearchParams = await searchParams
 
