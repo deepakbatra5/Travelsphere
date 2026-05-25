@@ -111,7 +111,7 @@ export default async function proxy(req: NextRequest) {
     }
 
     if (token?.agentStatus) {
-      return NextResponse.redirect(new URL(portal === 'agent' ? '/dashboard' : '/agent', req.url))
+      return NextResponse.redirect(new URL('/agent', req.url))
     }
 
     return originalPath === path ? NextResponse.next() : rewriteUrl(req, path)
@@ -129,7 +129,7 @@ export default async function proxy(req: NextRequest) {
 
   if (isAgentRoute && !token?.agentStatus) {
     const loginUrl = new URL(portal === 'agent' ? '/login' : '/agent-login', req.url)
-    loginUrl.searchParams.set('callbackUrl', portal === 'agent' ? '/dashboard' : `${path}${req.nextUrl.search}`)
+    loginUrl.searchParams.set('callbackUrl', portal === 'agent' ? '/agent' : `${path}${req.nextUrl.search}`)
     return NextResponse.redirect(loginUrl)
   }
 

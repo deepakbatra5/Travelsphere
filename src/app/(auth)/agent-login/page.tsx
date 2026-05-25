@@ -15,7 +15,7 @@ function getSafeCallbackPath() {
   if (typeof window === 'undefined') return '/agent'
 
   const isAgentSubdomain = window.location.hostname.startsWith('agent.')
-  const defaultPath = isAgentSubdomain ? '/dashboard' : '/agent'
+  const defaultPath = '/agent'
 
   const rawCallback = new URLSearchParams(window.location.search).get('callbackUrl')
   if (!rawCallback) return defaultPath
@@ -26,7 +26,7 @@ function getSafeCallbackPath() {
 
     const pathWithQuery = `${callbackUrl.pathname}${callbackUrl.search}${callbackUrl.hash}`
     const isSafeAgentPath = pathWithQuery.startsWith('/agent') && pathWithQuery !== '/agent-login'
-    const isSafeSubdomainPath = isAgentSubdomain && pathWithQuery.startsWith('/dashboard')
+    const isSafeSubdomainPath = isAgentSubdomain && (pathWithQuery.startsWith('/dashboard') || pathWithQuery.startsWith('/agent'))
 
     if (!isSafeAgentPath && !isSafeSubdomainPath) {
       return defaultPath
@@ -34,7 +34,7 @@ function getSafeCallbackPath() {
     return pathWithQuery
   } catch {
     if (rawCallback.startsWith('/agent') && rawCallback !== '/agent-login') return rawCallback
-    if (isAgentSubdomain && rawCallback.startsWith('/dashboard')) return rawCallback
+    if (isAgentSubdomain && (rawCallback.startsWith('/dashboard') || rawCallback.startsWith('/agent'))) return rawCallback
     return defaultPath
   }
 }
@@ -656,7 +656,7 @@ export default function AgentLoginPage() {
             Simple 4-Step Process
           </span>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
-            How to Register an Agent Account
+            How to Register an <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Agent Account</span>
           </h2>
           <p className="text-slate-550 dark:text-slate-400 text-sm md:text-base leading-relaxed">
             Create your travel agent profile, link your verification credentials, and configure your preferences to start receiving assignments in four simple steps.
@@ -674,7 +674,8 @@ export default function AgentLoginPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               ),
-              color: 'from-orange-400 to-amber-500 shadow-orange-500/20'
+              color: 'from-orange-400 to-amber-500 shadow-orange-500/20',
+              hoverTitle: 'group-hover:text-orange-500 dark:group-hover:text-orange-400'
             },
             {
               num: '02',
@@ -685,7 +686,8 @@ export default function AgentLoginPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               ),
-              color: 'from-blue-400 to-indigo-500 shadow-blue-500/20'
+              color: 'from-blue-400 to-indigo-500 shadow-blue-500/20',
+              hoverTitle: 'group-hover:text-blue-500 dark:group-hover:text-blue-400'
             },
             {
               num: '03',
@@ -696,7 +698,8 @@ export default function AgentLoginPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               ),
-              color: 'from-emerald-400 to-teal-500 shadow-emerald-500/20'
+              color: 'from-emerald-400 to-teal-500 shadow-emerald-500/20',
+              hoverTitle: 'group-hover:text-emerald-500 dark:group-hover:text-emerald-400'
             },
             {
               num: '04',
@@ -707,7 +710,8 @@ export default function AgentLoginPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               ),
-              color: 'from-purple-400 to-pink-500 shadow-purple-500/20'
+              color: 'from-purple-400 to-pink-500 shadow-purple-500/20',
+              hoverTitle: 'group-hover:text-purple-500 dark:group-hover:text-purple-400'
             }
           ].map((step, idx) => (
             <div 
@@ -728,7 +732,7 @@ export default function AgentLoginPage() {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors duration-300">
+                  <h3 className={`text-lg font-black text-slate-900 dark:text-white transition-colors duration-300 ${step.hoverTitle}`}>
                     {step.title}
                   </h3>
                   <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">
@@ -748,12 +752,14 @@ export default function AgentLoginPage() {
 
 
       {/* Why Choose Section */}
-      <section className="bg-slate-100 px-6 py-20 rounded-t-[3.5rem] w-full">
+      <section className="bg-slate-100 dark:bg-slate-900/40 px-6 py-20 rounded-t-[3.5rem] w-full">
         <div className="mx-auto max-w-7xl">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-orange-500">Key Benefits</span>
-            <h2 className="text-3xl font-black text-slate-900 md:text-4xl">Why Choose Travel Sphere Agent Portal?</h2>
-            <p className="text-slate-650 text-sm leading-relaxed">
+            <span className="text-xs font-bold uppercase tracking-widest text-orange-500 bg-orange-50 dark:bg-orange-950/20 px-3.5 py-1.5 rounded-full border border-orange-100 dark:border-orange-900/30">Key Benefits</span>
+            <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
+              Why Choose <span className="bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">Travel Sphere Agent Portal</span>?
+            </h2>
+            <p className="text-slate-655 dark:text-slate-450 text-sm leading-relaxed">
               Gain a massive competitive edge by leveraging our resources. We supply agents with real inquiries, verified payments, and tools to run operations flawlessly.
             </p>
           </div>
@@ -768,7 +774,10 @@ export default function AgentLoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                 ),
-                color: 'bg-blue-50 text-blue-600 border-blue-100'
+                color: 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-900/30',
+                glow: 'hover:shadow-blue-500/5 hover:border-blue-500/20',
+                line: 'bg-blue-500',
+                hoverTitle: 'group-hover:text-blue-500 dark:group-hover:text-blue-400'
               },
               {
                 title: '24/7 Support Helpline',
@@ -778,7 +787,10 @@ export default function AgentLoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 ),
-                color: 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                color: 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30',
+                glow: 'hover:shadow-emerald-500/5 hover:border-emerald-500/20',
+                line: 'bg-emerald-500',
+                hoverTitle: 'group-hover:text-emerald-500 dark:group-hover:text-emerald-400'
               },
               {
                 title: 'Multiple Income Streams',
@@ -788,17 +800,23 @@ export default function AgentLoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 ),
-                color: 'bg-purple-50 text-purple-600 border-purple-100'
+                color: 'bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-950/20 dark:text-purple-400 dark:border-purple-900/30',
+                glow: 'hover:shadow-purple-500/5 hover:border-purple-500/20',
+                line: 'bg-purple-500',
+                hoverTitle: 'group-hover:text-purple-500 dark:group-hover:text-purple-400'
               },
               {
                 title: 'Best Commissions (80% Payout)',
                 desc: 'Retain 80% of all assigned tour package values. Unmatched commission rates in the travel agent industry.',
                 icon: (
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                   </svg>
                 ),
-                color: 'bg-orange-50 text-orange-600 border-orange-100'
+                color: 'bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-950/20 dark:text-orange-400 dark:border-orange-900/30',
+                glow: 'hover:shadow-orange-500/5 hover:border-orange-500/20',
+                line: 'bg-orange-500',
+                hoverTitle: 'group-hover:text-orange-500 dark:group-hover:text-orange-400'
               },
               {
                 title: 'Exclusive Agent Portal',
@@ -808,7 +826,10 @@ export default function AgentLoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 ),
-                color: 'bg-cyan-50 text-cyan-600 border-cyan-100'
+                color: 'bg-cyan-50 text-cyan-600 border-cyan-100 dark:bg-cyan-950/20 dark:text-cyan-400 dark:border-cyan-900/30',
+                glow: 'hover:shadow-cyan-500/5 hover:border-cyan-500/20',
+                line: 'bg-cyan-500',
+                hoverTitle: 'group-hover:text-cyan-500 dark:group-hover:text-cyan-400'
               },
               {
                 title: 'Latest Deals & Offers',
@@ -818,18 +839,33 @@ export default function AgentLoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 ),
-                color: 'bg-pink-50 text-pink-600 border-pink-100'
+                color: 'bg-pink-50 text-pink-600 border-pink-100 dark:bg-pink-950/20 dark:text-pink-400 dark:border-pink-900/30',
+                glow: 'hover:shadow-pink-500/5 hover:border-pink-500/20',
+                line: 'bg-pink-500',
+                hoverTitle: 'group-hover:text-pink-500 dark:group-hover:text-pink-400'
               }
             ].map((item, idx) => (
               <div 
                 key={idx}
-                className="bg-white rounded-3xl p-8 border border-slate-100 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className={`group relative bg-white dark:bg-slate-900/60 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow-2xl hover:border-orange-500/20 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between overflow-hidden ${item.glow}`}
               >
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border mb-6 ${item.color}`}>
-                  {item.icon}
+                {/* Accent Top Bar */}
+                <div className={`absolute top-0 left-0 w-full h-[3px] ${item.line} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
+                
+                {/* Background wash on hover */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="space-y-5 relative z-10">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${item.color}`}>
+                    {item.icon}
+                  </div>
+                  <h3 className={`text-lg font-black text-slate-900 dark:text-white transition-colors duration-300 ${item.hoverTitle}`}>
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -837,16 +873,18 @@ export default function AgentLoginPage() {
       </section>
 
       {/* Travel Sphere Agent Advantages Section */}
-      <section id="advantages-section" className="mx-auto max-w-7xl px-6 py-20 w-full">
+      <section id="advantages-section" className="mx-auto max-w-7xl px-6 py-20 w-full relative">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-orange-500">Travel Sphere Advantages</span>
-          <h2 className="text-3xl font-black text-slate-900 md:text-4xl">Comprehensive Advantages of Our Platform</h2>
-          <p className="text-slate-650 text-sm">
+          <span className="text-xs font-bold uppercase tracking-widest text-orange-500 bg-orange-50 dark:bg-orange-950/20 px-3.5 py-1.5 rounded-full border border-orange-100 dark:border-orange-900/30">Travel Sphere Advantages</span>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
+            Comprehensive <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Advantages of Our Platform</span>
+          </h2>
+          <p className="text-slate-650 dark:text-slate-400 text-sm">
             Leverage our cutting-edge technology and extensive inventory to satisfy every customer demand.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
           {[
             {
               title: 'Automated Payments',
@@ -855,7 +893,8 @@ export default function AgentLoginPage() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-              )
+              ),
+              hoverTitle: 'group-hover:text-blue-500 dark:group-hover:text-blue-400'
             },
             {
               title: 'Post Booking Service Automation',
@@ -864,7 +903,8 @@ export default function AgentLoginPage() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              )
+              ),
+              hoverTitle: 'group-hover:text-emerald-500 dark:group-hover:text-emerald-400'
             },
             {
               title: 'Mobile Friendly Console',
@@ -873,7 +913,8 @@ export default function AgentLoginPage() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-              )
+              ),
+              hoverTitle: 'group-hover:text-purple-500 dark:group-hover:text-purple-400'
             },
             {
               title: 'Largest Network of Global Airfares',
@@ -882,7 +923,8 @@ export default function AgentLoginPage() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                 </svg>
-              )
+              ),
+              hoverTitle: 'group-hover:text-orange-500 dark:group-hover:text-orange-400'
             },
             {
               title: 'API/XML Integration',
@@ -891,7 +933,8 @@ export default function AgentLoginPage() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
-              )
+              ),
+              hoverTitle: 'group-hover:text-cyan-500 dark:group-hover:text-cyan-400'
             },
             {
               title: '50+ Global Hotel Suppliers',
@@ -900,19 +943,25 @@ export default function AgentLoginPage() {
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-              )
+              ),
+              hoverTitle: 'group-hover:text-pink-500 dark:group-hover:text-pink-400'
             }
           ].map((adv, idx) => (
             <div 
               key={idx}
-              className="flex gap-4 p-6 rounded-3xl bg-white border border-slate-100 shadow-xs hover:border-orange-200 transition-all duration-300"
+              className="group relative flex gap-6 p-8 md:p-10 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow-xl hover:border-orange-500/20 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
             >
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-orange-50 text-orange-500 border border-orange-100 flex items-center justify-center">
+              {/* Highlight card corner accent */}
+              <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/20 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/30 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-300">
                 {adv.icon}
               </div>
-              <div className="space-y-1">
-                <h4 className="text-sm font-black text-slate-900">{adv.title}</h4>
-                <p className="text-slate-500 text-xs leading-relaxed">{adv.desc}</p>
+              <div className="space-y-2 relative z-10">
+                <h4 className={`text-base font-black text-slate-900 dark:text-white transition-colors duration-300 ${adv.hoverTitle}`}>
+                  {adv.title}
+                </h4>
+                <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">{adv.desc}</p>
               </div>
             </div>
           ))}
@@ -1027,7 +1076,7 @@ export default function AgentLoginPage() {
               }}
               className="rounded-xl bg-orange-500 px-6 py-2.5 text-xs font-bold text-white shadow-md hover:bg-orange-600 transition-all hover:scale-105 active:scale-95"
             >
-              Sign Up Now
+              Register Now
             </a>
           </div>
         </div>
