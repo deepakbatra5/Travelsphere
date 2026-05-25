@@ -51,6 +51,11 @@ export type AgentMinAggregateOutputType = {
   totalTours: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  companyName: string | null
+  aadharCard: string | null
+  panCard: string | null
+  pinCode: string | null
+  gstNumber: string | null
 }
 
 export type AgentMaxAggregateOutputType = {
@@ -66,6 +71,11 @@ export type AgentMaxAggregateOutputType = {
   totalTours: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  companyName: string | null
+  aadharCard: string | null
+  panCard: string | null
+  pinCode: string | null
+  gstNumber: string | null
 }
 
 export type AgentCountAggregateOutputType = {
@@ -82,6 +92,11 @@ export type AgentCountAggregateOutputType = {
   totalTours: number
   createdAt: number
   updatedAt: number
+  companyName: number
+  aadharCard: number
+  panCard: number
+  pinCode: number
+  gstNumber: number
   _all: number
 }
 
@@ -111,6 +126,11 @@ export type AgentMinAggregateInputType = {
   totalTours?: true
   createdAt?: true
   updatedAt?: true
+  companyName?: true
+  aadharCard?: true
+  panCard?: true
+  pinCode?: true
+  gstNumber?: true
 }
 
 export type AgentMaxAggregateInputType = {
@@ -126,6 +146,11 @@ export type AgentMaxAggregateInputType = {
   totalTours?: true
   createdAt?: true
   updatedAt?: true
+  companyName?: true
+  aadharCard?: true
+  panCard?: true
+  pinCode?: true
+  gstNumber?: true
 }
 
 export type AgentCountAggregateInputType = {
@@ -142,6 +167,11 @@ export type AgentCountAggregateInputType = {
   totalTours?: true
   createdAt?: true
   updatedAt?: true
+  companyName?: true
+  aadharCard?: true
+  panCard?: true
+  pinCode?: true
+  gstNumber?: true
   _all?: true
 }
 
@@ -245,6 +275,11 @@ export type AgentGroupByOutputType = {
   totalTours: number
   createdAt: Date
   updatedAt: Date
+  companyName: string | null
+  aadharCard: string | null
+  panCard: string | null
+  pinCode: string | null
+  gstNumber: string | null
   _count: AgentCountAggregateOutputType | null
   _avg: AgentAvgAggregateOutputType | null
   _sum: AgentSumAggregateOutputType | null
@@ -284,6 +319,11 @@ export type AgentWhereInput = {
   totalTours?: Prisma.IntFilter<"Agent"> | number
   createdAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
+  companyName?: Prisma.StringNullableFilter<"Agent"> | string | null
+  aadharCard?: Prisma.StringNullableFilter<"Agent"> | string | null
+  panCard?: Prisma.StringNullableFilter<"Agent"> | string | null
+  pinCode?: Prisma.StringNullableFilter<"Agent"> | string | null
+  gstNumber?: Prisma.StringNullableFilter<"Agent"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   preferredTours?: Prisma.AgentTourPreferenceListRelationFilter
   assignedBookings?: Prisma.BookingAgentListRelationFilter
@@ -303,6 +343,11 @@ export type AgentOrderByWithRelationInput = {
   totalTours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  aadharCard?: Prisma.SortOrderInput | Prisma.SortOrder
+  panCard?: Prisma.SortOrderInput | Prisma.SortOrder
+  pinCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  gstNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   preferredTours?: Prisma.AgentTourPreferenceOrderByRelationAggregateInput
   assignedBookings?: Prisma.BookingAgentOrderByRelationAggregateInput
@@ -325,6 +370,11 @@ export type AgentWhereUniqueInput = Prisma.AtLeast<{
   totalTours?: Prisma.IntFilter<"Agent"> | number
   createdAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
+  companyName?: Prisma.StringNullableFilter<"Agent"> | string | null
+  aadharCard?: Prisma.StringNullableFilter<"Agent"> | string | null
+  panCard?: Prisma.StringNullableFilter<"Agent"> | string | null
+  pinCode?: Prisma.StringNullableFilter<"Agent"> | string | null
+  gstNumber?: Prisma.StringNullableFilter<"Agent"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   preferredTours?: Prisma.AgentTourPreferenceListRelationFilter
   assignedBookings?: Prisma.BookingAgentListRelationFilter
@@ -344,6 +394,11 @@ export type AgentOrderByWithAggregationInput = {
   totalTours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  aadharCard?: Prisma.SortOrderInput | Prisma.SortOrder
+  panCard?: Prisma.SortOrderInput | Prisma.SortOrder
+  pinCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  gstNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AgentCountOrderByAggregateInput
   _avg?: Prisma.AgentAvgOrderByAggregateInput
   _max?: Prisma.AgentMaxOrderByAggregateInput
@@ -368,6 +423,11 @@ export type AgentScalarWhereWithAggregatesInput = {
   totalTours?: Prisma.IntWithAggregatesFilter<"Agent"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Agent"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Agent"> | Date | string
+  companyName?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  aadharCard?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  panCard?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  pinCode?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  gstNumber?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
 }
 
 export type AgentCreateInput = {
@@ -383,6 +443,11 @@ export type AgentCreateInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutAgentInput
   preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
@@ -402,6 +467,11 @@ export type AgentUncheckedCreateInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
 }
@@ -419,6 +489,11 @@ export type AgentUpdateInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
   preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
@@ -438,6 +513,11 @@ export type AgentUncheckedUpdateInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUncheckedUpdateManyWithoutAgentNestedInput
 }
@@ -456,6 +536,11 @@ export type AgentCreateManyInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
 }
 
 export type AgentUpdateManyMutationInput = {
@@ -471,6 +556,11 @@ export type AgentUpdateManyMutationInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AgentUncheckedUpdateManyInput = {
@@ -487,6 +577,11 @@ export type AgentUncheckedUpdateManyInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AgentNullableScalarRelationFilter = {
@@ -508,6 +603,11 @@ export type AgentCountOrderByAggregateInput = {
   totalTours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  aadharCard?: Prisma.SortOrder
+  panCard?: Prisma.SortOrder
+  pinCode?: Prisma.SortOrder
+  gstNumber?: Prisma.SortOrder
 }
 
 export type AgentAvgOrderByAggregateInput = {
@@ -529,6 +629,11 @@ export type AgentMaxOrderByAggregateInput = {
   totalTours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  aadharCard?: Prisma.SortOrder
+  panCard?: Prisma.SortOrder
+  pinCode?: Prisma.SortOrder
+  gstNumber?: Prisma.SortOrder
 }
 
 export type AgentMinOrderByAggregateInput = {
@@ -544,6 +649,11 @@ export type AgentMinOrderByAggregateInput = {
   totalTours?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  aadharCard?: Prisma.SortOrder
+  panCard?: Prisma.SortOrder
+  pinCode?: Prisma.SortOrder
+  gstNumber?: Prisma.SortOrder
 }
 
 export type AgentSumOrderByAggregateInput = {
@@ -643,6 +753,11 @@ export type AgentCreateWithoutUserInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
 }
@@ -660,6 +775,11 @@ export type AgentUncheckedCreateWithoutUserInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
 }
@@ -693,6 +813,11 @@ export type AgentUpdateWithoutUserInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
 }
@@ -710,6 +835,11 @@ export type AgentUncheckedUpdateWithoutUserInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUncheckedUpdateManyWithoutAgentNestedInput
 }
@@ -727,6 +857,11 @@ export type AgentCreateWithoutPreferredToursInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
 }
@@ -745,6 +880,11 @@ export type AgentUncheckedCreateWithoutPreferredToursInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
 }
 
@@ -777,6 +917,11 @@ export type AgentUpdateWithoutPreferredToursInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
 }
@@ -795,6 +940,11 @@ export type AgentUncheckedUpdateWithoutPreferredToursInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedBookings?: Prisma.BookingAgentUncheckedUpdateManyWithoutAgentNestedInput
 }
 
@@ -811,6 +961,11 @@ export type AgentCreateWithoutAssignedBookingsInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutAgentInput
   preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
 }
@@ -829,6 +984,11 @@ export type AgentUncheckedCreateWithoutAssignedBookingsInput = {
   totalTours?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
 }
 
@@ -861,6 +1021,11 @@ export type AgentUpdateWithoutAssignedBookingsInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
   preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
 }
@@ -879,6 +1044,11 @@ export type AgentUncheckedUpdateWithoutAssignedBookingsInput = {
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedUpdateManyWithoutAgentNestedInput
 }
 
@@ -936,6 +1106,11 @@ export type AgentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   totalTours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  companyName?: boolean
+  aadharCard?: boolean
+  panCard?: boolean
+  pinCode?: boolean
+  gstNumber?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   preferredTours?: boolean | Prisma.Agent$preferredToursArgs<ExtArgs>
   assignedBookings?: boolean | Prisma.Agent$assignedBookingsArgs<ExtArgs>
@@ -956,6 +1131,11 @@ export type AgentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   totalTours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  companyName?: boolean
+  aadharCard?: boolean
+  panCard?: boolean
+  pinCode?: boolean
+  gstNumber?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agent"]>
 
@@ -973,6 +1153,11 @@ export type AgentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   totalTours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  companyName?: boolean
+  aadharCard?: boolean
+  panCard?: boolean
+  pinCode?: boolean
+  gstNumber?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agent"]>
 
@@ -990,9 +1175,14 @@ export type AgentSelectScalar = {
   totalTours?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  companyName?: boolean
+  aadharCard?: boolean
+  panCard?: boolean
+  pinCode?: boolean
+  gstNumber?: boolean
 }
 
-export type AgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "phone" | "city" | "state" | "experience" | "languages" | "bio" | "status" | "rating" | "totalTours" | "createdAt" | "updatedAt", ExtArgs["result"]["agent"]>
+export type AgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "phone" | "city" | "state" | "experience" | "languages" | "bio" | "status" | "rating" | "totalTours" | "createdAt" | "updatedAt" | "companyName" | "aadharCard" | "panCard" | "pinCode" | "gstNumber", ExtArgs["result"]["agent"]>
 export type AgentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   preferredTours?: boolean | Prisma.Agent$preferredToursArgs<ExtArgs>
@@ -1027,6 +1217,11 @@ export type $AgentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     totalTours: number
     createdAt: Date
     updatedAt: Date
+    companyName: string | null
+    aadharCard: string | null
+    panCard: string | null
+    pinCode: string | null
+    gstNumber: string | null
   }, ExtArgs["result"]["agent"]>
   composites: {}
 }
@@ -1466,6 +1661,11 @@ export interface AgentFieldRefs {
   readonly totalTours: Prisma.FieldRef<"Agent", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Agent", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Agent", 'DateTime'>
+  readonly companyName: Prisma.FieldRef<"Agent", 'String'>
+  readonly aadharCard: Prisma.FieldRef<"Agent", 'String'>
+  readonly panCard: Prisma.FieldRef<"Agent", 'String'>
+  readonly pinCode: Prisma.FieldRef<"Agent", 'String'>
+  readonly gstNumber: Prisma.FieldRef<"Agent", 'String'>
 }
     
 

@@ -5,7 +5,7 @@ import { createAndSendEmailOtp, normalizeEmail } from '@/lib/email-otp'
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password, phone, city, state, experience, bio, languages } = await req.json()
+    const { name, email, password, phone, city, state, experience, bio, languages, companyName, aadharCard, panCard, pinCode, gstNumber } = await req.json()
     const normalizedEmail = normalizeEmail(email || '')
 
     if (!name || !email || !password || !phone || !city || !state || !experience || !Array.isArray(languages) || languages.length === 0) {
@@ -34,6 +34,11 @@ export async function POST(req: Request) {
             bio: bio || null,
             languages,
             status: 'PENDING',
+            companyName: companyName || null,
+            aadharCard: aadharCard || null,
+            panCard: panCard || null,
+            pinCode: pinCode || null,
+            gstNumber: gstNumber || null,
           },
         },
       },

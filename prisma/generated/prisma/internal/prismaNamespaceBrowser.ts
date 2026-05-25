@@ -209,7 +209,12 @@ export const AgentScalarFieldEnum = {
   rating: 'rating',
   totalTours: 'totalTours',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  companyName: 'companyName',
+  aadharCard: 'aadharCard',
+  panCard: 'panCard',
+  pinCode: 'pinCode',
+  gstNumber: 'gstNumber'
 } as const
 
 export type AgentScalarFieldEnum = (typeof AgentScalarFieldEnum)[keyof typeof AgentScalarFieldEnum]
