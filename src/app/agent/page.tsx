@@ -9,7 +9,7 @@ export const revalidate = 0
 
 export default async function AgentDashboard() {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) redirect('/agent-login?callbackUrl=/agent')
+	if (!session?.user?.email) redirect('/login?callbackUrl=/dashboard')
   const userEmail = session.user.email
 
   const user = await (async () => {
@@ -35,14 +35,14 @@ export default async function AgentDashboard() {
           <p className="mb-6 leading-relaxed text-slate-600">
             We could not retrieve your agent profile. This might be due to a temporary database connection issue. Please try logging in again.
           </p>
-          <a href="/agent-login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
+          <a href="/login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
             Back to Login
           </a>
         </div>
       </div>
     )
   }
-  if (user.agent.status === 'PENDING') redirect('/agent/pending')
+  if (user.agent.status === 'PENDING') redirect('/pending')
   if (user.agent.status === 'SUSPENDED') redirect('/')
 
   const assignments = await prisma.bookingAgent.findMany({
@@ -76,10 +76,10 @@ export default async function AgentDashboard() {
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: 'Active Assignments', value: active, bg: 'bg-cyan-600', href: '/agent/my-tours?status=active', detail: activeAssignments[0]?.booking.package.title || 'No active tours yet' },
-          { label: 'Completed Tours', value: completed, bg: 'bg-emerald-600', href: '/agent/my-tours?status=completed', detail: completedAssignments[0]?.booking.package.title || 'No completed tours yet' },
-          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500', href: '/agent/earnings#breakdown', detail: `${completed} completed payout record(s)` },
-          { label: 'Tours I Cover', value: preferredCount, bg: 'bg-slate-800', href: '/agent/tours?view=covered', detail: preferredTours[0]?.package.title || 'Select tours you can cover' },
+          { label: 'Active Assignments', value: active, bg: 'bg-cyan-600', href: '/my-tours?status=active', detail: activeAssignments[0]?.booking.package.title || 'No active tours yet' },
+          { label: 'Completed Tours', value: completed, bg: 'bg-emerald-600', href: '/my-tours?status=completed', detail: completedAssignments[0]?.booking.package.title || 'No completed tours yet' },
+          { label: 'Agent Payout', value: `Rs ${totalEarnings.toLocaleString('en-IN')}`, bg: 'bg-orange-500', href: '/earning#breakdown', detail: `${completed} completed payout record(s)` },
+          { label: 'Tours I Cover', value: preferredCount, bg: 'bg-slate-800', href: '/tours?view=covered', detail: preferredTours[0]?.package.title || 'Select tours you can cover' },
         ].map((stat) => (
           <Link key={stat.label} href={stat.href} className={`${stat.bg} block rounded-2xl p-5 text-white transition hover:-translate-y-0.5 hover:shadow-lg`}>
             <p className="text-sm opacity-85">{stat.label}</p>
@@ -92,7 +92,7 @@ export default async function AgentDashboard() {
       <div className="rounded-3xl bg-white p-6 shadow-sm">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900">Recent Assignments</h2>
-          <Link href="/agent/my-tours" className="text-sm font-semibold text-orange-600 hover:underline">View All</Link>
+          <Link href="/my-tours" className="text-sm font-semibold text-orange-600 hover:underline">View All</Link>
         </div>
         <div className="space-y-3">
           {assignments.slice(0, 5).map((assignment) => (

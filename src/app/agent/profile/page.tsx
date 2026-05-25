@@ -9,7 +9,7 @@ export const revalidate = 0
 
 export default async function AgentProfilePage() {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) redirect('/agent-login?callbackUrl=/agent/profile')
+  if (!session?.user?.email) redirect('/login?callbackUrl=/profile')
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email.toLowerCase() },
@@ -30,14 +30,14 @@ export default async function AgentProfilePage() {
           <p className="mb-6 leading-relaxed text-slate-600">
             We could not retrieve your agent profile. This might be due to a temporary database connection issue. Please try logging in again.
           </p>
-          <a href="/agent-login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
+          <a href="/login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
             Back to Login
           </a>
         </div>
       </div>
     )
   }
-  if (user.agent.status === 'PENDING') redirect('/agent/pending')
+      if (user.agent.status === 'PENDING') redirect('/pending')
   if (user.agent.status === 'SUSPENDED') redirect('/')
 
   return (

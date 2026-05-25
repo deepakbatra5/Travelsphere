@@ -54,7 +54,7 @@ type PageProps = {
 
 export default async function AgentToursPage({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) redirect('/agent-login?callbackUrl=/agent/tours')
+	if (!session?.user?.email) redirect('/login?callbackUrl=/tours')
   const userEmail = session.user.email
   const resolvedSearchParams = await searchParams
 
@@ -81,14 +81,14 @@ export default async function AgentToursPage({ searchParams }: PageProps) {
           <p className="mb-6 leading-relaxed text-slate-600">
             We could not retrieve your agent profile. This might be due to a temporary database connection issue. Please try logging in again.
           </p>
-          <a href="/agent-login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
+          <a href="/login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
             Back to Login
           </a>
         </div>
       </div>
     )
   }
-  if (user.agent.status === 'PENDING') redirect('/agent/pending')
+      if (user.agent.status === 'PENDING') redirect('/pending')
   if (user.agent.status === 'SUSPENDED') redirect('/')
 
   const agent = user.agent
@@ -109,10 +109,10 @@ export default async function AgentToursPage({ searchParams }: PageProps) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <a href="/agent/tours" className={`rounded-full px-4 py-2 text-xs font-bold ${!showCoveredOnly ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
+        <a href="/tours" className={`rounded-full px-4 py-2 text-xs font-bold ${!showCoveredOnly ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
           All tours ({packages.length})
         </a>
-        <a href="/agent/tours?view=covered" className={`rounded-full px-4 py-2 text-xs font-bold ${showCoveredOnly ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
+        <a href="/tours?view=covered" className={`rounded-full px-4 py-2 text-xs font-bold ${showCoveredOnly ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
           Tours I cover ({selectedIds.size})
         </a>
       </div>

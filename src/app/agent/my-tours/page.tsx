@@ -27,7 +27,7 @@ function filterAssignments<T extends { status: string }>(assignments: T[], statu
 
 export default async function AgentMyToursPage({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) redirect('/agent-login?callbackUrl=/agent/my-tours')
+	if (!session?.user?.email) redirect('/login?callbackUrl=/my-tours')
   const userEmail = session.user.email
   const resolvedSearchParams = await searchParams
 
@@ -54,14 +54,14 @@ export default async function AgentMyToursPage({ searchParams }: PageProps) {
           <p className="mb-6 leading-relaxed text-slate-600">
             We could not retrieve your agent profile. This might be due to a temporary database connection issue. Please try logging in again.
           </p>
-          <a href="/agent-login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
+          <a href="/login" className="block w-full rounded-2xl bg-orange-500 py-3 font-bold text-white hover:bg-orange-600">
             Back to Login
           </a>
         </div>
       </div>
     )
   }
-  if (user.agent.status === 'PENDING') redirect('/agent/pending')
+      if (user.agent.status === 'PENDING') redirect('/pending')
   if (user.agent.status === 'SUSPENDED') redirect('/')
 
   const assignments = await prisma.bookingAgent.findMany({
@@ -83,10 +83,10 @@ export default async function AgentMyToursPage({ searchParams }: PageProps) {
 
       <div className="flex flex-wrap gap-2">
         {[
-          { label: 'All', href: '/agent/my-tours', active: !resolvedSearchParams?.status, count: assignments.length },
-          { label: 'Active', href: '/agent/my-tours?status=active', active: resolvedSearchParams?.status === 'active', count: active },
-          { label: 'Completed', href: '/agent/my-tours?status=completed', active: resolvedSearchParams?.status === 'completed', count: completed },
-          { label: 'Declined', href: '/agent/my-tours?status=cancelled', active: resolvedSearchParams?.status === 'cancelled', count: cancelled },
+          { label: 'All', href: '/my-tours', active: !resolvedSearchParams?.status, count: assignments.length },
+          { label: 'Active', href: '/my-tours?status=active', active: resolvedSearchParams?.status === 'active', count: active },
+          { label: 'Completed', href: '/my-tours?status=completed', active: resolvedSearchParams?.status === 'completed', count: completed },
+          { label: 'Declined', href: '/my-tours?status=cancelled', active: resolvedSearchParams?.status === 'cancelled', count: cancelled },
         ].map((item) => (
           <a key={item.label} href={item.href} className={`rounded-full px-4 py-2 text-xs font-bold ${item.active ? 'bg-cyan-700 text-white' : 'bg-white text-slate-600 shadow-sm hover:text-cyan-700'}`}>
             {item.label} ({item.count})

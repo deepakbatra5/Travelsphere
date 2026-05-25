@@ -12,10 +12,11 @@ const REMEMBER_EMAIL_KEY = 'travel-sphere-agent-email'
 const languageOptions = ['Hindi', 'English', 'Punjabi', 'Bengali', 'Tamil', 'Telugu', 'Gujarati', 'Marathi']
 
 function getSafeCallbackPath() {
-  if (typeof window === 'undefined') return '/agent'
+  if (typeof window === 'undefined') return '/dashboard'
 
   const isAgentSubdomain = window.location.hostname.startsWith('agent.')
-  const defaultPath = '/agent'
+  const defaultPath = '/dashboard'
+  const allowedAgentPaths = ['/dashboard', '/profile', '/tours', '/my-tours', '/earning', '/earnings', '/help', '/pending', '/agent']
 
   const rawCallback = new URLSearchParams(window.location.search).get('callbackUrl')
   if (!rawCallback) return defaultPath
@@ -25,15 +26,15 @@ function getSafeCallbackPath() {
     if (callbackUrl.origin !== window.location.origin) return defaultPath
 
     const pathWithQuery = `${callbackUrl.pathname}${callbackUrl.search}${callbackUrl.hash}`
-    const isSafeAgentPath = pathWithQuery.startsWith('/agent') && pathWithQuery !== '/agent-login'
-    const isSafeSubdomainPath = isAgentSubdomain && (pathWithQuery.startsWith('/dashboard') || pathWithQuery.startsWith('/agent'))
+    const isSafeAgentPath = allowedAgentPaths.some((path) => pathWithQuery.startsWith(path))
+    const isSafeSubdomainPath = isAgentSubdomain && (pathWithQuery.startsWith('/dashboard') || allowedAgentPaths.some((path) => pathWithQuery.startsWith(path)))
 
     if (!isSafeAgentPath && !isSafeSubdomainPath) {
       return defaultPath
     }
     return pathWithQuery
   } catch {
-    if (rawCallback.startsWith('/agent') && rawCallback !== '/agent-login') return rawCallback
+    if (allowedAgentPaths.some((path) => rawCallback.startsWith(path))) return rawCallback
     if (isAgentSubdomain && (rawCallback.startsWith('/dashboard') || rawCallback.startsWith('/agent'))) return rawCallback
     return defaultPath
   }
@@ -182,7 +183,7 @@ export default function AgentLoginPage() {
       return
     }
 
-    router.push(`/verify-otp?email=${encodeURIComponent(data.email || regForm.email)}&next=${encodeURIComponent('/agent-login')}`)
+    router.push(`/verify-otp?email=${encodeURIComponent(data.email || regForm.email)}&next=${encodeURIComponent('/login')}`)
   }
 
   return (

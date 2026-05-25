@@ -33,12 +33,13 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
   }
 
   if (portal === 'agent') {
-    if (path === '/' || path === '/dashboard') return '/agent'
+    if (path === '/' || path === '/dashboard' || path === '/dashbaord') return '/agent'
     if (path === '/login') return '/agent-login'
     if (path === '/register') return '/agent-register'
     if (path === '/profile') return '/agent/profile'
     if (path === '/tours') return '/agent/tours'
     if (path === '/my-tours') return '/agent/my-tours'
+    if (path === '/earning' || path === '/earnings') return '/agent/earnings'
     if (path === '/earnings') return '/agent/earnings'
     if (path === '/help') return '/agent/help'
     if (path === '/pending') return '/agent/pending'

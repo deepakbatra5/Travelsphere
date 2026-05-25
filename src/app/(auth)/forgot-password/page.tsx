@@ -20,7 +20,7 @@ function ForgotPasswordContent() {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  const loginHref = portal === 'agent' ? '/agent-login' : '/login'
+  const loginHref = portal === 'agent' ? '/login' : '/login'
   const accent = portal === 'agent' ? 'cyan' : 'orange'
 
   const requestOtp = async (e: React.FormEvent) => {
@@ -104,7 +104,7 @@ function ForgotPasswordContent() {
                 className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
               />
             </div>
-            <button type="submit" disabled={loading} className={`w-full rounded-2xl py-3 font-bold text-white disabled:opacity-60 ${accent === 'cyan' ? 'bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600' : 'bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600'}`}>
+            <button type="submit" disabled={loading} className={`w-full rounded-2xl py-3 font-bold text-white disabled:opacity-60 ${accent === 'cyan' ? 'bg-linear-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600' : 'bg-linear-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600'}`}>
               {loading ? 'Sending OTP...' : 'Send Reset OTP'}
             </button>
           </form>
@@ -152,7 +152,7 @@ function ForgotPasswordContent() {
                 className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
               />
             </div>
-            <button type="submit" disabled={loading} className={`w-full rounded-2xl py-3 font-bold text-white disabled:opacity-60 ${accent === 'cyan' ? 'bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600' : 'bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600'}`}>
+            <button type="submit" disabled={loading} className={`w-full rounded-2xl py-3 font-bold text-white disabled:opacity-60 ${accent === 'cyan' ? 'bg-linear-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600' : 'bg-linear-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600'}`}>
               {loading ? 'Resetting...' : 'Reset Password'}
             </button>
           </form>

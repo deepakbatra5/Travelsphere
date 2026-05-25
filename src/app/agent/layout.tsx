@@ -8,19 +8,19 @@ import { clearAuthSession } from '@/lib/browser-session'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navItems = [
-  { href: '/agent', label: 'Dashboard' },
-  { href: '/agent/profile', label: 'Profile' },
-  { href: '/agent/tours', label: 'Available Tours' },
-  { href: '/agent/my-tours', label: 'My Assignments' },
-  { href: '/agent/earnings', label: 'Earnings' },
-  { href: '/agent/help', label: 'Help & Support' },
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/profile', label: 'Profile' },
+  { href: '/tours', label: 'Available Tours' },
+  { href: '/my-tours', label: 'My Assignments' },
+  { href: '/earning', label: 'Earnings' },
+  { href: '/help', label: 'Help & Support' },
 ]
 
 export default function AgentLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  if (pathname === '/agent/pending') return <>{children}</>
+  if (pathname === '/pending') return <>{children}</>
 
   return (
     <div className="flex min-h-screen bg-slate-100">
@@ -49,7 +49,7 @@ export default function AgentLayout({ children }: { children: React.ReactNode })
             onClick={async () => {
               clearAuthSession()
               await signOut({ redirect: false })
-              window.location.href = '/agent-login'
+              window.location.href = '/login'
             }}
             className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-red-300 hover:bg-cyan-900"
           >
