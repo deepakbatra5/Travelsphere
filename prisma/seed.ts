@@ -311,7 +311,7 @@ async function main() {
       role: 'Chief Technology Officer (CTO)',
       linkedin: 'https://www.linkedin.com/in/nikhil-singhal04/',
       moto: 'Powering smart travel with cutting-edge tech and seamless itineraries.',
-      imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+      imageUrl: '/images/team/nikhil.png',
       order: 3
     },
     {
