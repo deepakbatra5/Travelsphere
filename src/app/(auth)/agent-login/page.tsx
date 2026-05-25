@@ -183,7 +183,7 @@ export default function AgentLoginPage() {
       return
     }
 
-    router.push(`/verify-otp?email=${encodeURIComponent(data.email || regForm.email)}&next=${encodeURIComponent('/login')}`)
+    router.push(`/verify-otp?email=${encodeURIComponent(data.email || regForm.email)}&next=${encodeURIComponent('/?tab=register')}`)
   }
 
   return (
@@ -214,9 +214,9 @@ export default function AgentLoginPage() {
       {/* Hero Banner Section */}
       <section className="relative overflow-hidden bg-slate-950 px-6 py-20 lg:py-28 text-white rounded-b-[3.5rem] shadow-2xl">
         <div className="absolute inset-0 opacity-15">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-          <div className="absolute top-0 right-0 -mt-20 -mr-20 h-[500px] w-[500px] rounded-full bg-orange-500/20 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-[500px] w-[500px] rounded-full bg-cyan-500/20 blur-3xl"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[32px_32px]"></div>
+          <div className="absolute top-0 right-0 -mt-20 -mr-20 h-125 w-125 rounded-full bg-orange-500/20 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-125 w-125 rounded-full bg-cyan-500/20 blur-3xl"></div>
         </div>
 
         <div className="relative mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -227,7 +227,7 @@ export default function AgentLoginPage() {
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
               Grow Your Business as a <br />
-              <span className="bg-gradient-to-r from-orange-400 via-rose-500 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-orange-400 via-rose-500 to-cyan-400 bg-clip-text text-transparent">
                 Travel Sphere Agent
               </span>
             </h1>
@@ -657,7 +657,7 @@ export default function AgentLoginPage() {
             Simple 4-Step Process
           </span>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
-            How to Register an <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Agent Account</span>
+            How to Register an <span className="bg-linear-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Agent Account</span>
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base leading-relaxed">
             Create your travel agent profile, link your verification credentials, and configure your preferences to start receiving assignments in four simple steps.
@@ -720,11 +720,11 @@ export default function AgentLoginPage() {
               className="group relative bg-white dark:bg-slate-900/60 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow-2xl hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between overflow-hidden"
             >
               {/* Card background glowing gradient ring */}
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-linear-to-br from-transparent via-transparent to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="space-y-6 relative z-10">
                 <div className="flex items-center justify-between">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${step.color} text-white flex items-center justify-center shadow-lg`}>
+                  <div className={`w-12 h-12 rounded-2xl bg-linear-to-br ${step.color} text-white flex items-center justify-center shadow-lg`}>
                     {step.icon}
                   </div>
                   <span className="text-4xl font-black text-slate-150 dark:text-slate-800 group-hover:text-orange-500/20 transition-colors duration-500">
@@ -744,7 +744,7 @@ export default function AgentLoginPage() {
 
               {/* Card footer decorative accent line */}
               <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full mt-6 overflow-hidden relative">
-                <div className={`absolute top-0 left-0 h-full w-0 group-hover:w-full bg-gradient-to-r ${step.color} transition-all duration-700 ease-out`} />
+                <div className={`absolute top-0 left-0 h-full w-0 group-hover:w-full bg-linear-to-r ${step.color} transition-all duration-700 ease-out`} />
               </div>
             </div>
           ))}
@@ -758,7 +758,7 @@ export default function AgentLoginPage() {
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-orange-500 bg-orange-50 dark:bg-orange-950/20 px-3.5 py-1.5 rounded-full border border-orange-100 dark:border-orange-900/30">Key Benefits</span>
             <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
-              Why Choose <span className="bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">Travel Sphere Agent Portal</span>?
+              Why Choose <span className="bg-linear-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">Travel Sphere Agent Portal</span>?
             </h2>
             <p className="text-slate-600 dark:text-slate-450 text-sm leading-relaxed">
               Gain a massive competitive edge by leveraging our resources. We supply agents with real inquiries, verified payments, and tools to run operations flawlessly.
@@ -851,10 +851,10 @@ export default function AgentLoginPage() {
                 className={`group relative bg-white dark:bg-slate-900/60 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow-2xl hover:border-orange-500/20 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between overflow-hidden ${item.glow}`}
               >
                 {/* Accent Top Bar */}
-                <div className={`absolute top-0 left-0 w-full h-[3px] ${item.line} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
+                <div className={`absolute top-0 left-0 w-full h-0.75 ${item.line} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
                 
                 {/* Background wash on hover */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-linear-to-b from-transparent to-slate-500/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 <div className="space-y-5 relative z-10">
                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${item.color}`}>
@@ -878,7 +878,7 @@ export default function AgentLoginPage() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="text-xs font-bold uppercase tracking-widest text-orange-500 bg-orange-50 dark:bg-orange-950/20 px-3.5 py-1.5 rounded-full border border-orange-100 dark:border-orange-900/30">Travel Sphere Advantages</span>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
-            Comprehensive <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Advantages of Our Platform</span>
+            Comprehensive <span className="bg-linear-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Advantages of Our Platform</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm">
             Leverage our cutting-edge technology and extensive inventory to satisfy every customer demand.
@@ -953,9 +953,9 @@ export default function AgentLoginPage() {
               className="group relative flex gap-6 p-8 md:p-10 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow-xl hover:border-orange-500/20 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
             >
               {/* Highlight card corner accent */}
-              <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 right-0 w-8 h-8 bg-linear-to-bl from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
-              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/20 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/30 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-300">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/20 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/30 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-300">
                 {adv.icon}
               </div>
               <div className="space-y-2 relative z-10">
@@ -988,7 +988,7 @@ export default function AgentLoginPage() {
             
             <div className="space-y-4 pt-4 border-t border-slate-800">
               <div className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-5 h-5 text-orange-400 mt-1">
+                <span className="shrink-0 w-5 h-5 text-orange-400 mt-1">
                   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1003,7 +1003,7 @@ export default function AgentLoginPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="flex-shrink-0 w-5 h-5 text-orange-400">
+                <span className="shrink-0 w-5 h-5 text-orange-400">
                   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
@@ -1017,7 +1017,7 @@ export default function AgentLoginPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="flex-shrink-0 w-5 h-5 text-orange-400">
+                <span className="shrink-0 w-5 h-5 text-orange-400">
                   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -1031,7 +1031,7 @@ export default function AgentLoginPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="flex-shrink-0 w-5 h-5 text-orange-400">
+                <span className="shrink-0 w-5 h-5 text-orange-400">
                   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>

@@ -20,7 +20,7 @@ function ForgotPasswordContent() {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  const loginHref = portal === 'agent' ? '/login' : '/login'
+  const loginHref = portal === 'agent' ? '/' : '/login'
   const accent = portal === 'agent' ? 'cyan' : 'orange'
 
   const requestOtp = async (e: React.FormEvent) => {

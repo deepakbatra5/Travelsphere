@@ -7,7 +7,7 @@ export default function AgentRegisterPage() {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/login?tab=register')
+    router.replace('/?tab=register')
   }, [router])
 
   return (

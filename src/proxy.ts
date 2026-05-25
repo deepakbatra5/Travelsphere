@@ -33,14 +33,25 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
   }
 
   if (portal === 'agent') {
-    if (path === '/' || path === '/dashboard' || path === '/dashbaord') return '/agent'
-    if (path === '/login') return '/agent-login'
-    if (path === '/register') return '/agent-register'
+    if (originalPath === '/login') {
+      const url = req.nextUrl.clone()
+      url.pathname = '/'
+      return NextResponse.redirect(url)
+    }
+
+    if (originalPath === '/register') {
+      const url = req.nextUrl.clone()
+      url.pathname = '/'
+      url.searchParams.set('tab', 'register')
+      return NextResponse.redirect(url)
+    }
+
+    if (path === '/') return token?.agentStatus ? '/dashboard' : '/agent-login'
+    if (path === '/dashboard' || path === '/dashbaord') return '/agent'
     if (path === '/profile') return '/agent/profile'
     if (path === '/tours') return '/agent/tours'
     if (path === '/my-tours') return '/agent/my-tours'
     if (path === '/earning' || path === '/earnings') return '/agent/earnings'
-    if (path === '/earnings') return '/agent/earnings'
     if (path === '/help') return '/agent/help'
     if (path === '/pending') return '/agent/pending'
     return path
@@ -94,7 +105,7 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 
-  if (portal === 'agent' && !isAgentRoute && !isAuthRoute) {
+  if (portal === 'agent' && path !== '/' && !isAgentRoute && !isAuthRoute) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 
@@ -112,10 +123,18 @@ export default async function proxy(req: NextRequest) {
     }
 
     if (token?.agentStatus) {
-      return NextResponse.redirect(new URL('/agent', req.url))
+      return NextResponse.redirect(new URL('/dashboard', req.url))
     }
 
     return originalPath === path ? NextResponse.next() : rewriteUrl(req, path)
+  }
+
+  if (path === '/') {
+    if (token?.agentStatus) {
+      return NextResponse.redirect(new URL('/dashboard', req.url))
+    }
+
+    return originalPath === path ? NextResponse.next() : rewriteUrl(req, '/agent-login')
   }
 
   if (isAdminRoute && token?.role !== 'ADMIN') {
