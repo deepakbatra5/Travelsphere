@@ -9,13 +9,73 @@ import {
   SparklesIcon
 } from '@heroicons/react/24/outline'
 
+const FALLBACK_TEAM_MEMBERS = [
+  {
+    id: 'fallback-deepak',
+    name: 'Deepak Kumar',
+    role: 'Founder & CEO',
+    moto: 'To inspire every Indian to explore the world with absolute trust and zero hassle.',
+    linkedin: 'https://www.linkedin.com/in/deepakumar04/',
+    imageUrl: '/images/team/deepak.png',
+    order: 1
+  },
+  {
+    id: 'fallback-harsh',
+    name: 'Harsh Raj',
+    role: 'Co-Founder & Operations Head',
+    moto: 'Building the strongest local partner network to guarantee 100% safety and premium comfort for every traveler.',
+    linkedin: 'https://www.linkedin.com/in/harshraj04/',
+    imageUrl: '/images/team/harsh.png',
+    order: 2
+  },
+  {
+    id: 'fallback-nikhil',
+    name: 'Nikhil Singhal',
+    role: 'Chief Technology Officer (CTO)',
+    linkedin: 'https://www.linkedin.com/in/nikhil-singhal04/',
+    moto: 'Powering smart travel with cutting-edge tech and seamless itineraries.',
+    imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+    order: 3
+  },
+  {
+    id: 'fallback-pratik',
+    name: 'Pratik Kumar',
+    role: 'Head of Marketing & Strategy',
+    linkedin: 'https://www.linkedin.com/in/pratik70/',
+    moto: 'Connecting people with their dream destinations through authentic stories.',
+    imageUrl: '/images/team/pratik.png',
+    order: 4
+  },
+  {
+    id: 'fallback-abhishek',
+    name: 'Abhishek Dixit',
+    role: 'Head of Customer Experience',
+    linkedin: 'https://www.linkedin.com/in/abhishek-dixitt-/',
+    moto: 'Ensuring 24/7 support so that every trip with us is completely memorable.',
+    imageUrl: '/images/team/abhishek.png',
+    order: 5
+  }
+]
+
 export const dynamic = 'force-dynamic'
 
 export default async function AboutUsPage() {
-  // Query all team members from the PostgreSQL database
-  const teamMembers = await prisma.teamMember.findMany({
-    orderBy: { order: 'asc' }
-  })
+  let teamMembers = []
+  
+  try {
+    // Query all team members from the PostgreSQL database
+    teamMembers = await prisma.teamMember.findMany({
+      orderBy: { order: 'asc' }
+    })
+    
+    // If the database has no seeded team members, use the fallback list
+    if (!teamMembers || teamMembers.length === 0) {
+      teamMembers = FALLBACK_TEAM_MEMBERS
+    }
+  } catch (error) {
+    console.error('Failed to load team members from database, using fallback data:', error)
+    teamMembers = FALLBACK_TEAM_MEMBERS
+  }
 
   // Separate the top two leaders (Deepak and Harsh) from the rest for a clean layout
   const topLeaders = teamMembers.filter(m => m.order <= 2)
