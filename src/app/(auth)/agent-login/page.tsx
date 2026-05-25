@@ -598,7 +598,7 @@ export default function AgentLoginPage() {
                               className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${
                                 regForm.languages.includes(lang) 
                                   ? 'border-orange-500 bg-orange-500 text-white' 
-                                  : 'border-slate-200 bg-white text-slate-650 hover:border-orange-300'
+                                  : 'border-slate-200 bg-white text-slate-600 hover:border-orange-300'
                               }`}
                             >
                               {lang}
@@ -658,7 +658,7 @@ export default function AgentLoginPage() {
           <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
             How to Register an <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Agent Account</span>
           </h2>
-          <p className="text-slate-550 dark:text-slate-400 text-sm md:text-base leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base leading-relaxed">
             Create your travel agent profile, link your verification credentials, and configure your preferences to start receiving assignments in four simple steps.
           </p>
         </div>
@@ -759,7 +759,7 @@ export default function AgentLoginPage() {
             <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
               Why Choose <span className="bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">Travel Sphere Agent Portal</span>?
             </h2>
-            <p className="text-slate-655 dark:text-slate-450 text-sm leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-450 text-sm leading-relaxed">
               Gain a massive competitive edge by leveraging our resources. We supply agents with real inquiries, verified payments, and tools to run operations flawlessly.
             </p>
           </div>
@@ -879,7 +879,7 @@ export default function AgentLoginPage() {
           <h2 className="text-3xl font-black text-slate-900 dark:text-white md:text-4xl">
             Comprehensive <span className="bg-gradient-to-r from-orange-500 via-rose-500 to-indigo-600 bg-clip-text text-transparent">Advantages of Our Platform</span>
           </h2>
-          <p className="text-slate-650 dark:text-slate-400 text-sm">
+          <p className="text-slate-600 dark:text-slate-400 text-sm">
             Leverage our cutting-edge technology and extensive inventory to satisfy every customer demand.
           </p>
         </div>

@@ -230,7 +230,7 @@ export default function AdminTeamPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 font-semibold text-gray-900">{member.name}</td>
-                    <td className="px-6 py-4 text-orange-655 font-medium">{member.role}</td>
+                    <td className="px-6 py-4 text-orange-600 font-medium">{member.role}</td>
                     <td className="px-6 py-4 max-w-xs truncate text-gray-500 italic">"{member.moto}"</td>
                     <td className="px-6 py-4">
                       <a
@@ -363,11 +363,11 @@ export default function AdminTeamPage() {
               {form.imageUrl && (
                 <div className="mt-2 flex items-center gap-3 bg-gray-50 rounded-xl p-3 border border-gray-150">
                   <img src={form.imageUrl} alt="Preview" className="h-10 w-10 rounded-full object-cover border border-gray-200" />
-                  <span className="text-xs text-gray-550 font-medium truncate grow">{form.imageUrl}</span>
+                  <span className="text-xs text-gray-500 font-medium truncate grow">{form.imageUrl}</span>
                   <button
                     type="button"
                     onClick={() => setForm(prev => ({ ...prev, imageUrl: '' }))}
-                    className="text-xs font-bold text-red-500 hover:text-red-650"
+                    className="text-xs font-bold text-red-500 hover:text-red-600"
                   >
                     Remove
                   </button>
@@ -378,7 +378,7 @@ export default function AdminTeamPage() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 border border-gray-300 text-gray-650 font-semibold py-2.5 rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                  className="flex-1 border border-gray-300 text-gray-600 font-semibold py-2.5 rounded-xl hover:bg-gray-50 transition-colors text-sm"
                 >
                   Cancel
                 </button>

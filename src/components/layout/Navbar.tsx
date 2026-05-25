@@ -72,7 +72,7 @@ export default function Navbar() {
                   className={`rounded-full px-3 py-2 text-sm font-semibold transition ${
                     (link.href === '/tours' ? (pathname === '/tours' && !isSearchActive) : pathname === link.href)
                       ? 'bg-slate-900 text-white'
-                      : 'text-slate-650 hover:bg-slate-100 hover:text-slate-900'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                 >
                   {link.label}
@@ -270,7 +270,7 @@ export default function Navbar() {
                     clearAuthSession()
                     void signOut()
                   }}
-                  className="rounded-xl px-3 py-2 text-left text-sm font-bold text-red-650 hover:bg-red-50 flex items-center gap-2"
+                  className="rounded-xl px-3 py-2 text-left text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2"
                 >
                   <svg className="h-4.5 w-4.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013 3v1" />

@@ -87,7 +87,7 @@ export default async function ToursPage({ searchParams }: Props) {
         <div className="mb-6">
           <Link
             href="/tours"
-            className="inline-flex items-center gap-2 text-sm font-bold text-orange-650 hover:text-orange-700 transition"
+            className="inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700 transition"
           >
             ← Show all tours
           </Link>

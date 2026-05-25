@@ -245,7 +245,7 @@ export default function CustomerDashboard({ user, initialTab = 'personal' }: Cus
               className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
                 activeTab === 'personal'
                   ? 'bg-orange-500 text-white shadow-md'
-                  : 'text-slate-650 hover:bg-slate-50 hover:text-slate-950'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
               }`}
             >
               <UserIcon className="h-5 w-5" />
@@ -257,7 +257,7 @@ export default function CustomerDashboard({ user, initialTab = 'personal' }: Cus
               className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
                 activeTab === 'bookings'
                   ? 'bg-orange-500 text-white shadow-md'
-                  : 'text-slate-650 hover:bg-slate-50 hover:text-slate-950'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
               }`}
             >
               <CalendarDaysIcon className="h-5 w-5" />
@@ -269,7 +269,7 @@ export default function CustomerDashboard({ user, initialTab = 'personal' }: Cus
               className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
                 activeTab === 'reviews'
                   ? 'bg-orange-500 text-white shadow-md'
-                  : 'text-slate-650 hover:bg-slate-50 hover:text-slate-950'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
               }`}
             >
               <StarIcon className="h-5 w-5" />
@@ -281,7 +281,7 @@ export default function CustomerDashboard({ user, initialTab = 'personal' }: Cus
               className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
                 activeTab === 'settings'
                   ? 'bg-orange-500 text-white shadow-md'
-                  : 'text-slate-650 hover:bg-slate-50 hover:text-slate-950'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
               }`}
             >
               <Cog6ToothIcon className="h-5 w-5" />
@@ -493,7 +493,7 @@ export default function CustomerDashboard({ user, initialTab = 'personal' }: Cus
                                   )
                                 ))}
                               </div>
-                              <p className="text-xs italic text-slate-650">"{existingReview.comment}"</p>
+                              <p className="text-xs italic text-slate-600">"{existingReview.comment}"</p>
                             </div>
                           ) : (
                             <p className="text-xs text-slate-400 mt-1">You haven't reviewed this package yet.</p>
@@ -698,7 +698,7 @@ export default function CustomerDashboard({ user, initialTab = 'personal' }: Cus
               </div>
 
               {reviewModal.error && <p className="text-xs font-semibold text-rose-600">{reviewModal.error}</p>}
-              {reviewModal.success && <p className="text-xs font-semibold text-emerald-650">{reviewModal.success}</p>}
+              {reviewModal.success && <p className="text-xs font-semibold text-emerald-600">{reviewModal.success}</p>}
 
               <div className="flex gap-2 justify-end pt-2">
                 <button

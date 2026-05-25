@@ -170,7 +170,7 @@ export default function PackageFilter({ basePath = '/packages' }: { basePath?: s
                       e.stopPropagation()
                       setSearch('')
                     }}
-                    className="text-slate-400 hover:text-slate-650 dark:hover:text-white p-1 shrink-0"
+                    className="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 shrink-0"
                   >
                     <XMarkIcon className="h-3.5 w-3.5" />
                   </button>
@@ -185,7 +185,7 @@ export default function PackageFilter({ basePath = '/packages' }: { basePath?: s
             onClick={() => setActiveDropdown(activeDropdown === 'category' ? null : 'category')}
           >
             <div className="shrink-0 w-9 h-9 flex items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/20 group-hover:bg-purple-200 dark:group-hover:bg-purple-950/30 transition-colors">
-              <TagIcon className="h-5 w-5 text-purple-650 dark:text-purple-400" />
+              <TagIcon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="flex-1 min-w-0 text-left">
               <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Category</p>
@@ -213,7 +213,7 @@ export default function PackageFilter({ basePath = '/packages' }: { basePath?: s
                       className={`flex flex-col items-center justify-center p-5 rounded-2xl border text-center transition duration-300 ${
                         category === opt.value
                           ? 'border-crimson bg-crimson/5 shadow-sm'
-                          : 'border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-650 hover:shadow-sm'
+                          : 'border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-sm'
                       }`}
                     >
                       <span className="text-3xl mb-3 block leading-none">{opt.emoji}</span>
@@ -334,7 +334,7 @@ export default function PackageFilter({ basePath = '/packages' }: { basePath?: s
             </button>
             <button
               onClick={clearFilters}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-650 dark:text-slate-350 px-5 py-3 rounded-xl font-bold text-xs hover:-translate-y-0.5 active:scale-95 transition-all whitespace-nowrap"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-350 px-5 py-3 rounded-xl font-bold text-xs hover:-translate-y-0.5 active:scale-95 transition-all whitespace-nowrap"
             >
               Clear
             </button>
