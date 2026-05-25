@@ -201,8 +201,8 @@ export default function AgentLoginPage() {
           <div className="flex items-center gap-6">
             <div className="hidden sm:flex flex-col items-end">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Agent Helpline</span>
-              <a href="tel:+919773335623" className="text-sm font-black text-slate-800 hover:text-orange-500 transition-colors">
-                +91-9773335623
+              <a href="tel:+918603606089" className="text-sm font-black text-slate-800 dark:text-slate-200 hover:text-orange-500 transition-colors">
+                +91 8603606089
               </a>
             </div>
             <ThemeToggle />
@@ -859,9 +859,9 @@ export default function AgentLoginPage() {
             <span className="text-xs uppercase tracking-widest text-orange-400 font-bold bg-orange-500/10 px-3.5 py-1.5 rounded-full border border-orange-500/20">
               Corporate Office
             </span>
-            <h2 className="text-3xl font-black md:text-4xl">Contact Our Noida Branch</h2>
+            <h2 className="text-3xl font-black md:text-4xl">Contact Travel Sphere</h2>
             <p className="text-slate-350 text-sm leading-relaxed max-w-md">
-              Have specific agent onboarding questions or corporate queries? Feel free to contact our Noida branch team via phone, email, or by scheduling an in-person meeting.
+              India's trusted travel company. Curated tours for families, couples, groups and solo travelers since 2013.
             </p>
             
             <div className="space-y-4 pt-4 border-t border-slate-800">
@@ -873,9 +873,9 @@ export default function AgentLoginPage() {
                   </svg>
                 </span>
                 <div>
-                  <h4 className="text-sm font-bold text-white">Noida Branch Address</h4>
+                  <h4 className="text-sm font-bold text-white">Address</h4>
                   <p className="text-slate-400 text-xs leading-relaxed mt-1">
-                    Tower A-408A, ITHUM TOWER, GALAXY BUSINESS PARK, Block A, Industrial Area, Sector 62, Noida, Uttar Pradesh 201309
+                    Amritsar, Punjab, India
                   </p>
                 </div>
               </div>
@@ -888,10 +888,52 @@ export default function AgentLoginPage() {
                 </span>
                 <div>
                   <h4 className="text-sm font-bold text-white">Agent Helpline</h4>
-                  <a href="tel:+919773335623" className="text-orange-400 text-xs font-black hover:underline mt-1 block">
-                    +91-9773335623
+                  <a href="tel:+918603606089" className="text-orange-400 text-xs font-black hover:underline mt-1 block">
+                    +91 8603606089
                   </a>
                 </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-5 h-5 text-orange-400">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </span>
+                <div>
+                  <h4 className="text-sm font-bold text-white">Email Address</h4>
+                  <a href="mailto:deepankumar81c401a1e8@gmail.com" className="text-orange-400 text-xs font-black hover:underline mt-1 block">
+                    deepankumar81c401a1e8@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-5 h-5 text-orange-400">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+                <div>
+                  <h4 className="text-sm font-bold text-white">Business Hours</h4>
+                  <p className="text-slate-400 text-xs mt-1">
+                    Mon–Sat: 9AM to 7PM
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <a
+                  href="https://wa.me/918603606089"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-700 transition-all hover:scale-105 active:scale-95"
+                >
+                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.993L2 22l5.233-1.371a9.936 9.936 0 004.777 1.224h.005c5.505 0 9.986-4.479 9.988-9.985a9.95 9.95 0 00-2.922-7.062A9.92 9.92 0 0012.012 2zm5.72 14.126c-.244.688-1.218 1.25-1.688 1.3-1.077.112-2.484-.338-5.077-1.412-3.32-1.373-5.419-4.733-5.586-4.954-.166-.222-1.332-1.772-1.332-3.38 0-1.609.83-2.4 1.135-2.718.305-.318.664-.397.886-.397.222 0 .443.002.637.01.2.01.47.007.728.63.266.643.91 2.223.987 2.378.077.155.129.336.027.539-.1.203-.152.33-.3.504-.148.174-.313.39-.446.522-.148.148-.303.309-.13.606.173.297.77 1.272 1.65 2.057.94.84 1.733 1.102 2.036 1.228.303.125.48.105.659-.102.179-.207.77-.899.975-1.206.205-.308.41-.256.692-.152.282.105 1.794.846 2.1.999.305.153.509.229.583.359.074.13.074.75-.17 1.438z" />
+                  </svg>
+                  WhatsApp Us
+                </a>
               </div>
             </div>
           </div>
