@@ -87,7 +87,9 @@ function PackageCard({ pkg }: { pkg: Package }) {
 function TypingIndicator() {
   return (
     <div className="flex gap-2 items-start">
-      <div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div>
+      <div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 p-0.5">
+        <img src="/logo-transparent.png" alt="AI Avatar" className="w-full h-full object-contain" />
+      </div>
       <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
         <div className="flex gap-1 items-center">
           {[0, 1, 2].map(i => (
@@ -134,7 +136,9 @@ function MessageBubble({ msg }: { msg: Message }) {
 
   return (
     <div className="flex gap-2 items-start">
-      <div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">🌍</div>
+      <div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 p-0.5 mt-0.5">
+        <img src="/logo-transparent.png" alt="AI Avatar" className="w-full h-full object-contain" />
+      </div>
       <div className="max-w-[85%]">
         <div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed text-gray-800" dangerouslySetInnerHTML={{ __html: formatText(text) }} />
       </div>
@@ -283,8 +287,8 @@ export default function AIAgent() {
   return (
     <>
       {!open && (
-        <button onClick={openChat} className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95" aria-label="Open AI Travel Agent">
-          <span className="text-2xl">🌍</span>
+        <button onClick={openChat} className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-2xl flex items-center justify-center p-3.5 transition-all hover:scale-110 active:scale-95" aria-label="Open AI Travel Agent">
+          <img src="/logo-transparent.png" alt="AI Agent Logo" className="w-full h-full object-contain" />
           {unread > 0 && (<span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">{unread}</span>)}
         </button>
       )}
@@ -292,7 +296,9 @@ export default function AIAgent() {
       {open && (
         <div className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-24px)] h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-100">
           <div className="bg-orange-900 px-4 py-3 flex items-center gap-3 flex-shrink-0">
-            <div className="w-9 h-9 bg-orange-500 rounded-full flex items-center justify-center text-lg flex-shrink-0">🌍</div>
+            <div className="w-9 h-9 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0 p-1">
+              <img src="/logo-transparent.png" alt="AI Agent Logo" className="w-full h-full object-contain" />
+            </div>
             <div className="flex-1 min-w-0">
               <p className="text-white font-semibold text-sm font-sans">Sphere — AI Travel Agent</p>
               <p className="text-orange-300 text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block animate-pulse" />Online · Travel Sphere</p>
@@ -307,7 +313,7 @@ export default function AIAgent() {
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scroll-smooth">
             {messages.map((msg, i) => (<MessageBubble key={i} msg={normalizeMessage(msg)} />))}
             {loading && !messages[messages.length - 1]?.content && <TypingIndicator />}
-            {showCustomForm && (<div className="flex gap-2 items-start"><div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 text-sm">🌍</div><div className="flex-1"><div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-700 mb-1">Let me build a custom trip plan for you! Fill in your preferences:</div><CustomPlanForm onSubmit={(q) => { setShowCustomForm(false); sendMessage(q) }} /></div></div>)}
+            {showCustomForm && (<div className="flex gap-2 items-start"><div className="w-7 h-7 rounded-full bg-orange-900 flex items-center justify-center flex-shrink-0 p-0.5"><img src="/logo-transparent.png" alt="AI Avatar" className="w-full h-full object-contain" /></div><div className="flex-1"><div className="bg-gray-50 border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-700 mb-1">Let me build a custom trip plan for you! Fill in your preferences:</div><CustomPlanForm onSubmit={(q) => { setShowCustomForm(false); sendMessage(q) }} /></div></div>)}
             <div ref={messagesEndRef} />
           </div>
 
