@@ -22,9 +22,7 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
     if (path === '/login') return '/admin/login'
     if (path === '/packages') return '/admin/packages'
     if (path === '/packages/new') return '/admin/packages/new'
-    if (path.startsWith('/packages/') && path.endsWith('/edit')) {
-      return `/admin${path}`
-    }
+    if (path.startsWith('/packages/') && path.endsWith('/edit')) return `/admin${path}`
     if (path === '/bookings') return '/admin/bookings'
     if (path === '/enquiries') return '/admin/enquiries'
     if (path === '/agents') return '/admin/agents'
@@ -33,20 +31,6 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
   }
 
   if (portal === 'agent') {
-    if (originalPath === '/login') {
-      const url = req.nextUrl.clone()
-      url.pathname = '/'
-      return NextResponse.redirect(url)
-    }
-
-    if (originalPath === '/register') {
-      const url = req.nextUrl.clone()
-      url.pathname = '/'
-      url.searchParams.set('tab', 'register')
-      return NextResponse.redirect(url)
-    }
-
-    if (path === '/') return token?.agentStatus ? '/dashboard' : '/agent-login'
     if (path === '/dashboard' || path === '/dashbaord') return '/agent'
     if (path === '/profile') return '/agent/profile'
     if (path === '/tours') return '/agent/tours'
@@ -127,6 +111,19 @@ export default async function proxy(req: NextRequest) {
     }
 
     return originalPath === path ? NextResponse.next() : rewriteUrl(req, path)
+  }
+
+  if (portal === 'agent' && originalPath === '/login') {
+    const url = req.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+  }
+
+  if (portal === 'agent' && originalPath === '/register') {
+    const url = req.nextUrl.clone()
+    url.pathname = '/'
+    url.searchParams.set('tab', 'register')
+    return NextResponse.redirect(url)
   }
 
   if (path === '/') {
