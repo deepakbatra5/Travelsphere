@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { clearAuthSession } from '@/lib/browser-session'
+import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard' },
@@ -84,7 +85,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             Menu
           </button>
           <h1 className="text-lg font-semibold text-gray-700">Admin Panel</h1>
-          <span className="text-sm text-gray-400">Travel Sphere</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-400">Travel Sphere</span>
+            <ThemeToggle />
+          </div>
         </header>
         <main className="flex-1 p-6 overflow-auto">{children}</main>
       </div>

@@ -69,16 +69,16 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="bg-[#0b0813] text-white min-h-screen flex flex-col selection:bg-orange-500 selection:text-white font-sans relative overflow-hidden">
+    <div className="bg-[#0d0b14] text-white min-h-screen flex flex-col selection:bg-orange-500 selection:text-white font-sans relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[32px_32px]"></div>
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-150 w-150 rounded-full bg-amber-500/20 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-150 w-150 rounded-full bg-rose-500/20 blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/3 h-100 w-100 rounded-full bg-violet-600/10 blur-3xl"></div>
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-150 w-150 rounded-full bg-pink-500/20 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-150 w-150 rounded-full bg-amber-500/20 blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/3 h-100 w-100 rounded-full bg-purple-600/10 blur-3xl"></div>
       </div>
       
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-[#0b0813]/80 backdrop-blur-md border-b border-violet-950/20 px-6 py-4 shadow-sm relative">
+      <header className="sticky top-0 z-40 bg-[#151221] border-b border-[#251e36] px-6 py-4 shadow-sm relative">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <img src="/logo-transparent.png" alt="Travel Sphere Logo" className="h-9 w-9 object-contain" />
@@ -98,7 +98,7 @@ export default function AdminLoginPage() {
         <div className="relative mx-auto max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Hero Left Info */}
           <div className="lg:col-span-7 space-y-6">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-rose-400 ring-1 ring-rose-500/30">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-purple-400 ring-1 ring-purple-500/30">
               🛡️ Core Administration Portal
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
@@ -111,7 +111,7 @@ export default function AdminLoginPage() {
               Behind every seamless booking, verified itinerary, and unforgettable journey is the dedication of our administration. Connect hearts, create lifelong memories, and empower our agents to orchestrate the future of travel.
             </p>
             
-            <div className="border-l-4 border-rose-500 pl-4 py-1 italic text-slate-400 text-sm">
+            <div className="border-l-4 border-purple-500 pl-4 py-1 italic text-slate-400 text-sm">
               "Connecting Hearts, Creating Memories, Empowering Dreams." — Travel Sphere Slogan
             </div>
 
@@ -206,11 +206,6 @@ export default function AdminLoginPage() {
                 </button>
               </form>
 
-              <div className="mt-6 border-t border-slate-100 pt-4 text-center">
-                <Link href="/login" className="text-xs font-bold text-orange-600 hover:underline">
-                  Go to customer login
-                </Link>
-              </div>
             </div>
           </div>
         </div>
