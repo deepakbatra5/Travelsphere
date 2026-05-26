@@ -89,10 +89,11 @@ function StarRating({ rating, interactive = false, onChange }: {
 function ReviewCard({ review, visible }: { review: Review; visible: boolean }) {
   const initials = review.user.name
     .split(' ')
+    .filter(Boolean)
     .map((w) => w[0])
     .join('')
     .slice(0, 2)
-    .toUpperCase()
+    .toUpperCase() || 'TR'
 
   const avatarColors = [
     'from-orange-400 to-rose-500',
@@ -166,7 +167,14 @@ export default function CustomerReviews() {
       .then((r) => r.json())
       .then((data) => {
         if (data.reviews?.length) {
-          setReviews([...data.reviews, ...SEED_REVIEWS])
+          if (data.reviews.length >= 7) {
+            setReviews(data.reviews.slice(0, 7))
+          } else {
+            const realReviews = data.reviews
+            const needed = 7 - realReviews.length
+            const padded = [...realReviews, ...SEED_REVIEWS.slice(0, needed)]
+            setReviews(padded)
+          }
         }
       })
       .catch(() => {}) // fallback to seeds

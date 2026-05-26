@@ -103,7 +103,7 @@ export default async function TourDetailPage({ params }: Props) {
       rating: r.rating,
       comment: r.comment,
       createdAt: r.createdAt.toISOString(),
-      user: { name: r.user.name },
+      user: { name: r.user ? r.user.name : (r.guestName || 'Anonymous') },
     })),
     category: category,
   }

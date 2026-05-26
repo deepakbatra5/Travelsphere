@@ -29,6 +29,7 @@ function getPortalPath(path: string, portal: ReturnType<typeof getPortalFromHost
     if (path === '/agents') return '/admin/agents'
     if (path === '/customers') return '/admin/customers'
     if (path === '/team') return '/admin/team'
+    if (path === '/reviews') return '/admin/reviews'
     return path
   }
 

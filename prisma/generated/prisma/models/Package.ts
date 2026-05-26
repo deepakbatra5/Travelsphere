@@ -715,10 +715,12 @@ export type PackageCreateNestedOneWithoutReviewsInput = {
   connect?: Prisma.PackageWhereUniqueInput
 }
 
-export type PackageUpdateOneRequiredWithoutReviewsNestedInput = {
+export type PackageUpdateOneWithoutReviewsNestedInput = {
   create?: Prisma.XOR<Prisma.PackageCreateWithoutReviewsInput, Prisma.PackageUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.PackageCreateOrConnectWithoutReviewsInput
   upsert?: Prisma.PackageUpsertWithoutReviewsInput
+  disconnect?: Prisma.PackageWhereInput | boolean
+  delete?: Prisma.PackageWhereInput | boolean
   connect?: Prisma.PackageWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.PackageUpdateToOneWithWhereWithoutReviewsInput, Prisma.PackageUpdateWithoutReviewsInput>, Prisma.PackageUncheckedUpdateWithoutReviewsInput>
 }

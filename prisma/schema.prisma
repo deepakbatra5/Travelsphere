@@ -154,14 +154,17 @@ model Enquiry {
 
 model Review {
   id        String   @id @default(cuid())
-  userId    String
-  packageId String
+  userId    String?
+  packageId String?
   rating    Int      // 1-5
   comment   String
+  guestName String?
+  guestDest String?
+  isPinned  Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id])
-  package   Package  @relation(fields: [packageId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package   Package? @relation(fields: [packageId], references: [id], onDelete: Cascade)
 }
 
 model Agent {

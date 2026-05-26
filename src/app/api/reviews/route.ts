@@ -1,19 +1,36 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
-// GET /api/reviews – fetch approved reviews (latest 30)
+// GET /api/reviews – fetch all reviews sorted by pinned status, then latest first
 export async function GET() {
   try {
     const reviews = await prisma.review.findMany({
-      take: 30,
-      orderBy: { createdAt: 'desc' },
+      orderBy: [
+        { isPinned: 'desc' },
+        { createdAt: 'desc' },
+      ],
       include: {
         user: { select: { name: true } },
         package: { select: { title: true, destination: true } },
       },
     })
-    return NextResponse.json({ reviews })
-  } catch {
+
+    const formattedReviews = reviews.map((r) => ({
+      id: r.id,
+      rating: r.rating,
+      comment: r.comment,
+      isPinned: r.isPinned,
+      createdAt: r.createdAt.toISOString(),
+      user: r.user ? { name: r.user.name } : { name: r.guestName || 'Anonymous' },
+      package: r.package
+        ? { title: r.package.title, destination: r.package.destination }
+        : { title: r.guestDest || 'General Experience', destination: r.guestDest || '' },
+      isGuest: !r.userId,
+    }))
+
+    return NextResponse.json({ reviews: formattedReviews })
+  } catch (error) {
+    console.error('Error fetching reviews:', error)
     return NextResponse.json({ reviews: [] })
   }
 }
@@ -33,23 +50,30 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Rating must be 1-5' }, { status: 400 })
     }
 
-    // Store as a "guest" review using a special guest user
-    // We use a pseudo-review stored in an isolated guest_review table via raw JSON
-    // For simplicity, we store in a simple DB-free in-memory cache and return it directly
-    // Real implementation: attach to a "guest" user or a separate GuestReview table
-    // Here we return a mock saved review so the UI can show it immediately
-    const mockReview = {
-      id: `guest-${Date.now()}`,
-      rating: ratingNum,
-      comment,
-      createdAt: new Date().toISOString(),
-      user: { name },
-      package: { title: destination || 'General Experience', destination: destination || '' },
+    // Save public guest review to the database
+    const review = await prisma.review.create({
+      data: {
+        rating: ratingNum,
+        comment,
+        guestName: name,
+        guestDest: destination || 'General Experience',
+      },
+    })
+
+    const formattedReview = {
+      id: review.id,
+      rating: review.rating,
+      comment: review.comment,
+      createdAt: review.createdAt.toISOString(),
+      isPinned: review.isPinned,
+      user: { name: review.guestName || 'Anonymous' },
+      package: { title: review.guestDest || 'General Experience', destination: review.guestDest || '' },
       isGuest: true,
     }
 
-    return NextResponse.json({ review: mockReview, success: true })
-  } catch {
+    return NextResponse.json({ review: formattedReview, success: true })
+  } catch (error) {
+    console.error('Failed to submit guest review:', error)
     return NextResponse.json({ error: 'Failed to submit review' }, { status: 500 })
   }
 }

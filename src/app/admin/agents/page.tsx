@@ -40,52 +40,7 @@ export default async function AdminAgentsPage() {
         <p className="mt-1 text-sm text-gray-500">{agents.length} registered agent(s)</p>
       </div>
 
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="text-lg font-bold text-amber-900">Pending Deletion Requests</h2>
-            <p className="text-sm text-amber-800/80">Approve a request to permanently delete the agent account and all related records.</p>
-          </div>
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
-            {deletionRequests.length} pending
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          {deletionRequests.map((request) => (
-            <div key={request.id} className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-amber-100">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-base font-bold text-gray-800">{request.user.name}</h3>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">
-                      {request.agent.status}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-sm text-gray-500">{request.user.email} · {request.agent.city}, {request.agent.state}</p>
-                  <p className="mt-2 text-xs text-gray-400">
-                    Requested on {new Date(request.requestedAt).toLocaleDateString('en-IN', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </p>
-                  {request.reason && <p className="mt-2 max-w-3xl text-sm text-gray-600">Reason: {request.reason}</p>}
-                </div>
-
-                <AgentDeletionRequestActions requestId={request.id} />
-              </div>
-            </div>
-          ))}
-
-          {deletionRequests.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-amber-200 bg-white p-6 text-center text-sm text-gray-400">
-              No pending deletion requests.
-            </div>
-          )}
-        </div>
-      </div>
-
+      {/* Agents List */}
       <div className="space-y-4">
         {agents.map((agent) => {
           const completed = agent.assignedBookings.filter((booking) => booking.status === 'COMPLETED').length
@@ -148,8 +103,56 @@ export default async function AdminAgentsPage() {
         })}
         {agents.length === 0 && <div className="rounded-2xl bg-white p-10 text-center text-gray-400 shadow-sm">No agents registered yet.</div>}
       </div>
+
+      {/* Pending Deletion Requests */}
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-amber-900">Pending Deletion Requests</h2>
+            <p className="text-sm text-amber-800/80">Approve a request to permanently delete the agent account and all related records.</p>
+          </div>
+          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
+            {deletionRequests.length} pending
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          {deletionRequests.map((request) => (
+            <div key={request.id} className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-amber-100">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-base font-bold text-gray-800">{request.user.name}</h3>
+                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">
+                      {request.agent.status}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-500">{request.user.email} · {request.agent.city}, {request.agent.state}</p>
+                  <p className="mt-2 text-xs text-gray-400">
+                    Requested on {new Date(request.requestedAt).toLocaleDateString('en-IN', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </p>
+                  {request.reason && <p className="mt-2 max-w-3xl text-sm text-gray-600">Reason: {request.reason}</p>}
+                </div>
+
+                <AgentDeletionRequestActions requestId={request.id} />
+              </div>
+            </div>
+          ))}
+
+          {deletionRequests.length === 0 && (
+            <div className="rounded-2xl border border-dashed border-amber-200 bg-white p-6 text-center text-sm text-gray-400">
+              No pending deletion requests.
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
+
 
 

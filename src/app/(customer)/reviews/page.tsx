@@ -50,7 +50,7 @@ function StarRating({ rating, interactive = false, onChange }: { rating: number;
 }
 
 function ReviewCard({ review }: { review: Review }) {
-  const initials = review.user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+  const initials = review.user.name.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'TR'
   const colorIdx = review.id.charCodeAt(0) % avatarColors.length
   const date = new Date(review.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
 
@@ -89,7 +89,13 @@ function ReviewsContent() {
   useEffect(() => {
     fetch('/api/reviews')
       .then(r => r.json())
-      .then(data => { if (data.reviews?.length) setReviews([...data.reviews, ...SEED_REVIEWS]) })
+      .then(data => {
+        if (data.reviews?.length) {
+          setReviews(data.reviews)
+        } else {
+          setReviews(SEED_REVIEWS)
+        }
+      })
       .catch(() => {})
   }, [])
 

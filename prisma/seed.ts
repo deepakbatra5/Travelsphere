@@ -336,7 +336,80 @@ async function main() {
     data: teamMembers
   })
 
-  console.log('Seeding complete! 6 packages and trip dates added.')
+  // Seed reviews
+  console.log('Seeding reviews...')
+  const kashmirPkg = await prisma.package.findUnique({ where: { slug: 'kashmir-solo-escape' } })
+  const keralaPkg = await prisma.package.findUnique({ where: { slug: 'kerala-solo-retreat' } })
+  const goaPkg = await prisma.package.findUnique({ where: { slug: 'goa-beach-holiday' } })
+  const chardhamPkg = await prisma.package.findUnique({ where: { slug: 'char-dham-yatra' } })
+
+  const seedReviews = [
+    {
+      guestName: 'Priya Sharma',
+      guestDest: 'Kashmir',
+      comment: 'Absolutely breathtaking trip to Kashmir! Every detail was handled perfectly. The houseboat stay was a dream come true. Will book again without hesitation.',
+      rating: 5,
+      packageId: kashmirPkg?.id,
+      isPinned: true
+    },
+    {
+      guestName: 'Rahul & Meena Joshi',
+      guestDest: 'Kerala',
+      comment: 'Kerala backwater cruise was magical. The food, the scenery, the guides — everything was 10/10. Travel Sphere made our anniversary unforgettable!',
+      rating: 5,
+      packageId: keralaPkg?.id,
+      isPinned: true
+    },
+    {
+      guestName: 'Ankit Verma',
+      guestDest: 'Rajasthan',
+      comment: 'Rajasthan heritage tour was stunning. Loved the camel ride and the forts. The team was super responsive on WhatsApp whenever we had questions.',
+      rating: 4,
+      isPinned: true
+    },
+    {
+      guestName: 'Sneha Patil',
+      guestDest: 'Goa',
+      comment: 'Goa trip with the family was a blast! Kids loved the beaches, we loved the relaxed vibe and great hotel pick. Transparent pricing — no surprise charges at all.',
+      rating: 5,
+      packageId: goaPkg?.id,
+      isPinned: true
+    },
+    {
+      guestName: 'Suresh Kumar',
+      guestDest: 'Uttarakhand',
+      comment: 'Trekked to Kedarnath with Travel Sphere\'s pilgrimage package. Everything from transport to accommodation was organised flawlessly. Truly a spiritual journey.',
+      rating: 5,
+      packageId: chardhamPkg?.id,
+      isPinned: true
+    },
+    {
+      guestName: 'Divya Nair',
+      guestDest: 'Himachal Pradesh',
+      comment: 'Solo trip to Manali was exactly what I needed. The adventure activities were thrilling and the guides were knowledgeable. Highly recommended for solo travellers!',
+      rating: 4,
+      isPinned: true
+    },
+    {
+      guestName: 'Arjun & Pooja Mehta',
+      guestDest: 'Andaman',
+      comment: 'Best travel agency in India, period. The Andaman Islands trip was picture-perfect. Crystal clear water, white sand beaches. 24/7 support team was always just a call away.',
+      rating: 5,
+      isPinned: true
+    }
+  ]
+
+  const reviewCount = await prisma.review.count()
+  if (reviewCount === 0) {
+    for (const r of seedReviews) {
+      await prisma.review.create({
+        data: r
+      })
+    }
+    console.log('Seeded 7 reviews!')
+  }
+
+  console.log('Seeding complete! Packages, team, and reviews added.')
 }
 
 main()

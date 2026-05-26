@@ -303,7 +303,7 @@ export default async function AgentToursPage({ searchParams }: PageProps) {
                         {pkg.reviews.map((rev) => (
                           <div key={rev.id} className="rounded-xl bg-white p-3 border border-slate-100 shadow-2xs">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="font-semibold text-xs text-slate-700">{rev.user.name}</span>
+                              <span className="font-semibold text-xs text-slate-700">{rev.user ? rev.user.name : (rev.guestName || 'Anonymous')}</span>
                               <div className="flex items-center text-amber-500 gap-0.5">
                                 <StarIcon className="w-3 h-3 fill-amber-500 text-amber-500" />
                                 <span className="text-xs font-bold">{rev.rating}</span>

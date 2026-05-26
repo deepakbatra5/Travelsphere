@@ -13,6 +13,7 @@ const navItems = [
   { href: '/packages/new', label: 'Add Package' },
   { href: '/bookings', label: 'Bookings' },
   { href: '/enquiries', label: 'Enquiries' },
+  { href: '/reviews', label: 'Reviews' },
   { href: '/agents', label: 'Agents' },
   { href: '/customers', label: 'Customers' },
   { href: '/team', label: 'Manage Team' },

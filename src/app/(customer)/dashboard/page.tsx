@@ -72,7 +72,12 @@ export default async function DashboardPage({ searchParams }: Props) {
           package: booking.package,
           payment: booking.payment,
         })),
-        reviews: user.reviews,
+        reviews: user.reviews.map(r => ({
+          id: r.id,
+          packageId: r.packageId || '',
+          rating: r.rating,
+          comment: r.comment,
+        })),
       }}
       initialTab={tab || 'personal'}
     />
