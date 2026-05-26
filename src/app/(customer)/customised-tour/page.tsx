@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import {
   PaperAirplaneIcon,
   SparklesIcon,
@@ -13,14 +13,10 @@ import {
   StarIcon,
 } from '@heroicons/react/24/outline'
 
-// Lazy-load the AI Trip Planner (heavy component)
-const AiTripPlanner = dynamic(() => import('@/components/AiTripPlanner'), { ssr: false })
-
 export default function CustomisedTourPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
-  const [showAiPlanner, setShowAiPlanner] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -75,11 +71,7 @@ ${formData.message}`
   }
 
   return (
-    <>
-      {/* ── AI Trip Planner Overlay ──────────────────────────────────────── */}
-      {showAiPlanner && <AiTripPlanner onClose={() => setShowAiPlanner(false)} />}
-
-      <div className="mx-auto max-w-7xl px-4 py-10 md:py-16">
+    <div className="mx-auto max-w-7xl px-4 py-10 md:py-16">
 
         {/* ══════════════════════════════════════════════════════════════════
             AI TRIP PLANNER BANNER — above Tailor-Made Holidays
@@ -128,8 +120,8 @@ ${formData.message}`
 
               {/* CTA Button */}
               <div className="flex flex-col items-start gap-3 lg:items-center lg:shrink-0">
-                <button
-                  onClick={() => setShowAiPlanner(true)}
+                <Link
+                  href="/ai-planner"
                   className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-white px-7 py-4 text-base font-black text-orange-600 shadow-xl shadow-black/20 transition-all hover:scale-105 hover:shadow-2xl active:scale-100"
                 >
                   <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 transition-colors group-hover:bg-orange-200">
@@ -140,7 +132,7 @@ ${formData.message}`
                   </span>
                   <span>Plan My Trip with AI</span>
                   <span className="text-orange-400 transition-transform group-hover:translate-x-1">→</span>
-                </button>
+                </Link>
                 <p className="text-xs text-orange-100 text-center">
                   Free · Takes 2 minutes · Expert calls you back
                 </p>
@@ -190,13 +182,13 @@ ${formData.message}`
                 Chat with our AI Trip Planner and get a complete custom itinerary in minutes.
                 Our expert will then call you to finalize and book.
               </p>
-              <button
-                onClick={() => setShowAiPlanner(true)}
+              <Link
+                href="/ai-planner"
                 className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-700"
               >
                 <ChatBubbleLeftRightIcon className="h-4 w-4" />
                 Open AI Trip Planner
-              </button>
+              </Link>
             </div>
 
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -380,7 +372,6 @@ ${formData.message}`
             )}
           </div>
         </div>
-      </div>
-    </>
+    </div>
   )
 }
