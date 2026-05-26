@@ -18,8 +18,8 @@ type KnowledgeReview = {
   rating: number
   comment: string
   createdAt: Date
-  user: { name: string | null }
-  package: { title: string; destination: string }
+  user: { name: string | null } | null
+  package: { title: string; destination: string } | null
 }
 
 function normalizeList(values: unknown, maxItems: number): string[] {
@@ -52,8 +52,8 @@ function toCompactPackageLine(pkg: KnowledgePackage): string {
 }
 
 function toCompactReviewLine(review: KnowledgeReview): string {
-  const author = review.user.name?.trim() || 'Anonymous'
-  const destination = review.package.destination || review.package.title || 'Travel package'
+  const author = review.user?.name?.trim() || 'Anonymous'
+  const destination = review.package?.destination || review.package?.title || 'Travel package'
   const comment = review.comment.trim().replace(/\s+/g, ' ')
 
   return `- ${author} on ${destination} (${review.rating}/5): ${comment}`
