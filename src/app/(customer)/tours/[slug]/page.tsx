@@ -68,6 +68,14 @@ export default async function TourDetailPage({ params }: Props) {
 
   if (!pkg || !pkg.isActive) return notFound()
 
+  // Safely guard database arrays/fields that might be null at runtime
+  const safeImages = Array.isArray(pkg.images) ? pkg.images : []
+  const safeInclusions = Array.isArray(pkg.inclusions) ? pkg.inclusions : []
+  const safeExclusions = Array.isArray(pkg.exclusions) ? pkg.exclusions : []
+  const safeReviews = Array.isArray(pkg.reviews) ? pkg.reviews : []
+  const safeTripDates = Array.isArray(pkg.tripDates) ? pkg.tripDates : []
+  const safeDestination = pkg.destination || ''
+
   const itinerary = getDetailedItinerary(
     pkg.slug,
     pkg.itinerary as Array<{
@@ -77,8 +85,8 @@ export default async function TourDetailPage({ params }: Props) {
     }>
   )
 
-  const avgRating = pkg.reviews.length
-    ? (pkg.reviews.reduce((sum, r) => sum + r.rating, 0) / pkg.reviews.length).toFixed(1)
+  const avgRating = safeReviews.length
+    ? (safeReviews.reduce((sum, r) => sum + r.rating, 0) / safeReviews.length).toFixed(1)
     : null
   
   const category = pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category
@@ -90,25 +98,25 @@ export default async function TourDetailPage({ params }: Props) {
     price: pkg.price,
     duration: pkg.duration,
     itinerary: itinerary,
-    inclusions: pkg.inclusions,
-    exclusions: pkg.exclusions,
-    tripDates: pkg.tripDates.map((td) => ({
+    inclusions: safeInclusions,
+    exclusions: safeExclusions,
+    tripDates: safeTripDates.map((td) => ({
       id: td.id,
-      startDate: td.startDate.toISOString(),
+      startDate: td.startDate ? td.startDate.toISOString() : new Date().toISOString(),
       totalSeats: td.totalSeats,
       availableSeats: td.availableSeats,
     })),
-    reviews: pkg.reviews.map((r) => ({
+    reviews: safeReviews.map((r) => ({
       id: r.id,
       rating: r.rating,
-      comment: r.comment,
-      createdAt: r.createdAt.toISOString(),
+      comment: r.comment || '',
+      createdAt: r.createdAt ? r.createdAt.toISOString() : new Date().toISOString(),
       user: { name: r.user ? r.user.name : (r.guestName || 'Anonymous') },
     })),
     category: category,
   }
 
-  const descriptionParagraphs = getDetailedTourDescription(pkg.slug, pkg.title, pkg.destination, pkg.category, pkg.description)
+  const descriptionParagraphs = getDetailedTourDescription(pkg.slug, pkg.title, safeDestination, pkg.category, pkg.description)
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -126,7 +134,7 @@ export default async function TourDetailPage({ params }: Props) {
         <div className="space-y-7 lg:col-span-2">
           {/* Tour Image Gallery */}
           <div className="surface-card grid grid-cols-2 gap-2 overflow-hidden rounded-3xl p-2">
-            {pkg.images.slice(0, 4).map((img, i) => (
+            {safeImages.slice(0, 4).map((img, i) => (
               <div key={i} className={`relative overflow-hidden rounded-2xl ${i === 0 ? 'col-span-2 h-64 md:h-96' : 'h-40 md:h-52'}`}>
                 <Image
                   src={img}
@@ -137,7 +145,7 @@ export default async function TourDetailPage({ params }: Props) {
                 />
               </div>
             ))}
-            {pkg.images.length === 0 && (
+            {safeImages.length === 0 && (
               <div className="col-span-2 flex h-64 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-neutral-900">
                 No images available
               </div>
@@ -218,10 +226,10 @@ export default async function TourDetailPage({ params }: Props) {
               price={pkg.price}
               duration={pkg.duration}
               category={pkg.category}
-              destination={pkg.destination}
-              tripDates={pkg.tripDates.map((td) => ({
+              destination={safeDestination}
+              tripDates={safeTripDates.map((td) => ({
                 id: td.id,
-                startDate: td.startDate.toISOString(),
+                startDate: td.startDate ? td.startDate.toISOString() : new Date().toISOString(),
                 totalSeats: td.totalSeats,
                 availableSeats: td.availableSeats,
               }))}

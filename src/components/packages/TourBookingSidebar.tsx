@@ -44,10 +44,13 @@ export default function TourBookingSidebar({
   const { data: session } = useSession()
 
   // Default meta values based on package
-  const difficulty = category === 'ADVENTURE' ? 'Hard' : category === 'PILGRIMAGE' ? 'Moderate' : 'Easy'
-  const meals = category === 'SOLO' ? 'Breakfast Included' : 'Breakfast & Dinner'
+  const safeCategory = category || 'SOLO'
+  const safeDestination = destination || ''
+  const difficulty = safeCategory === 'ADVENTURE' ? 'Hard' : safeCategory === 'PILGRIMAGE' ? 'Moderate' : 'Easy'
+  const meals = safeCategory === 'SOLO' ? 'Breakfast Included' : 'Breakfast & Dinner'
   const transport = 'AC Private Vehicle / Volvo'
-  const bestSeason = destination.toLowerCase().includes('kashmir') || destination.toLowerCase().includes('leh') || destination.toLowerCase().includes('ladakh') ? 'Oct–Mar' : 'Oct–May'
+  const destLower = safeDestination.toLowerCase()
+  const bestSeason = destLower.includes('kashmir') || destLower.includes('leh') || destLower.includes('ladakh') ? 'Oct–Mar' : 'Oct–May'
 
   // Booking states
   const [selectedDateId, setSelectedDateId] = useState('')

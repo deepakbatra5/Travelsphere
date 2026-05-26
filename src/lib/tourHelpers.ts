@@ -57,11 +57,13 @@ export function getDetailedTourDescription(
   }
 
   // Fallback dynamic generator using the package fields
-  const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
+  const safeCategory = category || 'SOLO'
+  const capitalizedCategory = safeCategory.charAt(0).toUpperCase() + safeCategory.slice(1).toLowerCase()
+  const safeOriginalDesc = originalDescription || ''
   return [
     `Embark on an unforgettable vacation with our premium ${title} package, specially designed to offer you a comfortable and immersive travel experience in ${destination}. Curated for travellers seeking a perfect blend of exploration, local sightseeing, and relaxation, this tour showcases the best attractions and hidden treasures of the region.`,
     `The journey takes you through iconic landmarks, scenic viewpoints, and local hotspots. Travellers can experience the rich culture, taste authentic local cuisine, and participate in immersive activities unique to ${destination}. Highlights of this package include guided city walks, beautiful nature trails, and specially selected excursions designed to make every day of your trip memorable.`,
-    `This ${capitalizedCategory} tour is ideal for families, groups, or solo explorers looking for a well-managed and hassle-free holiday. With premium accommodations, comfortable transfers, and professional local assistance, this package provides a seamless and memorable travel experience from start to finish. ${originalDescription}`
+    `This ${capitalizedCategory} tour is ideal for families, groups, or solo explorers looking for a well-managed and hassle-free holiday. With premium accommodations, comfortable transfers, and professional local assistance, this package provides a seamless and memorable travel experience from start to finish. ${safeOriginalDesc}`
   ]
 }
 
@@ -70,7 +72,8 @@ export function getDetailedItinerary(
   slug: string,
   originalItinerary: { day: number; title: string; description: string }[]
 ): { day: number; title: string; description: string }[] {
-  const normalizedSlug = slug.toLowerCase()
+  const safeItinerary = Array.isArray(originalItinerary) ? originalItinerary : []
+  const normalizedSlug = slug ? slug.toLowerCase() : ''
 
   if (normalizedSlug.includes('char-dham') || normalizedSlug.includes('dham')) {
     const data = [
@@ -87,7 +90,7 @@ export function getDetailedItinerary(
       { day: 11, title: 'Joshimath - Rishikesh / Haridwar', description: 'Joshimath/Pipalkoti to Rishikesh/Haridwar (250 Kms approx)\nMorning after breakfast drive to Rishikesh.\nEnroute visit Devprayag (Sangam of Alaknanda & Bhagirathi Rivers forming Ganga).\nReach Rishikesh, visit Laxman Jhula, Ram Jhula and attend evening Ganga Aarti at Triveni Ghat.\nTransfer to Haridwar hotel for overnight stay.' },
       { day: 12, title: 'Haridwar/Rishikesh - Delhi', description: 'Haridwar/Rishikesh to Delhi (250 Kms approx)\nMorning after breakfast checkout from hotel and depart for Delhi.\nDrop at Delhi airport or railway station.\nYatra ends with wonderful blessings & everlasting memories.' }
     ]
-    return mergeItineraries(originalItinerary, data)
+    return mergeItineraries(safeItinerary, data)
   }
 
   if (normalizedSlug.includes('golden-triangle')) {
@@ -99,7 +102,7 @@ export function getDetailedItinerary(
       { day: 5, title: 'Jaipur Sightseeing', description: 'Breakfast at hotel.\nMorning excursion to Amber Fort with an elephant ride or jeep ride.\nVisit Jal Mahal (Water Palace) and Hawa Mahal (Palace of Winds).\nExplore City Palace and Jantar Mantar observatory.\nEvening shopping for gems and textiles.\nDinner and overnight stay at Jaipur.' },
       { day: 6, title: 'Jaipur to Delhi Departure', description: 'Breakfast checkout.\nMorning free for last-minute shopping.\nDrive back to Delhi airport or railway station.\nReturn home with beautiful heritage memories.' }
     ]
-    return mergeItineraries(originalItinerary, data)
+    return mergeItineraries(safeItinerary, data)
   }
 
   if (normalizedSlug.includes('kashmir')) {
@@ -112,7 +115,7 @@ export function getDetailedItinerary(
       { day: 6, title: 'Pahalgam to Srinagar Return', description: 'Breakfast checkout.\nDrive back to Srinagar.\nCheck-in to hotel.\nAfternoon free for shopping of Pashmina shawls, dry fruits, and handicrafts.\nDinner and overnight stay at Srinagar.' },
       { day: 7, title: 'Departure from Srinagar', description: 'Breakfast checkout.\nTransfer to Srinagar airport.\nTour ends with sweet memories of Kashmir.' }
     ]
-    return mergeItineraries(originalItinerary, data)
+    return mergeItineraries(safeItinerary, data)
   }
 
   if (normalizedSlug.includes('goa')) {
@@ -123,7 +126,7 @@ export function getDetailedItinerary(
       { day: 4, title: 'South Goa Heritage & Waterfalls', description: 'Breakfast at resort.\nVisit Old Goa Churches: Basilica of Bom Jesus.\nExplore Mangueshi Temple and local spice plantation.\nVisit Miramar Beach and enjoy a sunset cruise on Mandovi River.\nDinner and overnight stay at resort.' },
       { day: 5, title: 'Departure from Goa', description: 'Breakfast checkout.\nFree morning for souvenir shopping.\nTransfer to airport/station for departure.\nTour ends with memorable beach vibes.' }
     ]
-    return mergeItineraries(originalItinerary, data)
+    return mergeItineraries(safeItinerary, data)
   }
 
   if (normalizedSlug.includes('kerala')) {
@@ -137,7 +140,7 @@ export function getDetailedItinerary(
       { day: 7, title: 'Kovalam & Kanyakumari Excursion', description: 'Breakfast at resort.\nDay trip to Kanyakumari to visit Vivekananda Rock Memorial.\nWitness the sunset at the confluence of three oceans.\nReturn to Kovalam for dinner and overnight stay.' },
       { day: 8, title: 'Departure from Trivandrum', description: 'Breakfast checkout.\nTransfer to Trivandrum Airport.\nTour ends with relaxing Kerala memories.' }
     ]
-    return mergeItineraries(originalItinerary, data)
+    return mergeItineraries(safeItinerary, data)
   }
 
   if (normalizedSlug.includes('ladakh')) {
@@ -152,18 +155,21 @@ export function getDetailedItinerary(
       { day: 8, title: 'Pangong Lake to Leh via Chang La', description: 'Breakfast checkout.\nDrive back to Leh via Chang La pass (5360m).\nStop at Karu for lunch and shopping.\nArrive in Leh, check-in to hotel.\nEvening free for souvenir shopping in Leh.\nFarewell dinner and overnight stay at Leh hotel.' },
       { day: 9, title: 'Departure from Leh', description: 'Early breakfast checkout.\nTransfer to Leh airport for departure flight.\nTour ends with thrilling memories of Ladakh.' }
     ]
-    return mergeItineraries(originalItinerary, data)
+    return mergeItineraries(safeItinerary, data)
   }
 
-  return originalItinerary
+  return safeItinerary
 }
 
 export function mergeItineraries(
   original: { day: number; title: string; description: string }[],
   mocked: { day: number; title: string; description: string }[]
 ): { day: number; title: string; description: string }[] {
-  return original.map(item => {
-    const match = mocked.find(m => m.day === item.day)
+  const safeOriginal = Array.isArray(original) ? original : []
+  const safeMocked = Array.isArray(mocked) ? mocked : []
+  return safeOriginal.map(item => {
+    const match = safeMocked.find(m => m.day === item.day)
     return match ? { ...item, title: match.title, description: match.description } : item
   })
 }
+
