@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { prisma } from '@/lib/db'
 import { checkRateLimit } from '@/lib/rateLimit'
+import { buildTravelKnowledgeContext } from '@/lib/aiTravelKnowledge'
 
 const isGroq = !!process.env.GROQ_API_KEY
 const apiKey = process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY
@@ -42,35 +43,6 @@ Instead, have a REAL conversation. Example:
 - "Have you traveled before that you absolutely loved? What made it special?"
 - "Are you thinking India or somewhere international?"
 - Then naturally work in questions about budget, group, dates as the conversation flows.
-
-TRAVEL SPHERE PACKAGES (recommend naturally when they match):
-1. Kerala Solo Retreat — Kochi · Munnar · Alleppey · Kovalam — 8 days — ₹19,999
-   Best for: Solo travelers, couples wanting nature + backwaters
-   Link: https://travelsphere.sbs/tours/kerala-solo-retreat
-
-2. Kashmir Solo Escape — Srinagar · Gulmarg · Pahalgam — 7 days — ₹28,999  
-   Best for: Solo, couples, mountain lovers, photographers
-   Link: https://travelsphere.sbs/tours/kashmir-solo-escape
-
-3. Ladakh Adventure Tour — Leh · Nubra Valley · Pangong Lake — 9 days — ₹32,999
-   Best for: Adventure seekers, bikers, photography enthusiasts
-   Link: https://travelsphere.sbs/tours/ladakh-adventure-tour
-
-4. Goa Beach Holiday — North Goa · South Goa — 5 days — ₹12,999
-   Best for: Groups, college friends, families, party + beach lovers
-   Link: https://travelsphere.sbs/tours/goa-beach-holiday
-
-5. Char Dham Yatra — Yamunotri · Gangotri · Kedarnath · Badrinath — 12 days — ₹22,999
-   Best for: Pilgrimage, spiritual seekers, families doing religious tours
-   Link: https://travelsphere.sbs/tours/char-dham-yatra
-
-6. Golden Triangle Tour — Delhi · Agra · Jaipur — 6 days — ₹15,999
-   Best for: First-time India travelers, culture lovers, families
-   Link: https://travelsphere.sbs/tours/golden-triangle-tour
-
-7. Chandigarh City Tour — Chandigarh — 2 days — ₹3,999
-   Best for: Quick weekend getaways, group outings
-   Link: https://travelsphere.sbs/tours/chandigarh-city-tour
 
 WORLD DESTINATION EXPERTISE (for Indian travelers):
 - Bali: ₹60k–1.2L | Apr–Oct | Temples, rice terraces, beaches | Visa on arrival
@@ -174,28 +146,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Fetch latest live packages from DB
-    let dbPackages: { title: string; destination: string; price: number; duration: number; category: string; slug: string }[] = []
-    try {
-      dbPackages = await prisma.package.findMany({
-        where: { isActive: true },
-        select: { title: true, destination: true, price: true, duration: true, category: true, slug: true },
-      })
-    } catch {
-      // ignore DB errors gracefully
-    }
-
-    let dynamicPackages = ''
-    if (dbPackages.length > 0) {
-      dynamicPackages =
-        '\n\nLIVE PACKAGES CURRENTLY AVAILABLE ON TRAVEL SPHERE:\n' +
-        dbPackages
-          .map(
-            (p) =>
-              `- **${p.title}**: ${p.destination} | ${p.duration} days | ₹${p.price.toLocaleString('en-IN')} | ${p.category} | https://travelsphere.sbs/tours/${p.slug}`
-          )
-          .join('\n')
-    }
+    const dynamicKnowledge = await buildTravelKnowledgeContext()
 
     if (!process.env.GROQ_API_KEY && !process.env.OPENAI_API_KEY) {
       return NextResponse.json(
@@ -211,7 +162,7 @@ export async function POST(req: Request) {
     const completion = await openai.chat.completions.create({
       model,
       messages: [
-        { role: 'system', content: TRIP_PLANNER_SYSTEM_PROMPT + dynamicPackages },
+        { role: 'system', content: `${TRIP_PLANNER_SYSTEM_PROMPT}\n\n${dynamicKnowledge}` },
         ...messages,
       ],
       max_tokens: 2000,

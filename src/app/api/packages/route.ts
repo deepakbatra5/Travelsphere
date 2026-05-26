@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import { Prisma, Category } from '@/generated/prisma/client'
 import { authOptions } from '@/lib/auth'
 import { z } from 'zod'
+import { getRelatedPackageImages } from '@/lib/packageImages'
 
 interface CreatePackageBody {
   title: string
@@ -76,7 +77,12 @@ export async function GET(req: Request) {
       orderBy: { createdAt: 'desc' }
     })
 
-    return NextResponse.json(packages, {
+    const enrichedPackages = packages.map((pkg) => ({
+      ...pkg,
+      images: getRelatedPackageImages(pkg),
+    }))
+
+    return NextResponse.json(enrichedPackages, {
       headers: {
         'Cache-Control': 'no-store',
       },
@@ -106,6 +112,7 @@ export async function POST(req: Request) {
 
     const slugify = (await import('slugify')).default
     const slug = slugify(title, { lower: true, strict: true })
+    const normalizedImages = getRelatedPackageImages({ title, destination, category, images })
 
     const pkg = await prisma.package.create({
       data: {
@@ -113,7 +120,7 @@ export async function POST(req: Request) {
         price,
         duration,
         category,
-        images,
+        images: normalizedImages,
         itinerary: itinerary as Prisma.InputJsonValue,
         inclusions,
         exclusions,

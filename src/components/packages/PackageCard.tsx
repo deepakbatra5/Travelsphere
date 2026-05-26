@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, ClockIcon, MapPinIcon } from '@heroicons/react/24/outline'
+import { getRelatedPackageImages } from '@/lib/packageImages'
 
 const categoryColors: Record<string, string> = {
   FAMILY: 'bg-sky-100/95 text-sky-700',
@@ -26,7 +27,7 @@ interface Props {
 }
 
 export default function PackageCard({ package: pkg, detailBasePath = '/tours' }: Props) {
-  const image = pkg.images?.[0] || '/travel-placeholder.svg'
+  const image = getRelatedPackageImages(pkg)[0]
   const category = pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category
 
   return (
@@ -44,10 +45,6 @@ export default function PackageCard({ package: pkg, detailBasePath = '/tours' }:
           <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold ${categoryColors[category] || 'bg-slate-100 text-slate-700'}`}>
             {category}
           </span>
-          <div className="absolute right-4 top-4 rounded-xl bg-orange-500/90 px-4 py-2 text-center shadow-lg backdrop-blur-sm transition-transform group-hover:scale-105">
-            <div className="text-xl font-black text-white leading-none">15%</div>
-            <div className="mt-1 text-[10px] font-bold tracking-widest text-orange-100">SPECIAL OFF</div>
-          </div>
           <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700">
             <MapPinIcon className="h-4 w-4" />
             {pkg.destination}

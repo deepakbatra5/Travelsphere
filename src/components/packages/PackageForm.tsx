@@ -17,6 +17,7 @@ import {
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid'
 import AdminToast, { AdminToastMessage } from '@/components/ui/AdminToast'
+import { getRelatedPackageImages } from '@/lib/packageImages'
 
 const categories = ['FAMILY', 'SOLO', 'GROUP', 'PILGRIMAGE', 'ADVENTURE', 'COUPLE', 'CORPORATE']
 
@@ -105,6 +106,15 @@ export default function PackageForm({
       ? (initialData as any).itinerary || [{ day: 1, title: '', description: '' }]
       : [{ day: 1, title: '', description: '' }]
   )
+
+  const previewImage = useMemo(() => {
+    return getRelatedPackageImages({
+      title: form.title,
+      destination: form.destination,
+      category: form.category,
+      images,
+    })[0]
+  }, [form.title, form.destination, form.category, images])
 
   // Fetch approved agents
   useEffect(() => {
@@ -791,18 +801,12 @@ export default function PackageForm({
                 {/* Visual Preview Card of Tour */}
                 <div className="border border-slate-100 rounded-3xl bg-slate-50/50 p-5 space-y-4 shadow-2xs">
                   <div className="relative h-44 rounded-2xl overflow-hidden bg-slate-200">
-                    {images[0] ? (
-                      <Image
-                        src={images[0]}
-                        alt="Tour thumbnail"
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-sm font-semibold">
-                        No cover image uploaded
-                      </div>
-                    )}
+                    <Image
+                      src={previewImage}
+                      alt="Tour thumbnail"
+                      fill
+                      className="object-cover"
+                    />
                     <span className="absolute top-3 left-3 bg-orange-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
                       {form.category}
                     </span>

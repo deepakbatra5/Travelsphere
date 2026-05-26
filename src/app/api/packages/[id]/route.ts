@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import { authOptions } from '@/lib/auth'
 import { Category, Prisma } from '@/generated/prisma/client'
 import { z } from 'zod'
+import { getRelatedPackageImages } from '@/lib/packageImages'
 
 const itineraryDaySchema = z.object({
   day: z.number().int().positive(),
@@ -47,7 +48,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       },
     })
     if (!pkg) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-    return NextResponse.json(pkg, {
+    return NextResponse.json({
+      ...pkg,
+      images: getRelatedPackageImages(pkg),
+    }, {
       headers: {
         'Cache-Control': 'no-store',
       },
@@ -75,6 +79,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     }
 
     const payload = parsed.data
+    const normalizedImages = getRelatedPackageImages({
+      title: payload.title,
+      destination: payload.destination,
+      category: payload.category,
+      images: payload.images,
+    })
 
     const existingTripDates = await prisma.packageTripDate.findMany({ where: { packageId: id } })
     const incomingIds = payload.tripDates.map((tripDate) => tripDate.id).filter(Boolean) as string[]
@@ -131,7 +141,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
           price: payload.price,
           duration: payload.duration,
           category: payload.category,
-          images: payload.images,
+          images: normalizedImages,
           itinerary: payload.itinerary as Prisma.InputJsonValue,
           inclusions: payload.inclusions,
           exclusions: payload.exclusions,

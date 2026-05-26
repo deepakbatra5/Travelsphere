@@ -1,182 +1,239 @@
-# TravelSphere 🌏
+# 🌎 TravelSphere — Smart Tour & Travel System
 
-**Professional Tour & Travel Platform** — Three portals, one codebase, one server.
+TravelSphere is a modern, enterprise-grade, multi-portal travel management system. It provides an all-in-one platform for customers to browse packages and plan custom trips using conversational AI, for agents to manage tours and track earnings, and for administrators to oversee bookings, packages, and agent commissions.
 
-| Portal   | URL                              | Audience     |
-|----------|----------------------------------|--------------|
-| Customer | `https://travelsphere.sbs`       | Customers    |
-| Agent    | `https://agent.travelsphere.sbs` | Travel Agents|
-| Admin    | `https://admin.travelsphere.sbs` | Admins       |
+Designed as a multi-tenant system, it serves three distinct portals (Customer, Agent, Admin) from a single Next.js deployment using host-based routing.
 
 ---
 
-## Architecture
+## 🏗️ System Architecture & Subdomain Routing
 
-```
-Internet → DNS → ONE Server (one IP)
-                       │
-                   Nginx (SSL)
-                       │
-              Next.js App (port 3000)
-             /           │           \
-       Customer       Agent          Admin
-        Portal        Portal         Panel
-                           │
-                    src/app/api/   ← ONE backend
-                           │
-                      PostgreSQL
-```
+TravelSphere uses a reverse proxy to route different subdomains to a single Next.js application process. The Next.js middleware (`src/proxy.ts` / `src/middleware.ts`) inspects the host header and rewrites/redirects incoming requests dynamically.
 
----
+```mermaid
+graph TD
+    %% Subdomains
+    subgraph Subdomains [Subdomain Entry Points]
+        CustDomain["travelsphere.sbs (Customer Portal)"]
+        AgentDomain["agent.travelsphere.sbs (Agent Portal)"]
+        AdminDomain["admin.travelsphere.sbs (Admin Portal)"]
+    end
 
-## Tech Stack
+    %% Routing Layer
+    subgraph RoutingLayer [Nginx Reverse Proxy & Middleware]
+        Nginx["Nginx Reverse Proxy (Port 80/443)"]
+        NextMiddleware["Next.js Middleware (src/proxy.ts)"]
+    end
 
-| Layer      | Technology                                    |
-|------------|-----------------------------------------------|
-| Framework  | Next.js 16 (App Router, `src/` layout)        |
-| Styling    | Tailwind CSS v4                               |
-| Auth       | NextAuth v4 (JWT + role-based)                |
-| Database   | PostgreSQL + Prisma ORM                       |
-| Payments   | Razorpay                                      |
-| Storage    | Cloudinary                                    |
-| AI Chat    | OpenAI / Groq (llama-3.1-8b)                 |
-| Email      | Gmail SMTP (Nodemailer)                       |
-| Deployment | Vercel (primary) / AWS VPS + Nginx (secondary)|
+    %% Application Portals
+    subgraph AppPortals [Next.js Core Application]
+        CustApp["Customer Pages (/(customer)/*)"]
+        AgentApp["Agent Portal (/agent/*)"]
+        AdminApp["Admin Dashboard (/admin/*)"]
+    end
 
----
+    %% Database & External Services
+    subgraph Services [Database & External Services]
+        DB[(PostgreSQL Database via Prisma)]
+        AI["AI Engines (Groq Llama-3.1 / OpenAI)"]
+        Razorpay["Razorpay Payment Gateway"]
+        Cloudinary["Cloudinary Image Storage"]
+        Nodemailer["Nodemailer (SMTP Relay)"]
+    end
 
-## Project Structure
+    %% Connections
+    CustDomain --> Nginx
+    AgentDomain --> Nginx
+    AdminDomain --> Nginx
+    Nginx --> NextMiddleware
+    
+    NextMiddleware -- Host: travelsphere.sbs --> CustApp
+    NextMiddleware -- Host: agent.travelsphere.sbs --> AgentApp
+    NextMiddleware -- Host: admin.travelsphere.sbs --> AdminApp
 
-```
-travel/
-├── src/
-│   ├── app/               ← Next.js pages + API routes
-│   │   ├── (customer)/    ← Customer portal pages
-│   │   ├── (auth)/        ← Shared auth pages
-│   │   ├── agent/         ← Agent portal pages
-│   │   ├── admin/         ← Admin panel pages
-│   │   └── api/           ← ONE shared backend API
-│   ├── components/        ← Shared React components (Navbar, Cards, etc.)
-│   ├── lib/               ← Server logic (auth, db, email, payments)
-│   └── types/             ← TypeScript type declarations
-├── prisma/
-│   ├── schema.prisma      ← Database schema
-│   ├── seed.ts            ← Initial data
-│   └── generated/         ← Auto-generated Prisma client
-├── deployment/
-│   ├── nginx/             ← Nginx reverse proxy (3 server blocks + SSL)
-│   ├── docker-compose.yml ← Full stack Docker
-│   └── deploy.sh          ← Automated VPS setup
-├── proxy.ts               ← Subdomain routing + auth guard
-└── vercel.json            ← Vercel settings
+    CustApp --> DB
+    AgentApp --> DB
+    AdminApp --> DB
+
+    CustApp --> AI
+    CustApp --> Razorpay
+    CustApp --> Cloudinary
+    CustApp --> Nodemailer
 ```
 
-→ Full detail: [docs/project-structure.md](docs/project-structure.md)
-
 ---
 
-## Quick Start (Local Dev)
+## ⚡ Core Workflows
 
-```bash
-# 1. Install dependencies
-npm install
+### 1. AI Customised Trip Planning & Enquiry Workflow
+Instead of filling out rigid forms, customers converse with **Sphere**, an AI travel consultant. Sphere learns the customer's travel style, suggests destinations, builds detailed markdown itineraries, and submits custom plans to the database for administrative follow-up.
 
-# 2. Setup environment
-cp .env.example .env.local
-# Edit .env.local with your keys
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Customer as Customer (travelsphere.sbs)
+    participant UI as AI Planner Page
+    participant API as API Route (/api/ai-trip-planner)
+    participant DB as PostgreSQL Database
+    participant LLM as AI Engine (Groq / OpenAI)
+    actor Admin as Admin (admin.travelsphere.sbs)
 
-# 3. Database setup
-npm run db:push        # push schema
-npm run seed           # create admin + sample packages
-
-# 4. Start dev server
-npm run dev            # http://localhost:3000
+    Customer->>UI: Opens AI Planner & starts chatting
+    UI->>API: Send chat message history
+    API->>DB: Fetch live package catalog & reviews
+    DB-->>API: Return active packages and testimonials
+    API->>LLM: Send system prompt + database context + chat history
+    LLM-->>API: Stream conversational travel suggestions
+    API-->>UI: Render streamed response in markdown
+    Customer->>UI: Agrees to custom itinerary & inputs contact info
+    UI->>API: Post action: "submit_trip" with contact details & plan
+    API->>DB: Create Enquiry record
+    DB-->>API: Confirm Enquiry Created
+    API-->>UI: Show success state to Customer
+    Admin->>DB: Check Enquiries Dashboard
+    DB-->>Admin: Show new custom trip planning enquiry
+    Admin->>Customer: Contact Customer via WhatsApp/Phone to finalize
 ```
 
-### Test all 3 portals locally
+---
 
-Run as **Administrator** in PowerShell:
-```powershell
-node scripts/setup-local-hosts.js
+### 2. Booking & Razorpay Payment Workflow
+Customers can book preset tour packages, select scheduled travel dates, and make payments securely using the integrated Razorpay checkout.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Customer as Customer (travelsphere.sbs)
+    participant UI as Package Page & Sidebar
+    participant API as Booking API (/api/bookings)
+    participant RP as Razorpay SDK/Gateway
+    participant DB as PostgreSQL Database
+
+    Customer->>UI: Selects travel date, travellers & clicks "Book Now"
+    UI->>API: POST booking details
+    API->>DB: Create Booking (Status: PENDING)
+    API->>RP: Create Razorpay Order
+    RP-->>API: Return Order ID
+    API-->>UI: Return Order details
+    UI->>Customer: Open Razorpay Payment Modal
+    Customer->>RP: Input payment details & authorize
+    RP-->>Customer: Payment Successful
+    Customer->>UI: Return payment signature & details
+    UI->>API: POST /api/payment (Verify signature)
+    API->>DB: Update Booking (Status: CONFIRMED) & Payment (Status: SUCCESS)
+    API-->>UI: Show Booking Confirmation screen
 ```
 
-Then open:
-- **Customer** → `http://localhost:3000`
-- **Agent** → `http://agent.localhost:3000`
-- **Admin** → `http://admin.localhost:3000`
-
 ---
 
-## Deploy to Vercel (Primary)
+### 3. Booking Assignment & Agent Commission Workflow
+Confirmed bookings are assigned to local travel agents. Once the agent executes the tour, they earn 80% commission, and the platform retains 20%.
 
-1. Push code to GitHub
-2. Import repo in [vercel.com](https://vercel.com)
-3. Set environment variables in Vercel dashboard (copy from `.env.example`)
-4. Set custom domains:
-   - `travelsphere.sbs` → Production
-   - `agent.travelsphere.sbs` → Production (same deployment)
-   - `admin.travelsphere.sbs` → Production (same deployment)
-5. Deploy ✓
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as Administrator
+    participant DB as PostgreSQL Database
+    actor Agent as Tour Agent (agent.travelsphere.sbs)
+    participant UI as Agent Dashboard
 
-> **Important Vercel env vars:**
-> ```
-> ROOT_DOMAIN=travelsphere.sbs
-> NEXT_PUBLIC_ROOT_DOMAIN=travelsphere.sbs
-> NEXTAUTH_URL=https://travelsphere.sbs
-> NEXTAUTH_URL_INTERNAL=https://travelsphere.sbs
-> ```
-
----
-
-## Deploy to AWS / VPS (Secondary)
-
-```bash
-ssh root@YOUR_SERVER_IP
-git clone <repo>
-cd travel
-nano deployment/deploy.sh   # fill in your passwords/keys
-chmod +x deployment/deploy.sh && ./deployment/deploy.sh
+    Admin->>DB: Select Booking & Assign to Agent
+    DB-->>Admin: BookingAgent Relation Created (Status: ASSIGNED)
+    Agent->>UI: View assigned tours
+    UI->>DB: Fetch assigned tours
+    DB-->>UI: List active bookings
+    Agent->>DB: Accept & mark status as IN_PROGRESS
+    Agent->>DB: Mark tour as COMPLETED upon execution
+    DB->>DB: Calculate Commission (80% Agent, 20% TravelSphere)
+    Agent->>UI: View weekly/monthly earnings & SVG charts
 ```
 
-The script automatically installs: Node.js 22, PostgreSQL, Nginx, PM2, SSL (Let's Encrypt).
+---
 
-→ Full guide: [docs/subdomain-deployment.md](docs/subdomain-deployment.md)
+## 🛠️ Tools & Technologies Used
+
+| Category | Technology / Library | Description |
+| :--- | :--- | :--- |
+| **Core Framework** | Next.js 16 (App Router) | React framework for server-side rendering, routing, and serverless APIs. |
+| **Database ORM** | Prisma ORM | Type-safe schema definition, migration generation, and database client. |
+| **Database** | PostgreSQL | Enterprise-grade relational database storing users, packages, bookings, and agents. |
+| **AI Integration** | OpenAI SDK + Groq API | Powers the streaming AI Travel Agent and Trip Planner. |
+| **Payment Gateway** | Razorpay SDK | Handles secure online transactions, orders, and payment verifications. |
+| **Media Hosting** | Cloudinary & Next-Cloudinary | Uploads, optimizes, and delivers high-resolution package images. |
+| **Email Transport** | Nodemailer | Sends email OTP hashes, verification links, and password resets. |
+| **Styling & UI** | Tailwind CSS v4 & Headless UI | Modern utility-first CSS framework coupled with unstyled accessible components. |
+| **Forms & Validation** | React Hook Form + Zod | Client-side form management integrated with runtime schema validation. |
+| **Process Manager** | PM2 | Daemon process manager keeping the Next.js production server running 24/7. |
 
 ---
 
-## npm Scripts
+## 🔒 Security Measures
 
-| Script                    | Description                            |
-|---------------------------|----------------------------------------|
-| `npm run dev`             | Start dev server (Windows PowerShell) |
-| `npm run build`           | Production build                       |
-| `npm run start`           | Start production server                |
-| `npm run seed`            | Seed DB with admin + sample packages   |
-| `npm run db:push`         | Push schema to DB (dev only)           |
-| `npm run db:migrate:deploy` | Apply migrations (production)        |
-| `npm run prisma:generate` | Regenerate Prisma client               |
-| `npm run setup-hosts`     | Add subdomain entries to hosts file (Admin) |
+TravelSphere is secured at multiple layers to protect customer data, prevent unauthorized agent access, and block automated attacks.
+
+### 1. Subdomain Isolation & Router Restrictions
+The Next.js middleware (`src/proxy.ts` / `src/middleware.ts`) checks the host headers. If a user attempts to access `/admin` or `/agent` endpoints from the base customer domain (`travelsphere.sbs`), the middleware rewrites the request to a `404 Not Found` page. This isolates administrative interfaces from the public customer domain.
+
+### 2. Role-Based Access Control (RBAC)
+Session tokens are authenticated and validated using JWTs via `next-auth`. 
+- **Admin routes** (`/admin/*`) require a session token with the `ADMIN` role.
+- **Agent routes** (`/agent/*`) require a session token with approved agent status (`status === APPROVED`).
+- Unauthenticated or unauthorized users are automatically redirected to their respective login portals with a dynamic `callbackUrl`.
+
+### 3. Nginx Security Headers
+The Nginx configuration defines strict headers:
+- `X-Frame-Options "SAMEORIGIN"` (Customer/Agent) and `X-Frame-Options "DENY"` (Admin) to block clickjacking.
+- `Content-Security-Policy "frame-ancestors 'none';"` on the admin subdomain to prevent administrative screens from being embedded in iframes.
+- `X-Content-Type-Options "nosniff"` to prevent MIME-sniffing.
+- `Referrer-Policy "strict-origin-when-cross-origin"`.
+
+### 4. Sliding-Window Rate Limiting
+To prevent abuse of AI APIs, endpoints are rate-limited via an IP-based sliding window:
+- **AI Trip Planner** (`/api/ai-trip-planner`): Limited to 60 requests per hour per IP.
+- **AI General Agent** (`/api/ai-agent`): Limited to 40 requests per hour per IP.
+Over-limit requests receive a `429 Too Many Requests` response.
+
+### 5. Multi-Step Authentication & Verification
+- **Email Verification**: User sign-ups are verified via single-use secure OTPs.
+- **Password Reset**: Secure OTP validation with expiration times, attempt limits, and resend cooldowns.
+- **Bcrypt Hashing**: All user passwords are encrypted using Bcrypt prior to storage.
 
 ---
 
-## Environment Variables
+## 🚀 Deployment Guide
 
-Copy `.env.example` → `.env.local`:
+The platform is designed to be deployed on a virtual private server (VPS) running Ubuntu 22.04 or 24.04.
 
-| Variable               | Description                             |
-|------------------------|-----------------------------------------|
-| `DATABASE_URL`         | PostgreSQL connection string            |
-| `NEXTAUTH_SECRET`      | Random 32-char secret                   |
-| `ROOT_DOMAIN`          | `travelsphere.sbs` in prod, `localhost` in dev |
-| `NEXTAUTH_URL`         | Primary domain URL                      |
-| `RAZORPAY_KEY_ID/SECRET` | Payment keys                          |
-| `CLOUDINARY_*`         | Image storage                           |
-| `EMAIL_USER/PASS`      | Gmail SMTP credentials                  |
-| `OPENAI_API_KEY`       | AI chat (optional)                      |
-| `GROQ_API_KEY`         | AI chat alternative                     |
+### 1. Prerequisites
+Configure your DNS provider with wildcards or direct records pointing to your server's IP:
+- `travelsphere.sbs` (A record)
+- `admin.travelsphere.sbs` (A record)
+- `agent.travelsphere.sbs` (A record)
+
+### 2. Automated VPS Setup
+The `deployment/deploy.sh` script automates the installation of Node.js 22, Git, PostgreSQL, Nginx, PM2, and Let's Encrypt Certbot.
+
+1. SSH into your VPS as root.
+2. Edit `deployment/deploy.sh` to fill in your repo URL, domain, and secure credentials.
+3. Run the script:
+   ```bash
+   chmod +x deployment/deploy.sh
+   ./deployment/deploy.sh
+   ```
+
+### 3. Process Management (PM2)
+PM2 runs the built Next.js application in the background and restarts it on server reboots.
+- **Start command:** `pm2 start npm --name "travelsphere" -- run start -- -p 3000`
+- **View status:** `pm2 status`
+- **View logs:** `pm2 logs travelsphere`
 
 ---
 
-## License
+## ✨ Unique Features of TravelSphere
 
-MIT
+1. **Dual AI Interfaces**: 
+   - A general-purpose AI chat assistant in the footer/sidebar for quick destination facts, visa information, and recommendations.
+   - A full-screen conversational **AI Customised Tour Planner** that listens, constructs rich custom itineraries, calculates budgets, and submits details directly to the admin.
+2. **Dynamic Knowledge Base**: The AI does not rely on static training data alone. Real-time details of active packages, testimonials, site policies, and support facts are fetched directly from PostgreSQL and injected into the system prompt at runtime.
+3. **Agent Earnings Analytics**: Approved agents access an analytics dashboard equipped with custom SVG charts detailing weekly and monthly performance, booking history, and transparent commission payouts.
+4. **Comprehensive Data Seed**: Comes pre-populated with 79 famous travel packages covering beaches, mountains, pilgrimage sites, and adventure spots across North, South, East, West, and Island regions of India, each verified to have unique and relevant photography.

@@ -18,6 +18,33 @@ const prisma = new PrismaClient({ adapter })
 
 type SeedPackage = Prisma.PackageCreateInput
 
+const REMOVED_PACKAGE_SLUGS = new Set([
+  'kashmir-paradise-escape',
+  'spiti-valley-road-trip',
+  'rishikesh-spiritual-adventure-camp',
+  'jim-corbett-wildlife-safari',
+  'varanasi-heritage-spiritual-tour',
+  'dharamshala-dalhousie-hills',
+  'ooty-kodaikanal-romantic-escapade',
+  'hampi-badami-ruins-explorer',
+  'chikmagalur-coffee-hills-trek',
+  'munnar-thekkady-hill-escapade',
+  'royal-rajasthan-heritage-tour',
+  'gir-national-park-lion-safari',
+  'rann-of-kutch-desert-festival',
+  'mahabaleshwar-strawberry-valley-tour',
+  'ajanta-ellora-caves-heritage-tour',
+  'jaisalmer-desert-safari-camping',
+  'dwarka-somnath-pilgrimage-tour',
+  'darjeeling-tea-toy-train-vacation',
+  'gangtok-tsango-lake-adventure',
+  'sundarbans-mangrove-cruise',
+  'majuli-island-cultural-retreat',
+  'rajasthan-heritage-with-jaisalmer',
+  'munnar-thekkady-alleppey-honeymoon-special',
+  'rann-of-kutch-desert-festival-special',
+])
+
 function buildTripDates(packageIndex: number) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -118,7 +145,9 @@ async function main() {
     console.log('Skipping admin seed. Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD to create an admin user.')
   }
 
-  const packages: SeedPackage[] = packagesData as unknown as SeedPackage[]
+  const packages: SeedPackage[] = (packagesData as unknown as SeedPackage[]).filter(
+    (pkg) => !REMOVED_PACKAGE_SLUGS.has(pkg.slug)
+  )
 
   for (const [packageIndex, pkg] of packages.entries()) {
     const savedPackage = await prisma.package.upsert({

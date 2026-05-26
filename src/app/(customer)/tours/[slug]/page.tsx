@@ -8,6 +8,7 @@ import { MapPinIcon, StarIcon } from '@heroicons/react/24/outline'
 import TourDetailTabs from '@/components/packages/TourDetailTabs'
 import TourBookingSidebar from '@/components/packages/TourBookingSidebar'
 import { getDetailedTourDescription, getDetailedItinerary } from '@/lib/tourHelpers'
+import { getRelatedPackageImages } from '@/lib/packageImages'
 
 export const dynamic = 'force-dynamic'
 
@@ -107,7 +108,6 @@ export default async function TourDetailPage({ params }: Props) {
   if (!pkg || !pkg.isActive) return notFound()
 
   // ─── Runtime safety guards for all DB arrays/fields ─────────────────────────
-  const safeImages = Array.isArray(pkg.images) ? pkg.images.filter(Boolean) : []
   const safeInclusions = Array.isArray(pkg.inclusions) ? pkg.inclusions.filter(Boolean) : []
   const safeExclusions = Array.isArray(pkg.exclusions) ? pkg.exclusions.filter(Boolean) : []
   const safeReviews = Array.isArray(pkg.reviews) ? pkg.reviews : []
@@ -119,6 +119,13 @@ export default async function TourDetailPage({ params }: Props) {
   const safeCategory = (pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category) || 'SOLO'
   const safePrice = typeof pkg.price === 'number' ? pkg.price : 0
   const safeDuration = typeof pkg.duration === 'number' ? pkg.duration : 0
+  const safeImages = getRelatedPackageImages({
+    slug: safeSlug,
+    title: safeTitle,
+    destination: safeDestination,
+    category: safeCategory,
+    images: pkg.images,
+  })
 
   // Safely parse itinerary from Prisma Json type
   const parsedItinerary = safeParseItinerary(pkg.itinerary)
@@ -197,11 +204,6 @@ export default async function TourDetailPage({ params }: Props) {
                 />
               </div>
             ))}
-            {safeImages.length === 0 && (
-              <div className="col-span-2 flex h-64 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-neutral-900">
-                No images available
-              </div>
-            )}
           </div>
 
           {/* Header Summary Section */}
