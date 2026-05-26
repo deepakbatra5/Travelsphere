@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import EarningsCharts from './EarningsCharts'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -66,6 +67,30 @@ export default async function AgentEarningsPage() {
   const monthlyRows = Object.entries(monthly).slice(-6)
   const maxMonthlyValue = Math.max(1, ...monthlyRows.map(([, row]) => row.agent))
 
+  // Weekly aggregation (last 8 weeks)
+  function weekKey(date: Date) {
+    const d = new Date(date)
+    const start = new Date(d)
+    // start of week (Sunday)
+    start.setDate(d.getDate() - d.getDay())
+    return start.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+  }
+
+  const weekly = completed.reduce<Record<string, number>>((acc, item) => {
+    const key = weekKey(item.completedAt || item.booking.travelDate)
+    acc[key] = (acc[key] || 0) + item.commission
+    return acc
+  }, {})
+  const weeklyRows = Object.entries(weekly).slice(-8)
+
+  // Trip rows -> recent assigned travel months with count
+  const tripMap = completed.reduce<Record<string, number>>((acc, item) => {
+    const k = new Date(item.booking.travelDate).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })
+    acc[k] = (acc[k] || 0) + 1
+    return acc
+  }, {})
+  const tripRows = Object.entries(tripMap).slice(-8)
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -86,39 +111,7 @@ export default async function AgentEarningsPage() {
         </a>
       </div>
 
-      <div className="rounded-3xl bg-white p-6 shadow-sm">
-        <div className="mb-5 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
-          <div>
-            <h2 className="text-lg font-bold text-slate-900">Growth Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Monthly agent earnings from completed tours.</p>
-          </div>
-          <div className="flex gap-3 text-xs font-semibold">
-            <span className="flex items-center gap-1 text-emerald-700"><span className="h-3 w-3 rounded-full bg-emerald-500" />Agent earnings</span>
-          </div>
-        </div>
-        {monthlyRows.length > 0 ? (
-          <div className="space-y-4">
-            {monthlyRows.map(([label, row]) => (
-              <div key={label} className="grid grid-cols-1 gap-2 sm:grid-cols-[120px_1fr] sm:items-center">
-                <div>
-                  <p className="text-sm font-bold text-slate-800">{label}</p>
-                  <p className="text-xs text-slate-400">{row.tours} tour(s)</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-100">
-                      <div className="h-full rounded-full bg-emerald-500" style={{ width: `${Math.max(5, (row.agent / maxMonthlyValue) * 100)}%` }} />
-                    </div>
-                    <span className="w-28 text-right text-xs font-bold text-emerald-700">Rs {row.agent.toLocaleString('en-IN')}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="py-8 text-center text-sm text-slate-400">No completed tours yet. Your growth chart will appear after completed assignments.</p>
-        )}
-      </div>
+      <EarningsCharts monthlyRows={monthlyRows} weeklyRows={weeklyRows} tripRows={tripRows} />
 
       <div id="breakdown" className="rounded-3xl bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-lg font-bold text-slate-900">Trip-wise Agent Earnings</h2>
