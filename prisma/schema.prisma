@@ -32,6 +32,7 @@ model User {
   reviews   Review[]
   enquiries Enquiry[]
   agent     Agent?
+  agentDeletionRequest AgentDeletionRequest?
 }
 
 enum Role {
@@ -187,6 +188,18 @@ model Agent {
   user             User                  @relation(fields: [userId], references: [id])
   preferredTours   AgentTourPreference[]
   assignedBookings BookingAgent[]
+  deletionRequest  AgentDeletionRequest?
+}
+
+model AgentDeletionRequest {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  agentId     String   @unique
+  reason      String?
+  requestedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
 }
 
 enum AgentStatus {

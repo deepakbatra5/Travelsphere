@@ -392,6 +392,7 @@ export const ModelName = {
   Enquiry: 'Enquiry',
   Review: 'Review',
   Agent: 'Agent',
+  AgentDeletionRequest: 'AgentDeletionRequest',
   AgentTourPreference: 'AgentTourPreference',
   BookingAgent: 'BookingAgent',
   TeamMember: 'TeamMember'
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "package" | "packageTripDate" | "booking" | "payment" | "enquiry" | "review" | "agent" | "agentTourPreference" | "bookingAgent" | "teamMember"
+    modelProps: "user" | "package" | "packageTripDate" | "booking" | "payment" | "enquiry" | "review" | "agent" | "agentDeletionRequest" | "agentTourPreference" | "bookingAgent" | "teamMember"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1006,6 +1007,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AgentDeletionRequest: {
+      payload: Prisma.$AgentDeletionRequestPayload<ExtArgs>
+      fields: Prisma.AgentDeletionRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgentDeletionRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgentDeletionRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.AgentDeletionRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgentDeletionRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>
+        }
+        findMany: {
+          args: Prisma.AgentDeletionRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>[]
+        }
+        create: {
+          args: Prisma.AgentDeletionRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>
+        }
+        createMany: {
+          args: Prisma.AgentDeletionRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgentDeletionRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.AgentDeletionRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>
+        }
+        update: {
+          args: Prisma.AgentDeletionRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.AgentDeletionRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgentDeletionRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgentDeletionRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.AgentDeletionRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDeletionRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.AgentDeletionRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgentDeletionRequest>
+        }
+        groupBy: {
+          args: Prisma.AgentDeletionRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentDeletionRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgentDeletionRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentDeletionRequestCountAggregateOutputType> | number
+        }
+      }
+    }
     AgentTourPreference: {
       payload: Prisma.$AgentTourPreferencePayload<ExtArgs>
       fields: Prisma.AgentTourPreferenceFieldRefs
@@ -1407,6 +1482,17 @@ export const AgentScalarFieldEnum = {
 export type AgentScalarFieldEnum = (typeof AgentScalarFieldEnum)[keyof typeof AgentScalarFieldEnum]
 
 
+export const AgentDeletionRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  agentId: 'agentId',
+  reason: 'reason',
+  requestedAt: 'requestedAt'
+} as const
+
+export type AgentDeletionRequestScalarFieldEnum = (typeof AgentDeletionRequestScalarFieldEnum)[keyof typeof AgentDeletionRequestScalarFieldEnum]
+
+
 export const AgentTourPreferenceScalarFieldEnum = {
   id: 'id',
   agentId: 'agentId',
@@ -1763,6 +1849,7 @@ export type GlobalOmitConfig = {
   enquiry?: Prisma.EnquiryOmit
   review?: Prisma.ReviewOmit
   agent?: Prisma.AgentOmit
+  agentDeletionRequest?: Prisma.AgentDeletionRequestOmit
   agentTourPreference?: Prisma.AgentTourPreferenceOmit
   bookingAgent?: Prisma.BookingAgentOmit
   teamMember?: Prisma.TeamMemberOmit

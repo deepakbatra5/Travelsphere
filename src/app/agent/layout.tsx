@@ -9,11 +9,13 @@ import ThemeToggle from '@/components/theme/ThemeToggle'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/profile', label: 'Profile' },
   { href: '/tours', label: 'Available Tours' },
   { href: '/my-tours', label: 'My Assignments' },
   { href: '/earnings', label: 'Earnings' },
   { href: '/help', label: 'Help & Support' },
+  // Move Profile and Settings to the bottom (below Help & Support)
+  { href: '/profile', label: 'Profile' },
+  { href: '/settings', label: 'Settings' },
 ]
 
 export default function AgentLayout({ children }: { children: React.ReactNode }) {

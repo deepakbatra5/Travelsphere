@@ -59,6 +59,7 @@ export const ModelName = {
   Enquiry: 'Enquiry',
   Review: 'Review',
   Agent: 'Agent',
+  AgentDeletionRequest: 'AgentDeletionRequest',
   AgentTourPreference: 'AgentTourPreference',
   BookingAgent: 'BookingAgent',
   TeamMember: 'TeamMember'
@@ -218,6 +219,17 @@ export const AgentScalarFieldEnum = {
 } as const
 
 export type AgentScalarFieldEnum = (typeof AgentScalarFieldEnum)[keyof typeof AgentScalarFieldEnum]
+
+
+export const AgentDeletionRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  agentId: 'agentId',
+  reason: 'reason',
+  requestedAt: 'requestedAt'
+} as const
+
+export type AgentDeletionRequestScalarFieldEnum = (typeof AgentDeletionRequestScalarFieldEnum)[keyof typeof AgentDeletionRequestScalarFieldEnum]
 
 
 export const AgentTourPreferenceScalarFieldEnum = {

@@ -69,7 +69,6 @@ export default async function AgentDashboard() {
         <h1 className="text-2xl font-extrabold">Welcome back, {user.name}</h1>
         <p className="mt-1 text-sm text-cyan-100">{user.agent.city}, {user.agent.state} - {user.agent.experience} year(s) experience</p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <div className="rounded-2xl bg-white/15 px-4 py-2 text-sm">Rating: {user.agent.rating > 0 ? `${user.agent.rating.toFixed(1)} / 5` : 'No ratings yet'}</div>
           <div className="rounded-2xl bg-white/15 px-4 py-2 text-sm">Status: {user.agent.status}</div>
         </div>
       </div>

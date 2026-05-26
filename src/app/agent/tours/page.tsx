@@ -96,6 +96,7 @@ export default async function AgentToursPage({ searchParams }: PageProps) {
   const packages = await prisma.package.findMany({
     where: { isActive: true },
     orderBy: { createdAt: 'desc' },
+    include: { tripDates: { orderBy: { startDate: 'asc' } } },
   }).catch(() => [])
   const selectedIds = new Set(agent.preferredTours.map((pref) => pref.packageId))
   const showCoveredOnly = resolvedSearchParams?.view === 'covered'
@@ -125,8 +126,10 @@ export default async function AgentToursPage({ searchParams }: PageProps) {
           const itinerary = itineraryRows(pkg.itinerary)
           const highlights = asStringList(pkg.inclusions).slice(0, 3)
 
+          const tripDates = (pkg as any).tripDates || []
+
           return (
-            <div key={pkg.id} className="rounded-3xl bg-white p-5 shadow-sm">
+            <div key={pkg.id} className="rounded-3xl bg-white p-5 shadow-sm transform transition hover:-translate-y-1 hover:shadow-lg">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h2 className="font-bold text-slate-900">{pkg.title}</h2>
@@ -157,6 +160,35 @@ export default async function AgentToursPage({ searchParams }: PageProps) {
                   {highlights.map((item) => (
                     <span key={item} className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold text-cyan-700">{item}</span>
                   ))}
+                </div>
+              )}
+              {/* Upcoming dates */}
+              {tripDates.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="text-sm font-bold text-slate-900 mb-2">Upcoming Dates</h3>
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {tripDates.slice(0, 6).map((td: any) => {
+                      const start = new Date(td.startDate)
+                      const soldOut = td.availableSeats <= 0
+                      return (
+                        <div key={td.id} className={`min-w-40 shrink-0 rounded-2xl border px-3 py-2 text-sm ${soldOut ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'} transform transition hover:scale-105`}> 
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="text-xs text-slate-500">{start.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</div>
+                              <div className="font-semibold text-slate-800">{start.toLocaleDateString('en-IN', { year: 'numeric' })}</div>
+                            </div>
+                            <div className="text-right">
+                              {soldOut ? (
+                                <span className="text-xs font-semibold text-red-600">Sold out</span>
+                              ) : (
+                                <span className="text-xs font-semibold text-emerald-700">{td.availableSeats} seats</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               )}
               <details className="group mt-4 rounded-2xl border border-slate-100 bg-slate-50">

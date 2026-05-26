@@ -327,6 +327,7 @@ export type AgentWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   preferredTours?: Prisma.AgentTourPreferenceListRelationFilter
   assignedBookings?: Prisma.BookingAgentListRelationFilter
+  deletionRequest?: Prisma.XOR<Prisma.AgentDeletionRequestNullableScalarRelationFilter, Prisma.AgentDeletionRequestWhereInput> | null
 }
 
 export type AgentOrderByWithRelationInput = {
@@ -351,6 +352,7 @@ export type AgentOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   preferredTours?: Prisma.AgentTourPreferenceOrderByRelationAggregateInput
   assignedBookings?: Prisma.BookingAgentOrderByRelationAggregateInput
+  deletionRequest?: Prisma.AgentDeletionRequestOrderByWithRelationInput
 }
 
 export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -378,6 +380,7 @@ export type AgentWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   preferredTours?: Prisma.AgentTourPreferenceListRelationFilter
   assignedBookings?: Prisma.BookingAgentListRelationFilter
+  deletionRequest?: Prisma.XOR<Prisma.AgentDeletionRequestNullableScalarRelationFilter, Prisma.AgentDeletionRequestWhereInput> | null
 }, "id" | "userId">
 
 export type AgentOrderByWithAggregationInput = {
@@ -451,6 +454,7 @@ export type AgentCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutAgentInput
   preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutAgentInput
 }
 
 export type AgentUncheckedCreateInput = {
@@ -474,6 +478,7 @@ export type AgentUncheckedCreateInput = {
   gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutAgentInput
 }
 
 export type AgentUpdateInput = {
@@ -497,6 +502,7 @@ export type AgentUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
   preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateInput = {
@@ -520,6 +526,7 @@ export type AgentUncheckedUpdateInput = {
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUncheckedUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutAgentNestedInput
 }
 
 export type AgentCreateManyInput = {
@@ -712,6 +719,20 @@ export type EnumAgentStatusFieldUpdateOperationsInput = {
   set?: $Enums.AgentStatus
 }
 
+export type AgentCreateNestedOneWithoutDeletionRequestInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutDeletionRequestInput, Prisma.AgentUncheckedCreateWithoutDeletionRequestInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutDeletionRequestInput
+  connect?: Prisma.AgentWhereUniqueInput
+}
+
+export type AgentUpdateOneRequiredWithoutDeletionRequestNestedInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutDeletionRequestInput, Prisma.AgentUncheckedCreateWithoutDeletionRequestInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutDeletionRequestInput
+  upsert?: Prisma.AgentUpsertWithoutDeletionRequestInput
+  connect?: Prisma.AgentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutDeletionRequestInput, Prisma.AgentUpdateWithoutDeletionRequestInput>, Prisma.AgentUncheckedUpdateWithoutDeletionRequestInput>
+}
+
 export type AgentCreateNestedOneWithoutPreferredToursInput = {
   create?: Prisma.XOR<Prisma.AgentCreateWithoutPreferredToursInput, Prisma.AgentUncheckedCreateWithoutPreferredToursInput>
   connectOrCreate?: Prisma.AgentCreateOrConnectWithoutPreferredToursInput
@@ -760,6 +781,7 @@ export type AgentCreateWithoutUserInput = {
   gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutAgentInput
 }
 
 export type AgentUncheckedCreateWithoutUserInput = {
@@ -782,6 +804,7 @@ export type AgentUncheckedCreateWithoutUserInput = {
   gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutAgentInput
 }
 
 export type AgentCreateOrConnectWithoutUserInput = {
@@ -820,10 +843,120 @@ export type AgentUpdateWithoutUserInput = {
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.AgentUpdatelanguagesInput | string[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  rating?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalTours?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTours?: Prisma.AgentTourPreferenceUncheckedUpdateManyWithoutAgentNestedInput
+  assignedBookings?: Prisma.BookingAgentUncheckedUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutAgentNestedInput
+}
+
+export type AgentCreateWithoutDeletionRequestInput = {
+  id?: string
+  phone: string
+  city: string
+  state: string
+  experience: number
+  languages?: Prisma.AgentCreatelanguagesInput | string[]
+  bio?: string | null
+  status?: $Enums.AgentStatus
+  rating?: number
+  totalTours?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
+  user: Prisma.UserCreateNestedOneWithoutAgentInput
+  preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
+  assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
+}
+
+export type AgentUncheckedCreateWithoutDeletionRequestInput = {
+  id?: string
+  userId: string
+  phone: string
+  city: string
+  state: string
+  experience: number
+  languages?: Prisma.AgentCreatelanguagesInput | string[]
+  bio?: string | null
+  status?: $Enums.AgentStatus
+  rating?: number
+  totalTours?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  companyName?: string | null
+  aadharCard?: string | null
+  panCard?: string | null
+  pinCode?: string | null
+  gstNumber?: string | null
+  preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
+  assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
+}
+
+export type AgentCreateOrConnectWithoutDeletionRequestInput = {
+  where: Prisma.AgentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgentCreateWithoutDeletionRequestInput, Prisma.AgentUncheckedCreateWithoutDeletionRequestInput>
+}
+
+export type AgentUpsertWithoutDeletionRequestInput = {
+  update: Prisma.XOR<Prisma.AgentUpdateWithoutDeletionRequestInput, Prisma.AgentUncheckedUpdateWithoutDeletionRequestInput>
+  create: Prisma.XOR<Prisma.AgentCreateWithoutDeletionRequestInput, Prisma.AgentUncheckedCreateWithoutDeletionRequestInput>
+  where?: Prisma.AgentWhereInput
+}
+
+export type AgentUpdateToOneWithWhereWithoutDeletionRequestInput = {
+  where?: Prisma.AgentWhereInput
+  data: Prisma.XOR<Prisma.AgentUpdateWithoutDeletionRequestInput, Prisma.AgentUncheckedUpdateWithoutDeletionRequestInput>
+}
+
+export type AgentUpdateWithoutDeletionRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.IntFieldUpdateOperationsInput | number
+  languages?: Prisma.AgentUpdatelanguagesInput | string[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  rating?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalTours?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aadharCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  panCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
+  preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
+  assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentUncheckedUpdateWithoutDeletionRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
@@ -864,6 +997,7 @@ export type AgentCreateWithoutPreferredToursInput = {
   gstNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutAgentInput
   assignedBookings?: Prisma.BookingAgentCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutAgentInput
 }
 
 export type AgentUncheckedCreateWithoutPreferredToursInput = {
@@ -886,6 +1020,7 @@ export type AgentUncheckedCreateWithoutPreferredToursInput = {
   pinCode?: string | null
   gstNumber?: string | null
   assignedBookings?: Prisma.BookingAgentUncheckedCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutAgentInput
 }
 
 export type AgentCreateOrConnectWithoutPreferredToursInput = {
@@ -924,6 +1059,7 @@ export type AgentUpdateWithoutPreferredToursInput = {
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
   assignedBookings?: Prisma.BookingAgentUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateWithoutPreferredToursInput = {
@@ -946,6 +1082,7 @@ export type AgentUncheckedUpdateWithoutPreferredToursInput = {
   pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedBookings?: Prisma.BookingAgentUncheckedUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutAgentNestedInput
 }
 
 export type AgentCreateWithoutAssignedBookingsInput = {
@@ -968,6 +1105,7 @@ export type AgentCreateWithoutAssignedBookingsInput = {
   gstNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutAgentInput
   preferredTours?: Prisma.AgentTourPreferenceCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutAgentInput
 }
 
 export type AgentUncheckedCreateWithoutAssignedBookingsInput = {
@@ -990,6 +1128,7 @@ export type AgentUncheckedCreateWithoutAssignedBookingsInput = {
   pinCode?: string | null
   gstNumber?: string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedCreateNestedManyWithoutAgentInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutAgentInput
 }
 
 export type AgentCreateOrConnectWithoutAssignedBookingsInput = {
@@ -1028,6 +1167,7 @@ export type AgentUpdateWithoutAssignedBookingsInput = {
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAgentNestedInput
   preferredTours?: Prisma.AgentTourPreferenceUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateWithoutAssignedBookingsInput = {
@@ -1050,6 +1190,7 @@ export type AgentUncheckedUpdateWithoutAssignedBookingsInput = {
   pinCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredTours?: Prisma.AgentTourPreferenceUncheckedUpdateManyWithoutAgentNestedInput
+  deletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutAgentNestedInput
 }
 
 
@@ -1114,6 +1255,7 @@ export type AgentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   preferredTours?: boolean | Prisma.Agent$preferredToursArgs<ExtArgs>
   assignedBookings?: boolean | Prisma.Agent$assignedBookingsArgs<ExtArgs>
+  deletionRequest?: boolean | Prisma.Agent$deletionRequestArgs<ExtArgs>
   _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agent"]>
 
@@ -1187,6 +1329,7 @@ export type AgentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   preferredTours?: boolean | Prisma.Agent$preferredToursArgs<ExtArgs>
   assignedBookings?: boolean | Prisma.Agent$assignedBookingsArgs<ExtArgs>
+  deletionRequest?: boolean | Prisma.Agent$deletionRequestArgs<ExtArgs>
   _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AgentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1202,6 +1345,7 @@ export type $AgentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     user: Prisma.$UserPayload<ExtArgs>
     preferredTours: Prisma.$AgentTourPreferencePayload<ExtArgs>[]
     assignedBookings: Prisma.$BookingAgentPayload<ExtArgs>[]
+    deletionRequest: Prisma.$AgentDeletionRequestPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1619,6 +1763,7 @@ export interface Prisma__AgentClient<T, Null = never, ExtArgs extends runtime.Ty
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   preferredTours<T extends Prisma.Agent$preferredToursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$preferredToursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentTourPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedBookings<T extends Prisma.Agent$assignedBookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$assignedBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingAgentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  deletionRequest<T extends Prisma.Agent$deletionRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$deletionRequestArgs<ExtArgs>>): Prisma.Prisma__AgentDeletionRequestClient<runtime.Types.Result.GetResult<Prisma.$AgentDeletionRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2112,6 +2257,25 @@ export type Agent$assignedBookingsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.BookingAgentScalarFieldEnum | Prisma.BookingAgentScalarFieldEnum[]
+}
+
+/**
+ * Agent.deletionRequest
+ */
+export type Agent$deletionRequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentDeletionRequest
+   */
+  select?: Prisma.AgentDeletionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentDeletionRequest
+   */
+  omit?: Prisma.AgentDeletionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentDeletionRequestInclude<ExtArgs> | null
+  where?: Prisma.AgentDeletionRequestWhereInput
 }
 
 /**

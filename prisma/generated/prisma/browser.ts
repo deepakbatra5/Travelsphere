@@ -58,6 +58,11 @@ export type Review = Prisma.ReviewModel
  */
 export type Agent = Prisma.AgentModel
 /**
+ * Model AgentDeletionRequest
+ * 
+ */
+export type AgentDeletionRequest = Prisma.AgentDeletionRequestModel
+/**
  * Model AgentTourPreference
  * 
  */

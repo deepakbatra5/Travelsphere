@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
 import AgentStatusUpdate from './AgentStatusUpdate'
 import { redirect } from 'next/navigation'
+import AgentDeletionRequestActions from './AgentDeletionRequestActions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -14,20 +15,75 @@ export default async function AdminAgentsPage() {
     redirect('/?callbackUrl=/agents')
   }
 
-  const agents = await prisma.agent.findMany({
-    include: {
-      user: true,
-      preferredTours: { include: { package: true } },
-      assignedBookings: true,
-    },
-    orderBy: [{ status: 'asc' }, { createdAt: 'desc' }],
-  })
+  const [agents, deletionRequests] = await Promise.all([
+    prisma.agent.findMany({
+      include: {
+        user: true,
+        preferredTours: { include: { package: true } },
+        assignedBookings: true,
+      },
+      orderBy: [{ status: 'asc' }, { createdAt: 'desc' }],
+    }),
+    prisma.agentDeletionRequest.findMany({
+      include: {
+        user: true,
+        agent: true,
+      },
+      orderBy: { requestedAt: 'desc' },
+    }),
+  ])
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-800">Agents</h1>
         <p className="mt-1 text-sm text-gray-500">{agents.length} registered agent(s)</p>
+      </div>
+
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-amber-900">Pending Deletion Requests</h2>
+            <p className="text-sm text-amber-800/80">Approve a request to permanently delete the agent account and all related records.</p>
+          </div>
+          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
+            {deletionRequests.length} pending
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          {deletionRequests.map((request) => (
+            <div key={request.id} className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-amber-100">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-base font-bold text-gray-800">{request.user.name}</h3>
+                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">
+                      {request.agent.status}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-500">{request.user.email} · {request.agent.city}, {request.agent.state}</p>
+                  <p className="mt-2 text-xs text-gray-400">
+                    Requested on {new Date(request.requestedAt).toLocaleDateString('en-IN', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </p>
+                  {request.reason && <p className="mt-2 max-w-3xl text-sm text-gray-600">Reason: {request.reason}</p>}
+                </div>
+
+                <AgentDeletionRequestActions requestId={request.id} />
+              </div>
+            </div>
+          ))}
+
+          {deletionRequests.length === 0 && (
+            <div className="rounded-2xl border border-dashed border-amber-200 bg-white p-6 text-center text-sm text-gray-400">
+              No pending deletion requests.
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="space-y-4">

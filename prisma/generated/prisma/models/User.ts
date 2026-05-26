@@ -340,6 +340,7 @@ export type UserWhereInput = {
   reviews?: Prisma.ReviewListRelationFilter
   enquiries?: Prisma.EnquiryListRelationFilter
   agent?: Prisma.XOR<Prisma.AgentNullableScalarRelationFilter, Prisma.AgentWhereInput> | null
+  agentDeletionRequest?: Prisma.XOR<Prisma.AgentDeletionRequestNullableScalarRelationFilter, Prisma.AgentDeletionRequestWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -366,6 +367,7 @@ export type UserOrderByWithRelationInput = {
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   enquiries?: Prisma.EnquiryOrderByRelationAggregateInput
   agent?: Prisma.AgentOrderByWithRelationInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -395,6 +397,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.ReviewListRelationFilter
   enquiries?: Prisma.EnquiryListRelationFilter
   agent?: Prisma.XOR<Prisma.AgentNullableScalarRelationFilter, Prisma.AgentWhereInput> | null
+  agentDeletionRequest?: Prisma.XOR<Prisma.AgentDeletionRequestNullableScalarRelationFilter, Prisma.AgentDeletionRequestWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -473,6 +476,7 @@ export type UserCreateInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -499,6 +503,7 @@ export type UserUncheckedCreateInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryUncheckedCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -525,6 +530,7 @@ export type UserUpdateInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -551,6 +557,7 @@ export type UserUncheckedUpdateInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUncheckedUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -797,6 +804,20 @@ export type UserUpdateOneRequiredWithoutAgentNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAgentInput, Prisma.UserUpdateWithoutAgentInput>, Prisma.UserUncheckedUpdateWithoutAgentInput>
 }
 
+export type UserCreateNestedOneWithoutAgentDeletionRequestInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAgentDeletionRequestInput, Prisma.UserUncheckedCreateWithoutAgentDeletionRequestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAgentDeletionRequestInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAgentDeletionRequestNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAgentDeletionRequestInput, Prisma.UserUncheckedCreateWithoutAgentDeletionRequestInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAgentDeletionRequestInput
+  upsert?: Prisma.UserUpsertWithoutAgentDeletionRequestInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAgentDeletionRequestInput, Prisma.UserUpdateWithoutAgentDeletionRequestInput>, Prisma.UserUncheckedUpdateWithoutAgentDeletionRequestInput>
+}
+
 export type UserCreateWithoutBookingsInput = {
   id?: string
   name: string
@@ -820,6 +841,7 @@ export type UserCreateWithoutBookingsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookingsInput = {
@@ -845,6 +867,7 @@ export type UserUncheckedCreateWithoutBookingsInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryUncheckedCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookingsInput = {
@@ -886,6 +909,7 @@ export type UserUpdateWithoutBookingsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookingsInput = {
@@ -911,6 +935,7 @@ export type UserUncheckedUpdateWithoutBookingsInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUncheckedUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEnquiriesInput = {
@@ -936,6 +961,7 @@ export type UserCreateWithoutEnquiriesInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEnquiriesInput = {
@@ -961,6 +987,7 @@ export type UserUncheckedCreateWithoutEnquiriesInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEnquiriesInput = {
@@ -1002,6 +1029,7 @@ export type UserUpdateWithoutEnquiriesInput = {
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEnquiriesInput = {
@@ -1027,6 +1055,7 @@ export type UserUncheckedUpdateWithoutEnquiriesInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -1052,6 +1081,7 @@ export type UserCreateWithoutReviewsInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -1077,6 +1107,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryUncheckedCreateNestedManyWithoutUserInput
   agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1118,6 +1149,7 @@ export type UserUpdateWithoutReviewsInput = {
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -1143,6 +1175,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUncheckedUpdateManyWithoutUserNestedInput
   agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAgentInput = {
@@ -1168,6 +1201,7 @@ export type UserCreateWithoutAgentInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryCreateNestedManyWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAgentInput = {
@@ -1193,6 +1227,7 @@ export type UserUncheckedCreateWithoutAgentInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   enquiries?: Prisma.EnquiryUncheckedCreateNestedManyWithoutUserInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAgentInput = {
@@ -1234,6 +1269,7 @@ export type UserUpdateWithoutAgentInput = {
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUpdateManyWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentInput = {
@@ -1259,6 +1295,127 @@ export type UserUncheckedUpdateWithoutAgentInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   enquiries?: Prisma.EnquiryUncheckedUpdateManyWithoutUserNestedInput
+  agentDeletionRequest?: Prisma.AgentDeletionRequestUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAgentDeletionRequestInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  password: string
+  role?: $Enums.Role
+  isEmailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  emailOtpHash?: string | null
+  emailOtpExpiresAt?: Date | string | null
+  emailOtpAttempts?: number
+  emailOtpSentAt?: Date | string | null
+  emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  enquiries?: Prisma.EnquiryCreateNestedManyWithoutUserInput
+  agent?: Prisma.AgentCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAgentDeletionRequestInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  password: string
+  role?: $Enums.Role
+  isEmailVerified?: boolean
+  emailVerifiedAt?: Date | string | null
+  emailOtpHash?: string | null
+  emailOtpExpiresAt?: Date | string | null
+  emailOtpAttempts?: number
+  emailOtpSentAt?: Date | string | null
+  emailOtpResendCount?: number
+  passwordResetOtpHash?: string | null
+  passwordResetOtpExpiresAt?: Date | string | null
+  passwordResetOtpAttempts?: number
+  passwordResetOtpSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  enquiries?: Prisma.EnquiryUncheckedCreateNestedManyWithoutUserInput
+  agent?: Prisma.AgentUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAgentDeletionRequestInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAgentDeletionRequestInput, Prisma.UserUncheckedCreateWithoutAgentDeletionRequestInput>
+}
+
+export type UserUpsertWithoutAgentDeletionRequestInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAgentDeletionRequestInput, Prisma.UserUncheckedUpdateWithoutAgentDeletionRequestInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAgentDeletionRequestInput, Prisma.UserUncheckedCreateWithoutAgentDeletionRequestInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAgentDeletionRequestInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAgentDeletionRequestInput, Prisma.UserUncheckedUpdateWithoutAgentDeletionRequestInput>
+}
+
+export type UserUpdateWithoutAgentDeletionRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  enquiries?: Prisma.EnquiryUpdateManyWithoutUserNestedInput
+  agent?: Prisma.AgentUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAgentDeletionRequestInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  emailOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailOtpResendCount?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordResetOtpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordResetOtpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  passwordResetOtpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  enquiries?: Prisma.EnquiryUncheckedUpdateManyWithoutUserNestedInput
+  agent?: Prisma.AgentUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -1334,6 +1491,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   enquiries?: boolean | Prisma.User$enquiriesArgs<ExtArgs>
   agent?: boolean | Prisma.User$agentArgs<ExtArgs>
+  agentDeletionRequest?: boolean | Prisma.User$agentDeletionRequestArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1409,6 +1567,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   enquiries?: boolean | Prisma.User$enquiriesArgs<ExtArgs>
   agent?: boolean | Prisma.User$agentArgs<ExtArgs>
+  agentDeletionRequest?: boolean | Prisma.User$agentDeletionRequestArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1421,6 +1580,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     enquiries: Prisma.$EnquiryPayload<ExtArgs>[]
     agent: Prisma.$AgentPayload<ExtArgs> | null
+    agentDeletionRequest: Prisma.$AgentDeletionRequestPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1840,6 +2000,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   enquiries<T extends Prisma.User$enquiriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enquiriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnquiryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   agent<T extends Prisma.User$agentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentArgs<ExtArgs>>): Prisma.Prisma__AgentClient<runtime.Types.Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  agentDeletionRequest<T extends Prisma.User$agentDeletionRequestArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentDeletionRequestArgs<ExtArgs>>): Prisma.Prisma__AgentDeletionRequestClient<runtime.Types.Result.GetResult<Prisma.$AgentDeletionRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2369,6 +2530,25 @@ export type User$agentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   include?: Prisma.AgentInclude<ExtArgs> | null
   where?: Prisma.AgentWhereInput
+}
+
+/**
+ * User.agentDeletionRequest
+ */
+export type User$agentDeletionRequestArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentDeletionRequest
+   */
+  select?: Prisma.AgentDeletionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentDeletionRequest
+   */
+  omit?: Prisma.AgentDeletionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentDeletionRequestInclude<ExtArgs> | null
+  where?: Prisma.AgentDeletionRequestWhereInput
 }
 
 /**

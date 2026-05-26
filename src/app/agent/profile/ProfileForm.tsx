@@ -98,14 +98,10 @@ export default function ProfileForm({ initialProfile }: { initialProfile: Profil
           </button>
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="rounded-2xl bg-white/15 p-4">
             <p className="text-xs text-cyan-100">Status</p>
             <p className="mt-1 font-bold">{form.status}</p>
-          </div>
-          <div className="rounded-2xl bg-white/15 p-4">
-            <p className="text-xs text-cyan-100">Rating</p>
-            <p className="mt-1 font-bold">{form.rating > 0 ? `${form.rating.toFixed(1)} / 5` : 'No ratings yet'}</p>
           </div>
           <div className="rounded-2xl bg-white/15 p-4">
             <p className="text-xs text-cyan-100">Total Tours</p>

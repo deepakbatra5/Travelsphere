@@ -31,7 +31,7 @@ export default function AgentTourSelector({
       type="button"
       disabled={loading}
       onClick={toggle}
-      className={`rounded-full px-4 py-2 text-xs font-bold ${selected ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-500 text-white hover:bg-orange-600'} disabled:opacity-60`}
+      className={`rounded-full px-4 py-2 text-xs font-bold transition-transform transform ${selected ? 'bg-emerald-100 text-emerald-700 scale-100' : 'bg-orange-500 text-white hover:bg-orange-600 hover:scale-105'} disabled:opacity-60`}
     >
       {loading ? 'Saving...' : selected ? 'Selected' : 'Select Tour'}
     </button>
