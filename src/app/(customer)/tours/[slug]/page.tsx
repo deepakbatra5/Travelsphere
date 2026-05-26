@@ -42,81 +42,132 @@ const SightseeingIcon = (props: React.ComponentProps<'svg'>) => (
   </svg>
 )
 
-// Shared description and itinerary helpers imported from @/lib/tourHelpers
+// ─── Safe JSON cast for itinerary ─────────────────────────────────────────────
+function safeParseItinerary(raw: unknown): { day: number; title: string; description: string }[] {
+  try {
+    if (!raw) return []
+    if (Array.isArray(raw)) {
+      return raw
+        .filter((item): item is Record<string, unknown> => item !== null && typeof item === 'object')
+        .map((item) => ({
+          day: typeof item.day === 'number' ? item.day : Number(item.day) || 0,
+          title: typeof item.title === 'string' ? item.title : String(item.title || ''),
+          description: typeof item.description === 'string' ? item.description : String(item.description || ''),
+        }))
+        .filter((item) => item.day > 0)
+    }
+    return []
+  } catch {
+    return []
+  }
+}
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 
 export default async function TourDetailPage({ params }: Props) {
-  const { slug } = await params
-  const session = await getServerSession(authOptions)
+  let slug: string
+  try {
+    const p = await params
+    slug = p?.slug || ''
+  } catch {
+    return notFound()
+  }
 
   if (!slug) return notFound()
 
-  const pkg = await prisma.package.findUnique({
-    where: { slug },
-    include: {
-      reviews: {
-        include: { user: { select: { name: true } } },
-        orderBy: { createdAt: 'desc' }
-      },
-      tripDates: {
-        where: { startDate: { gte: new Date() } },
-        orderBy: { startDate: 'asc' }
+  // Fetch session — non-blocking (failure is okay, just means user is logged out)
+  let session = null
+  try {
+    session = await getServerSession(authOptions)
+  } catch {
+    session = null
+  }
+
+  // Fetch package data with full error handling
+  let pkg = null
+  try {
+    pkg = await prisma.package.findUnique({
+      where: { slug },
+      include: {
+        reviews: {
+          include: { user: { select: { name: true } } },
+          orderBy: { createdAt: 'desc' }
+        },
+        tripDates: {
+          where: { startDate: { gte: new Date() } },
+          orderBy: { startDate: 'asc' }
+        }
       }
-    }
-  })
+    })
+  } catch (err) {
+    console.error('[TourDetailPage] DB error fetching package:', err)
+    return notFound()
+  }
 
   if (!pkg || !pkg.isActive) return notFound()
 
-  // Safely guard database arrays/fields that might be null at runtime
-  const safeImages = Array.isArray(pkg.images) ? pkg.images : []
-  const safeInclusions = Array.isArray(pkg.inclusions) ? pkg.inclusions : []
-  const safeExclusions = Array.isArray(pkg.exclusions) ? pkg.exclusions : []
+  // ─── Runtime safety guards for all DB arrays/fields ─────────────────────────
+  const safeImages = Array.isArray(pkg.images) ? pkg.images.filter(Boolean) : []
+  const safeInclusions = Array.isArray(pkg.inclusions) ? pkg.inclusions.filter(Boolean) : []
+  const safeExclusions = Array.isArray(pkg.exclusions) ? pkg.exclusions.filter(Boolean) : []
   const safeReviews = Array.isArray(pkg.reviews) ? pkg.reviews : []
   const safeTripDates = Array.isArray(pkg.tripDates) ? pkg.tripDates : []
   const safeDestination = pkg.destination || ''
+  const safeTitle = pkg.title || 'Tour Package'
+  const safeSlug = pkg.slug || slug
+  const safeDescription = pkg.description || ''
+  const safeCategory = (pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category) || 'SOLO'
+  const safePrice = typeof pkg.price === 'number' ? pkg.price : 0
+  const safeDuration = typeof pkg.duration === 'number' ? pkg.duration : 0
 
-  const itinerary = getDetailedItinerary(
-    pkg.slug,
-    pkg.itinerary as Array<{
-      day: number
-      title: string
-      description: string
-    }>
-  )
+  // Safely parse itinerary from Prisma Json type
+  const parsedItinerary = safeParseItinerary(pkg.itinerary)
 
+  // Apply enriched itinerary from helpers
+  let itinerary = parsedItinerary
+  try {
+    itinerary = getDetailedItinerary(safeSlug, parsedItinerary)
+  } catch {
+    itinerary = parsedItinerary
+  }
+
+  // Average rating
   const avgRating = safeReviews.length
-    ? (safeReviews.reduce((sum, r) => sum + r.rating, 0) / safeReviews.length).toFixed(1)
+    ? (safeReviews.reduce((sum, r) => sum + (r.rating || 0), 0) / safeReviews.length).toFixed(1)
     : null
-  
-  const category = pkg.category === 'HONEYMOON' ? 'SOLO' : pkg.category
 
-  // Map package data for tabs to consume safely
+  // Map package data for tabs — fully safe objects
   const packageDataForTabs = {
     id: pkg.id,
-    title: pkg.title,
-    price: pkg.price,
-    duration: pkg.duration,
-    itinerary: itinerary,
+    title: safeTitle,
+    price: safePrice,
+    duration: safeDuration,
+    itinerary,
     inclusions: safeInclusions,
     exclusions: safeExclusions,
     tripDates: safeTripDates.map((td) => ({
       id: td.id,
       startDate: td.startDate ? td.startDate.toISOString() : new Date().toISOString(),
-      totalSeats: td.totalSeats,
-      availableSeats: td.availableSeats,
+      totalSeats: td.totalSeats ?? 0,
+      availableSeats: td.availableSeats ?? 0,
     })),
     reviews: safeReviews.map((r) => ({
       id: r.id,
-      rating: r.rating,
+      rating: r.rating ?? 0,
       comment: r.comment || '',
       createdAt: r.createdAt ? r.createdAt.toISOString() : new Date().toISOString(),
-      user: { name: r.user ? r.user.name : (r.guestName || 'Anonymous') },
+      user: { name: (r.user?.name) || (r.guestName) || 'Anonymous' },
     })),
-    category: category,
+    category: safeCategory,
   }
 
-  const descriptionParagraphs = getDetailedTourDescription(pkg.slug, pkg.title, safeDestination, pkg.category, pkg.description)
+  // Description paragraphs
+  let descriptionParagraphs: string[] = []
+  try {
+    descriptionParagraphs = getDetailedTourDescription(safeSlug, safeTitle, safeDestination, safeCategory, safeDescription)
+  } catch {
+    descriptionParagraphs = [safeDescription || 'Experience an amazing tour package.']
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
@@ -126,7 +177,7 @@ export default async function TourDetailPage({ params }: Props) {
         {' / '}
         <Link href="/tours" className="hover:text-orange-600 transition">All Packages</Link>
         {' / '}
-        <span className="text-slate-900 dark:text-white">{pkg.title}</span>
+        <span className="text-slate-900 dark:text-white">{safeTitle}</span>
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -138,10 +189,11 @@ export default async function TourDetailPage({ params }: Props) {
               <div key={i} className={`relative overflow-hidden rounded-2xl ${i === 0 ? 'col-span-2 h-64 md:h-96' : 'h-40 md:h-52'}`}>
                 <Image
                   src={img}
-                  alt={`${pkg.title} photo ${i + 1}`}
+                  alt={`${safeTitle} photo ${i + 1}`}
                   fill
                   sizes={i === 0 ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 1024px) 50vw, 25vw'}
                   className="object-cover transition duration-500 hover:scale-102"
+                  unoptimized
                 />
               </div>
             ))}
@@ -157,12 +209,12 @@ export default async function TourDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <span className="inline-block rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700 dark:bg-orange-950/40 dark:text-orange-400">
-                  {category}
+                  {safeCategory}
                 </span>
-                <h1 className="mt-3 text-3xl font-black text-slate-900 dark:text-white">{pkg.title}</h1>
+                <h1 className="mt-3 text-3xl font-black text-slate-900 dark:text-white">{safeTitle}</h1>
                 <p className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400">
                   <MapPinIcon className="h-4 w-4 text-orange-500" />
-                  {pkg.destination}
+                  {safeDestination}
                 </p>
               </div>
               {avgRating && (
@@ -171,7 +223,7 @@ export default async function TourDetailPage({ params }: Props) {
                     <StarIcon className="h-5 w-5" />
                     {avgRating}
                   </div>
-                  <div className="text-xs font-bold text-amber-700 dark:text-amber-500">{pkg.reviews.length} reviews</div>
+                  <div className="text-xs font-bold text-amber-700 dark:text-amber-500">{safeReviews.length} reviews</div>
                 </div>
               )}
             </div>
@@ -222,16 +274,16 @@ export default async function TourDetailPage({ params }: Props) {
           <div className="sticky top-24">
             <TourBookingSidebar
               packageId={pkg.id}
-              title={pkg.title}
-              price={pkg.price}
-              duration={pkg.duration}
-              category={pkg.category}
+              title={safeTitle}
+              price={safePrice}
+              duration={safeDuration}
+              category={safeCategory}
               destination={safeDestination}
               tripDates={safeTripDates.map((td) => ({
                 id: td.id,
                 startDate: td.startDate ? td.startDate.toISOString() : new Date().toISOString(),
-                totalSeats: td.totalSeats,
-                availableSeats: td.availableSeats,
+                totalSeats: td.totalSeats ?? 0,
+                availableSeats: td.availableSeats ?? 0,
               }))}
             />
           </div>
