@@ -57,61 +57,136 @@ export default async function AgentEarningsPage() {
 
   const completed = assignments.filter((item) => item.status === 'COMPLETED')
   const total = completed.reduce((sum, item) => sum + item.commission, 0)
-  const monthly = completed.reduce<Record<string, { agent: number; tours: number }>>((acc, item) => {
-    const key = monthKey(item.completedAt || item.booking.travelDate)
-    acc[key] ||= { agent: 0, tours: 0 }
-    acc[key].agent += item.commission
-    acc[key].tours += 1
-    return acc
-  }, {})
-  const monthlyRows = Object.entries(monthly).slice(-6)
-  const maxMonthlyValue = Math.max(1, ...monthlyRows.map(([, row]) => row.agent))
+
+  const pendingAssignments = assignments.filter((item) => item.status === 'ASSIGNED' || item.status === 'IN_PROGRESS')
+  const pendingTotal = pendingAssignments.reduce((sum, item) => sum + item.commission, 0)
+
+  // Sort assignments chronologically (oldest first) to build running totals
+  const sortedAssignments = [...assignments].sort(
+    (a, b) => new Date(a.booking.travelDate).getTime() - new Date(b.booking.travelDate).getTime()
+  )
+
+  const monthlyGroups: Record<string, {
+    key: string;
+    date: Date;
+    completedEarnings: number;
+    pendingEarnings: number;
+    cancelledEarnings: number;
+    completedTours: number;
+    activeTours: number;
+    cancelledTours: number;
+    totalTours: number;
+  }> = {}
+
+  sortedAssignments.forEach((item) => {
+    const date = item.booking.travelDate
+    const key = monthKey(date)
+    
+    if (!monthlyGroups[key]) {
+      monthlyGroups[key] = {
+        key,
+        date,
+        completedEarnings: 0,
+        pendingEarnings: 0,
+        cancelledEarnings: 0,
+        completedTours: 0,
+        activeTours: 0,
+        cancelledTours: 0,
+        totalTours: 0,
+      }
+    }
+
+    const group = monthlyGroups[key]
+    group.totalTours += 1
+
+    if (item.status === 'COMPLETED') {
+      group.completedEarnings += item.commission
+      group.completedTours += 1
+    } else if (item.status === 'ASSIGNED' || item.status === 'IN_PROGRESS') {
+      group.pendingEarnings += item.commission
+      group.activeTours += 1
+    } else if (item.status === 'CANCELLED') {
+      group.cancelledEarnings += item.commission
+      group.cancelledTours += 1
+    }
+  })
+
+  // Sort groups chronologically
+  const sortedGroups = Object.values(monthlyGroups).sort((a, b) => a.date.getTime() - b.date.getTime())
+
+  const monthlyRows = sortedGroups.map((group, idx) => {
+    const cumulative = sortedGroups
+      .slice(0, idx + 1)
+      .reduce((sum, g) => sum + g.completedEarnings, 0)
+    return {
+      month: group.key,
+      completedEarnings: group.completedEarnings,
+      pendingEarnings: group.pendingEarnings,
+      cancelledEarnings: group.cancelledEarnings,
+      completedTours: group.completedTours,
+      activeTours: group.activeTours,
+      cancelledTours: group.cancelledTours,
+      totalTours: group.totalTours,
+      cumulativeEarnings: cumulative,
+    }
+  })
+
+  // Keep the last 12 months for charts if available
+  const chartMonthlyRows = monthlyRows.slice(-12)
 
   // Weekly aggregation (last 8 weeks)
   function weekKey(date: Date) {
     const d = new Date(date)
     const start = new Date(d)
-    // start of week (Sunday)
     start.setDate(d.getDate() - d.getDay())
     return start.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
   }
 
-  const weekly = completed.reduce<Record<string, number>>((acc, item) => {
+  const weeklyMap = completed.reduce<Record<string, number>>((acc, item) => {
     const key = weekKey(item.completedAt || item.booking.travelDate)
     acc[key] = (acc[key] || 0) + item.commission
     return acc
   }, {})
-  const weeklyRows = Object.entries(weekly).slice(-8)
 
-  // Trip rows -> recent assigned travel months with count
-  const tripMap = completed.reduce<Record<string, number>>((acc, item) => {
-    const k = new Date(item.booking.travelDate).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })
-    acc[k] = (acc[k] || 0) + 1
-    return acc
-  }, {})
-  const tripRows = Object.entries(tripMap).slice(-8)
+  const weeklyRows = Object.entries(weeklyMap)
+    .map(([label, val]) => {
+      const parts = label.split(' ')
+      const day = parseInt(parts[0], 10)
+      const monthStr = parts[1]
+      const year = new Date().getFullYear()
+      const date = new Date(`${monthStr} ${day}, ${year}`)
+      return { label, val, date }
+    })
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .map(x => [x.label, x.val] as [string, number])
+    .slice(-8)
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <a href="#breakdown" className="rounded-3xl bg-emerald-600 p-6 text-white transition hover:-translate-y-0.5 hover:shadow-lg">
-          <p className="text-sm text-emerald-100">Total Agent Earnings</p>
-          <h1 className="mt-1 text-3xl font-extrabold">Rs {total.toLocaleString('en-IN')}</h1>
-          <p className="mt-3 text-xs text-emerald-100">After Travel Sphere deduction</p>
+          <p className="text-sm text-emerald-100">Total Paid Earnings</p>
+          <h1 className="mt-1 text-2xl font-extrabold">Rs {total.toLocaleString('en-IN')}</h1>
+          <p className="mt-3 text-xs text-emerald-100">From completed tours</p>
+        </a>
+        <a href="#breakdown" className="rounded-3xl bg-amber-600 p-6 text-white transition hover:-translate-y-0.5 hover:shadow-lg">
+          <p className="text-sm text-amber-100">Pending Earnings</p>
+          <h1 className="mt-1 text-2xl font-extrabold">Rs {pendingTotal.toLocaleString('en-IN')}</h1>
+          <p className="mt-3 text-xs text-amber-100">Assigned / In Progress tours</p>
         </a>
         <a href="#breakdown" className="rounded-3xl bg-cyan-700 p-6 text-white transition hover:-translate-y-0.5 hover:shadow-lg">
           <p className="text-sm text-cyan-100">Completed Tours</p>
-          <h2 className="mt-1 text-3xl font-extrabold">{completed.length}</h2>
-          <p className="mt-3 text-xs text-cyan-100">Tours counted for earnings</p>
+          <h2 className="mt-1 text-2xl font-extrabold">{completed.length}</h2>
+          <p className="mt-3 text-xs text-cyan-100">Tours completed successfully</p>
         </a>
         <a href="#breakdown" className="rounded-3xl bg-slate-800 p-6 text-white transition hover:-translate-y-0.5 hover:shadow-lg">
           <p className="text-sm text-slate-200">Average Payout</p>
-          <h2 className="mt-1 text-3xl font-extrabold">Rs {(completed.length ? total / completed.length : 0).toLocaleString('en-IN')}</h2>
+          <h2 className="mt-1 text-2xl font-extrabold">Rs {(completed.length ? total / completed.length : 0).toLocaleString('en-IN')}</h2>
           <p className="mt-3 text-xs text-slate-300">Per completed tour</p>
         </a>
       </div>
 
-      <EarningsCharts monthlyRows={monthlyRows} weeklyRows={weeklyRows} tripRows={tripRows} />
+      <EarningsCharts monthlyRows={chartMonthlyRows} weeklyRows={weeklyRows} />
 
       <div id="breakdown" className="rounded-3xl bg-white p-6 shadow-sm">
         <h2 className="mb-4 text-lg font-bold text-slate-900">Trip-wise Agent Earnings</h2>
