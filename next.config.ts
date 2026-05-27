@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   // Next.js automatically detects src/ directory — no extra config needed.
 
   // Keep active pages warm for longer in dev to reduce recompiles.

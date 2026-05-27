@@ -1,0 +1,97 @@
+name: CI / CD — Build & Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: .next
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+
+      - name: Copy repository to EC2
+        uses: appleboy/scp-action@v0.1.8
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: .
+          target: /home/${{ secrets.EC2_USER }}/travelsphere
+
+      - name: Run remote deploy script
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            set -e
+            cd /home/${{ secrets.EC2_USER }}/travelsphere
+            chmod +x deployment/deploy.sh || true
+            sudo ./deployment/deploy.sh
+
+  provision-eip:
+    needs: []
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Allocate Elastic IP
+        id: alloc
+        run: |
+          set -eux
+          ALLOC_ID=$(aws ec2 allocate-address --domain vpc --query 'AllocationId' --output text)
+          EIP=$(aws ec2 describe-addresses --allocation-ids $ALLOC_ID --query 'Addresses[0].PublicIp' --output text)
+          echo "allocation_id=$ALLOC_ID" >> $GITHUB_OUTPUT
+          echo "eip=$EIP" >> $GITHUB_OUTPUT
+          echo "Allocated EIP: $EIP (allocation $ALLOC_ID)"
+
+      - name: Find primary network interface for instance
+        id: eni
+        run: |
+          set -eux
+          ENI=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query "Reservations[0].Instances[0].NetworkInterfaces[?Attachment.DeviceIndex==`0`].NetworkInterfaceId" --output text)
+          if [ -z "$ENI" ] || [ "$ENI" = "None" ]; then
+            echo "No primary network interface found for instance ${{ secrets.EC2_INSTANCE_ID }}" >&2
+            exit 1
+          fi
+          echo "network_interface_id=$ENI" >> $GITHUB_OUTPUT
+          echo "Found ENI: $ENI"
+
+      - name: Associate Elastic IP with instance ENI
+        run: |
+          set -eux
+          aws ec2 associate-address --allocation-id ${{ steps.alloc.outputs.allocation_id }} --network-interface-id ${{ steps.eni.outputs.network_interface_id }} --allow-reassociation
+          echo "Associated allocation ${{ steps.alloc.outputs.allocation_id }} to ENI ${{ steps.eni.outputs.network_interface_id }}"

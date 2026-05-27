@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: travelsphere-config
+  namespace: travelsphere
+data:
+  ROOT_DOMAIN: "travelsphere.sbs"
+  NEXT_PUBLIC_ROOT_DOMAIN: "travelsphere.sbs"
+  NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: "travel_sphere_packages"
+  GROQ_MODEL: "llama-3.1-8b-instant"
+  NEXTAUTH_URL: "https://travelsphere.sbs"
+  NEXTAUTH_URL_INTERNAL: "http://127.0.0.1:3000"

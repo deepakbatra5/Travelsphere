@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'travelsphere'
+    static_configs:
+      # Adjust the target to the host IP or service you want to monitor
+      - targets: ['host.docker.internal:3000']

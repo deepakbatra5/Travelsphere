@@ -8,8 +8,8 @@ const args = process.argv.slice(2);
 const isWindows = process.platform === 'win32';
 const nextBin = path.resolve(__dirname, '..', 'node_modules', '.bin', isWindows ? 'next.cmd' : 'next');
 
-// Spawn the next dev process with shell enabled for Windows
-const child = spawn(nextBin, ['dev', ...args], {
+// Spawn the next dev process with webpack enabled by default to prevent Turbopack path resolution issues on Windows
+const child = spawn(nextBin, ['dev', '--webpack', ...args], {
   env: { ...process.env, FORCE_COLOR: '1' },
   shell: true,
   stdio: ['inherit', 'pipe', 'pipe'] // Inherit stdin, pipe stdout/stderr

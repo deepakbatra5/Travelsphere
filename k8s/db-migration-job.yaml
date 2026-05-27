@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migration
+  namespace: travelsphere
+spec:
+  template:
+    metadata:
+      labels:
+        app: db-migration
+    spec:
+      containers:
+        - name: db-migration
+          image: travelsphere-migration:latest # Will be replaced with the ECR image path during GHA run
+          command: ["sh", "-c", "npx prisma migrate deploy && npm run seed"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: travelsphere-secrets
+                  key: DATABASE_URL
+            - name: SEED_ADMIN_EMAIL
+              value: "admin@travelsphere.com"
+            - name: SEED_ADMIN_PASSWORD
+              value: "AdminPassword123!"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+      restartPolicy: OnFailure
+  backoffLimit: 3
+Spec:
+  ttlSecondsAfterFinished: 100 # Cleanup completed pods automatically
