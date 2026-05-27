@@ -46,7 +46,7 @@ jobs:
         run: npm run build
 
   deploy:
-    needs: build
+    needs: [build, provision-eip]
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && inputs.deploy == 'true'
     steps:
@@ -55,7 +55,7 @@ jobs:
       - name: Copy repository to EC2
         uses: appleboy/scp-action@v1.0.0
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ needs.provision-eip.outputs.eip }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
@@ -65,7 +65,7 @@ jobs:
       - name: Run remote deploy script
         uses: appleboy/ssh-action@v1.2.5
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ needs.provision-eip.outputs.eip }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
@@ -79,6 +79,8 @@ jobs:
     needs: []
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
+    outputs:
+      eip: ${{ steps.alloc.outputs.eip }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
