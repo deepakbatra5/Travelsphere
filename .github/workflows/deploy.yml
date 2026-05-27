@@ -1,14 +1,11 @@
 name: Travelsphere EKS CI/CD
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 env:
-  AWS_REGION: us-east-1 # Change to your AWS Region
-  EKS_CLUSTER_NAME: travelsphere-cluster # Change to your EKS Cluster Name
-  ECR_REGISTRY_URL: 123456789012.dkr.ecr.us-east-1.amazonaws.com # Change to your AWS Account ECR Registry URL
+  AWS_REGION: us-east-1
+  EKS_CLUSTER_NAME: travelsphere-cluster
   APP_REPOSITORY: travelsphere-app
   MIGRATION_REPOSITORY: travelsphere-migration
 
@@ -30,6 +27,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Resolve AWS account and ECR registry
+        id: awsmeta
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+          echo "account_id=$ACCOUNT_ID" >> $GITHUB_OUTPUT
+          echo "ecr_registry=$ACCOUNT_ID.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com" >> $GITHUB_OUTPUT
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -46,8 +50,8 @@ jobs:
           target: builder
           push: true
           tags: |
-            ${{ env.ECR_REGISTRY_URL }}/${{ env.MIGRATION_REPOSITORY }}:${{ steps.vars.outputs.sha_short }}
-            ${{ env.ECR_REGISTRY_URL }}/${{ env.MIGRATION_REPOSITORY }}:latest
+            ${{ steps.awsmeta.outputs.ecr_registry }}/${{ env.MIGRATION_REPOSITORY }}:${{ steps.vars.outputs.sha_short }}
+            ${{ steps.awsmeta.outputs.ecr_registry }}/${{ env.MIGRATION_REPOSITORY }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -58,8 +62,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.ECR_REGISTRY_URL }}/${{ env.APP_REPOSITORY }}:${{ steps.vars.outputs.sha_short }}
-            ${{ env.ECR_REGISTRY_URL }}/${{ env.APP_REPOSITORY }}:latest
+            ${{ steps.awsmeta.outputs.ecr_registry }}/${{ env.APP_REPOSITORY }}:${{ steps.vars.outputs.sha_short }}
+            ${{ steps.awsmeta.outputs.ecr_registry }}/${{ env.APP_REPOSITORY }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -80,6 +84,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Resolve AWS account and ECR registry
+        id: awsmeta
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+          echo "account_id=$ACCOUNT_ID" >> $GITHUB_OUTPUT
+          echo "ecr_registry=$ACCOUNT_ID.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com" >> $GITHUB_OUTPUT
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v3
@@ -110,7 +121,7 @@ jobs:
       - name: Execute Prisma Migrations Job
         run: |
           # Replace the placeholder image with the ECR image that was just pushed
-          sed -i "s|travelsphere-migration:latest|${{ env.ECR_REGISTRY_URL }}/${{ env.MIGRATION_REPOSITORY }}:${{ needs.build-and-push.outputs.image_tag }}|g" k8s/db-migration-job.yaml
+          sed -i "s|travelsphere-migration:latest|${{ steps.awsmeta.outputs.ecr_registry }}/${{ env.MIGRATION_REPOSITORY }}:${{ needs.build-and-push.outputs.image_tag }}|g" k8s/db-migration-job.yaml
           
           # Delete any previous job execution to ensure this one runs
           kubectl delete job db-migration -n travelsphere --ignore-not-found=true
@@ -125,7 +136,7 @@ jobs:
       - name: Deploy Services
         run: |
           # Replace the placeholder image with the production ECR image
-          sed -i "s|travelsphere-app:latest|${{ env.ECR_REGISTRY_URL }}/${{ env.APP_REPOSITORY }}:${{ needs.build-and-push.outputs.image_tag }}|g" k8s/app-deployment.yaml
+          sed -i "s|travelsphere-app:latest|${{ steps.awsmeta.outputs.ecr_registry }}/${{ env.APP_REPOSITORY }}:${{ needs.build-and-push.outputs.image_tag }}|g" k8s/app-deployment.yaml
           
           # Apply Database, Application, Ingress and Monitoring configurations
           kubectl apply -f k8s/db-deployment.yaml
