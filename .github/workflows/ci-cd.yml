@@ -96,7 +96,7 @@ jobs:
         id: eni
         run: |
           set -eux
-          ENI=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query "Reservations[0].Instances[0].NetworkInterfaces[?Attachment.DeviceIndex==`0`].NetworkInterfaceId" --output text)
+          ENI=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query "Reservations[0].Instances[0].NetworkInterfaces[?Attachment.DeviceIndex==\`0\`].NetworkInterfaceId" --output text)
           if [ -z "$ENI" ] || [ "$ENI" = "None" ]; then
             echo "No primary network interface found for instance ${{ secrets.EC2_INSTANCE_ID }}" >&2
             exit 1
